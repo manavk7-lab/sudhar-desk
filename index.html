@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sudhar Desk — video + doc</title>
+<style>
+:root{
+  --paper:#FAF6EE;--ink:#231F1A;--ink-soft:#6E6558;
+  --saffron:#B4520A;--saffron-wash:#F6E3CE;--line:#E0D7C6;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:system-ui,sans-serif;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;overflow:hidden}
+button{font-family:inherit;border:none;background:none;cursor:pointer;color:inherit}
+input{font-family:inherit;font-size:inherit}
+
+/* ---- home ---- */
+#home{flex:1;overflow-y:auto;padding:20px 16px 90px;display:none}
+#home.active{display:block}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--saffron);font-weight:600}
+h1{font-size:26px;margin:2px 0 4px}
+.sub{color:var(--ink-soft);font-size:14px;margin-bottom:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;width:100%;text-align:left;display:block}
+.card b{font-size:16px;display:block;margin-bottom:4px}
+.card .meta{font-size:13px;color:var(--ink-soft)}
+.card .del{float:right;font-size:12px;color:var(--ink-soft);padding:4px 8px}
+.empty{text-align:center;color:var(--ink-soft);padding:44px 20px;border:1.5px dashed var(--line);border-radius:14px;line-height:1.6;font-size:15px}
+.fab{position:fixed;right:18px;bottom:22px;background:var(--saffron);color:#fff;border-radius:999px;padding:14px 22px;font-size:16px;font-weight:600;box-shadow:0 6px 18px rgba(180,82,10,.35);z-index:30}
+
+/* ---- add sheet ---- */
+#sheet{position:fixed;inset:0;background:rgba(35,31,26,.45);display:none;z-index:40;align-items:flex-end}
+#sheet.open{display:flex}
+.panel{background:var(--paper);width:100%;border-radius:20px 20px 0 0;padding:22px 18px 30px}
+.panel h2{font-size:19px;margin-bottom:14px}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
+.field input{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff;font-size:15px}
+.primary{width:100%;background:var(--saffron);color:#fff;border-radius:12px;padding:14px;font-size:16px;font-weight:600;margin-top:4px}
+.ghost{width:100%;color:var(--ink-soft);padding:12px;font-size:14px}
+
+/* ---- desk ---- */
+#desk{flex:1;display:none;flex-direction:column;min-height:0}
+#desk.active{display:flex}
+.strip{display:flex;align-items:center;gap:6px;background:var(--ink);color:var(--paper);padding:6px 10px;flex-shrink:0}
+.strip .back{font-size:20px;padding:0 6px}
+.strip .ttl{flex:1;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sbtn{color:var(--paper);font-size:13px;font-weight:700;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.1)}
+.sbtn.accent{background:var(--saffron)}
+#videoBox{background:#000;flex-shrink:0;position:relative;transition:height .25s;height:30vh}
+#videoBox.mini{height:0;overflow:hidden}
+#player{width:100%;height:100%}
+#docFrame{flex:1;border:none;width:100%;background:#fff}
+#docFallback{display:none;padding:14px;background:var(--saffron-wash);font-size:14px;line-height:1.5}
+#docFallback a{color:var(--saffron);font-weight:700}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:60}
+#toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<div id="home" class="active">
+  <div class="eyebrow">Sudhar Desk</div>
+  <h1>Video + Doc, one screen</h1>
+  <div class="sub">Small player on top, your Google Doc below. It remembers where you stopped.</div>
+  <div id="list"></div>
+</div>
+<button class="fab" id="fab">+ Add pair</button>
+
+<div id="sheet">
+  <div class="panel">
+    <h2>Add video + doc pair</h2>
+    <div class="field"><label>YouTube URL</label><input type="text" id="inYt" placeholder="https://youtu.be/..."></div>
+    <div class="field"><label>Google Doc URL</label><input type="text" id="inDoc" placeholder="https://docs.google.com/document/d/..."></div>
+    <div class="field"><label>Title (optional)</label><input type="text" id="inTitle" placeholder="યથાર્થ ગીતા સાર - 5"></div>
+    <button class="primary" id="btnAdd">Add</button>
+    <button class="ghost" id="btnCancel">Cancel</button>
+  </div>
+</div>
+
+<div id="desk">
+  <div class="strip">
+    <button class="back" id="btnBack">‹</button>
+    <div class="ttl" id="deskTitle"></div>
+    <button class="sbtn" id="btnRew">↺5</button>
+    <button class="sbtn accent" id="btnPlay">▶</button>
+    <button class="sbtn" id="btnSpeed">1×</button>
+    <button class="sbtn" id="btnMini">▾ hide</button>
+  </div>
+  <div id="videoBox"><div id="player"></div></div>
+  <div id="docFallback">If the Doc doesn't load below, open it directly: <a id="docLink" target="_blank" rel="noopener">Open in Google Docs</a> — the video keeps playing here.</div>
+  <iframe id="docFrame" allow="clipboard-read; clipboard-write"></iframe>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* storage: localStorage with in-memory fallback */
+const mem={};
+const sget=k=>{try{return localStorage.getItem(k)}catch(e){return mem[k]??null}};
+const sset=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){mem[k]=v}};
+const sdel=k=>{try{localStorage.removeItem(k)}catch(e){delete mem[k]}};
+
+const $=id=>document.getElementById(id);
+const toast=m=>{const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)};
+const fmt=s=>{s=Math.floor(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+
+let pairs = JSON.parse(sget('desk-pairs')||'[]');   // {yt, doc, title}
+let cur=null, player=null, ytReady=false, playing=false, poll=null;
+const speeds=[1,0.75,1.25,1.5]; let sp=0;
+
+const ytId=u=>{const m=(u||'').match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/);return m?m[1]:(/^[\w-]{11}$/.test((u||'').trim())?u.trim():null)};
+const docId=u=>{const m=(u||'').match(/\/d\/([\w-]{20,})/);return m?m[1]:null};
+
+/* ---- home ---- */
+function renderHome(){
+  const L=$('list');L.innerHTML='';
+  if(!pairs.length){L.innerHTML='<div class="empty">Nothing yet.<br>Tap <b>+ Add pair</b> — paste the YouTube link and the Google Doc link for that video.</div>';return}
+  pairs.forEach((p,i)=>{
+    const at=+(sget('desk-t-'+p.yt)||0);
+    const c=document.createElement('button');
+    c.className='card';
+    c.innerHTML=`<span class="del" data-i="${i}">remove</span><b>${p.title}</b><span class="meta">⏱ resume at ${fmt(at)}</span>`;
+    c.onclick=e=>{
+      if(e.target.dataset.i!==undefined){
+        if(confirm('Remove this pair?')){pairs.splice(+e.target.dataset.i,1);sset('desk-pairs',JSON.stringify(pairs));renderHome()}
+        return;
+      }
+      openDesk(p);
+    };
+    L.appendChild(c);
+  });
+}
+$('fab').onclick=()=>$('sheet').classList.add('open');
+$('btnCancel').onclick=()=>$('sheet').classList.remove('open');
+$('btnAdd').onclick=()=>{
+  const y=ytId($('inYt').value), d=docId($('inDoc').value);
+  if(!y){toast('Enter a valid YouTube link');return}
+  if(!d){toast('Enter a valid Google Doc link');return}
+  const title=$('inTitle').value.trim()||('Video '+y);
+  pairs.unshift({yt:y,doc:d,title});
+  sset('desk-pairs',JSON.stringify(pairs));
+  $('sheet').classList.remove('open');
+  $('inYt').value=$('inDoc').value=$('inTitle').value='';
+  renderHome();
+};
+
+/* ---- YouTube ---- */
+const tag=document.createElement('script');tag.src='https://www.youtube.com/iframe_api';document.head.appendChild(tag);
+window.onYouTubeIframeAPIReady=()=>{ytReady=true};
+
+/* ---- desk ---- */
+function openDesk(p){
+  cur=p;
+  $('home').classList.remove('active');$('fab').style.display='none';
+  $('desk').classList.add('active');
+  $('deskTitle').textContent=p.title;
+  const editUrl='https://docs.google.com/document/d/'+p.doc+'/edit';
+  $('docLink').href=editUrl;
+  $('docFallback').style.display='block';
+  $('docFrame').src=editUrl;
+  $('docFrame').onload=()=>{ $('docFallback').style.display='none'; };
+  const start=+(sget('desk-t-'+p.yt)||0);
+  const boot=()=>{
+    if(!ytReady){setTimeout(boot,150);return}
+    if(player){player.destroy();player=null}
+    player=new YT.Player('player',{
+      videoId:p.yt,
+      playerVars:{playsinline:1,rel:0,start:Math.floor(start)},
+      events:{onStateChange:e=>{playing=(e.data===YT.PlayerState.PLAYING);$('btnPlay').textContent=playing?'❚❚':'▶'}}
+    });
+  };
+  boot();
+  clearInterval(poll);
+  poll=setInterval(()=>{
+    if(player&&player.getCurrentTime){
+      const t=player.getCurrentTime();
+      if(t>0)sset('desk-t-'+p.yt,String(t));
+    }
+  },3000);
+  if(start>2)toast('Resuming at '+fmt(start));
+}
+function closeDesk(){
+  clearInterval(poll);
+  if(player){player.destroy();player=null}
+  $('docFrame').src='about:blank';
+  cur=null;
+  $('desk').classList.remove('active');
+  $('home').classList.add('active');$('fab').style.display='';
+  renderHome();
+}
+$('btnBack').onclick=closeDesk;
+$('btnPlay').onclick=()=>{if(!player)return;playing?player.pauseVideo():player.playVideo()};
+$('btnRew').onclick=()=>{if(player&&player.getCurrentTime)player.seekTo(Math.max(0,player.getCurrentTime()-5),true)};
+$('btnSpeed').onclick=()=>{sp=(sp+1)%speeds.length;if(player&&player.setPlaybackRate)player.setPlaybackRate(speeds[sp]);$('btnSpeed').textContent=speeds[sp]+'×'};
+$('btnMini').onclick=()=>{
+  const box=$('videoBox');
+  const mini=box.classList.toggle('mini');
+  $('btnMini').textContent=mini?'▴ video':'▾ hide';
+  // audio keeps playing while hidden — full screen for the Doc
+};
+
+renderHome();
+</script>
+</body>
+</html>
