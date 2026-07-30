@@ -59,7 +59,7 @@ h1{font-size:26px;margin:2px 0 4px}
 #saveState{font-size:12px;color:var(--ink-soft);flex:1}
 #saveState.ok{color:var(--ok)}
 #saveState.err{color:#A33}
-#btnReload{font-size:12px;color:var(--saffron);font-weight:700;padding:4px 8px}
+#btnReload,#btnSaveNow{font-size:12px;color:var(--saffron);font-weight:700;padding:4px 8px}
 #docEdit{
   flex:1;width:100%;border:none;outline:none;resize:none;background:#fff;
   font-family:'Noto Serif Gujarati',serif;font-size:17.5px;line-height:1.75;
@@ -116,7 +116,8 @@ h1{font-size:26px;margin:2px 0 4px}
   <div id="videoBox"><div id="player"></div></div>
   <div class="docbar">
     <span id="saveState">Loading Doc…</span>
-    <button id="btnReload">↻ reload from Doc</button>
+    <button id="btnSaveNow">⤓ save now</button>
+    <button id="btnReload">↻ reload</button>
   </div>
   <textarea id="docEdit" spellcheck="false" placeholder="Transcript loads here from your Google Doc…"></textarea>
 </div>
@@ -235,6 +236,7 @@ async function loadDoc(){
   }catch(e){setState('Doc load failed — check URL/secret','err')}
 }
 function setState(msg,cls){const s=$('saveState');s.textContent=msg;s.className=cls}
+$('btnSaveNow').onclick=()=>{clearTimeout(saveTimer);dirty=true;saveDoc()};
 $('btnReload').onclick=()=>{
   if(dirty&&!confirm('Unsaved edits will be replaced by Doc content. Continue?'))return;
   setState('Loading Doc…','');loadDoc();
@@ -246,17 +248,64 @@ $('docEdit').addEventListener('input',()=>{
   clearTimeout(saveTimer);
   saveTimer=setTimeout(saveDoc,4000);
 });
+/* Hidden-form POST: a real form submission, so CORS never applies.
+   The reply can't be read, so we confirm by reading the Doc back. */
+function formPost(text){
+  return new Promise(resolve=>{
+    const old=document.getElementById('gasForm');if(old)old.remove();
+    if(!document.getElementById('gasFrame')){
+      const i=document.createElement('iframe');
+      i.id='gasFrame';i.name='gasFrame';i.style.display='none';
+      document.body.appendChild(i);
+    }
+    const f=document.createElement('form');
+    f.id='gasForm';f.method='POST';f.action=gas.url;f.target='gasFrame';f.style.display='none';
+    const add=(n,v)=>{const t=document.createElement('textarea');t.name=n;t.value=v;f.appendChild(t)};
+    add('token',gas.token);add('docId',cur.doc);add('fullText',text);
+    document.body.appendChild(f);
+    f.submit();
+    setTimeout(resolve,2500);
+  });
+}
+async function verifySaved(text){
+  try{
+    const chk=await gasGetText(cur.doc);
+    return chk&&typeof chk.text==='string'&&chk.text.trim()===text.trim();
+  }catch(e){return false}
+}
 async function saveDoc(){
   if(!cur||!dirty)return;
   const text=$('docEdit').value;
   if(text===lastSavedText){dirty=false;setState('Saved ✓','ok');return}
   setState('Saving…','');
+  const done=how=>{
+    lastSavedText=text;dirty=false;
+    setState('Saved to Doc ✓ '+how+new Date().toLocaleTimeString().slice(0,5),'ok');
+  };
+  /* 1 — normal POST (works when Apps Script returns readable CORS headers) */
   try{
     const r=await gasPost({docId:cur.doc,fullText:text});
-    if(r.error){setState('Save failed: '+r.error,'err');return}
-    lastSavedText=text;dirty=false;
-    setState('Saved to Doc ✓ '+new Date().toLocaleTimeString().slice(0,5),'ok');
-  }catch(e){setState('Save failed — offline?','err')}
+    if(!r.error){done('');return}
+    setState('Save failed: '+r.error,'err');
+    if(r.error==='auth'||r.error==='no-docId')return;    // config issue — retrying won't help
+  }catch(e){}
+  /* 2 — no-cors POST: request goes out, reply unreadable; verify by reading back */
+  setState('Verifying save…','');
+  try{
+    await fetch(gas.url,{method:'POST',mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({token:gas.token,docId:cur.doc,fullText:text})});
+    await new Promise(r=>setTimeout(r,2000));
+    if(await verifySaved(text)){done('(verified) ');return}
+  }catch(e){}
+  /* 3 — hidden form submission: no CORS involved at all */
+  setState('Retrying save…','');
+  try{
+    await formPost(text);
+    if(await verifySaved(text)){done('(verified) ');return}
+  }catch(e){}
+  setState('Save failed — will retry','err');
+  clearTimeout(saveTimer);saveTimer=setTimeout(saveDoc,8000);
 }
 async function closeDesk(){
   clearTimeout(saveTimer);
