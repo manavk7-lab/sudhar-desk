@@ -68,6 +68,11 @@ h1{font-size:26px;margin:2px 0 4px}
 }
 #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:60}
 #toast.show{opacity:1}
+#floater{position:fixed;right:12px;top:60vh;display:none;gap:10px;z-index:70}
+#floater.show{display:flex}
+#floater button{border-radius:999px;padding:13px 17px;font-size:17px;font-weight:800;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+#fPlay{background:var(--saffron);color:#fff}
+#fRew{background:var(--ink);color:var(--paper)}
 </style>
 </head>
 <body>
@@ -125,6 +130,11 @@ h1{font-size:26px;margin:2px 0 4px}
   <textarea id="docEdit" spellcheck="false" placeholder="Transcript loads here from your Google Doc…"></textarea>
 </div>
 
+<div id="floater">
+  <button id="fRew">↺5</button>
+  <button id="fPlay">▶</button>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -140,6 +150,18 @@ const fmt=s=>{s=Math.floor(s||0);return Math.floor(s/60)+':'+String(s%60).padSta
 if(!/^https?:$/.test(location.protocol)) $('warn').style.display='block';
 
 let pairs=JSON.parse(sget('desk-pairs')||'[]');
+
+/* ===== BUILT-IN LIBRARY =====
+   Pre-loaded video+doc pairs baked into the app itself.
+   Format: {yt:'11charVideoId', doc:'GoogleDocId', title:'…'}
+   These appear on every device automatically; ones you remove stay removed. */
+const BUILTIN_PAIRS=[
+  {yt:'xQQp0lBsa-g',doc:'1XbvIIM8mmJXPx46QgwgL7cH-0klyGM2iHAkQKzIQX5k',title:'યથાર્થ ગીતા સાર - 5'}
+];
+let hidden=JSON.parse(sget('desk-hidden')||'[]');
+BUILTIN_PAIRS.forEach(b=>{
+  if(!hidden.includes(b.yt)&&!pairs.find(p=>p.yt===b.yt))pairs.push(b);
+});
 let gas=JSON.parse(sget('desk-gas')||'{"url":"","token":""}');
 let cur=null,player=null,ytReady=false,playing=false,poll=null;
 let dirty=false,saveTimer=null,lastSavedText='';
@@ -159,7 +181,11 @@ function renderHome(){
     c.innerHTML=`<span class="del" data-i="${i}">remove</span><b>${p.title}</b><span class="meta">⏱ resume at ${fmt(at)}</span>`;
     c.onclick=e=>{
       if(e.target.dataset.i!==undefined){
-        if(confirm('Remove this pair?')){pairs.splice(+e.target.dataset.i,1);sset('desk-pairs',JSON.stringify(pairs));renderHome()}
+        if(confirm('Remove this pair?')){
+          const rem=pairs[+e.target.dataset.i];
+          if(rem&&!hidden.includes(rem.yt)){hidden.push(rem.yt);sset('desk-hidden',JSON.stringify(hidden));}
+          pairs.splice(+e.target.dataset.i,1);sset('desk-pairs',JSON.stringify(pairs));renderHome();
+        }
         return;
       }
       openDesk(p);
@@ -174,6 +200,7 @@ $('btnAdd').onclick=()=>{
   if(!y){toast('Enter a valid YouTube link');return}
   if(!d){toast('Enter a valid Google Doc link');return}
   pairs.unshift({yt:y,doc:d,title:$('inTitle').value.trim()||('Video '+y)});
+  hidden=hidden.filter(h=>h!==y);sset('desk-hidden',JSON.stringify(hidden));
   sset('desk-pairs',JSON.stringify(pairs));
   $('sheet').classList.remove('open');
   $('inYt').value=$('inDoc').value=$('inTitle').value='';
@@ -209,6 +236,7 @@ async function openDesk(p){
   cur=p;dirty=false;lastSavedText='';
   $('home').classList.remove('active');$('fab').style.display='none';
   $('desk').classList.add('active');
+  $('floater').classList.add('show');placeFloater();
   $('deskTitle').textContent=p.title;
   $('docEdit').value='';setState('Loading Doc…','');
   loadDoc();
@@ -219,7 +247,7 @@ async function openDesk(p){
     player=new YT.Player('player',{
       videoId:p.yt,
       playerVars:{playsinline:1,rel:0,start:Math.floor(start)},
-      events:{onStateChange:e=>{playing=(e.data===YT.PlayerState.PLAYING);$('btnPlay').textContent=playing?'❚❚':'▶'}}
+      events:{onStateChange:e=>{playing=(e.data===YT.PlayerState.PLAYING);$('btnPlay').textContent=playing?'❚❚':'▶';$('fPlay').textContent=playing?'❚❚':'▶'}}
     });
   };
   boot();
@@ -235,6 +263,14 @@ async function loadDoc(){
     const r=await gasGetText(cur.doc);
     if(r.error){setState('Doc load failed: '+r.error,'err');return}
     $('docEdit').value=r.text;lastSavedText=r.text;dirty=false;
+    /* restore last cursor position + scroll there */
+    const ta=$('docEdit');
+    const posn=Math.min(+(sget('desk-c-'+cur.yt)||0),r.text.length);
+    ta.setSelectionRange(posn,posn);
+    requestAnimationFrame(()=>{
+      ta.scrollTop=Math.max(0,(posn/Math.max(1,r.text.length))*ta.scrollHeight-ta.clientHeight/2);
+    });
+    if(matchMedia('(pointer:fine)').matches)ta.focus();  /* desktop only — avoids popping the phone keyboard */
     setState('Loaded from Doc ✓','ok');
   }catch(e){setState('Doc load failed — check URL/secret','err')}
 }
@@ -251,8 +287,35 @@ $('btnReload').onclick=()=>{
   setState('Loading Doc…','');loadDoc();
 };
 
+/* ---- floating play controls: ride above the keyboard, never close it ---- */
+function placeFloater(){
+  const f=$('floater');
+  const vv=window.visualViewport;
+  const bottomEdge = vv ? (vv.offsetTop+vv.height) : window.innerHeight;
+  f.style.top = Math.max(80, bottomEdge-66) + 'px';
+}
+if(window.visualViewport){
+  visualViewport.addEventListener('resize',placeFloater);
+  visualViewport.addEventListener('scroll',placeFloater);
+}
+window.addEventListener('resize',placeFloater);
+/* pointerdown + preventDefault = tap works but textarea keeps focus, keyboard stays open */
+const noSteal=fn=>e=>{e.preventDefault();fn()};
+$('fPlay').addEventListener('pointerdown',noSteal(()=>{
+  if(!player)return; playing?player.pauseVideo():player.playVideo();
+}));
+$('fRew').addEventListener('pointerdown',noSteal(()=>{
+  if(player&&player.getCurrentTime)player.seekTo(Math.max(0,player.getCurrentTime()-5),true);
+}));
+
+/* remember cursor position per video */
+function saveCursor(){if(cur)sset('desk-c-'+cur.yt,String($('docEdit').selectionStart||0))}
+['keyup','click','touchend'].forEach(ev=>$('docEdit').addEventListener(ev,saveCursor));
+
 /* autosave: 4s after typing stops */
 $('docEdit').addEventListener('input',()=>{
+  if(playing&&player)player.pauseVideo();   /* auto-pause while typing */
+  saveCursor();
   dirty=true;setState('Editing…','');
   clearTimeout(saveTimer);
   saveTimer=setTimeout(saveDoc,4000);
@@ -323,6 +386,7 @@ async function closeDesk(){
   if(player){player.destroy();player=null}
   cur=null;
   $('desk').classList.remove('active');
+  $('floater').classList.remove('show');
   $('home').classList.add('active');$('fab').style.display='';
   renderHome();
 }
