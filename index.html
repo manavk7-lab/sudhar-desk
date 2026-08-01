@@ -267,6 +267,7 @@ async function openDesk(p){
           playing=(e.data===YT.PlayerState.PLAYING);
           if(playing){try{e.target.setPlaybackQuality('hd1080')}catch(_){}}
           $('btnPlay').textContent=playing?'❚❚':'▶';$('fPlay').textContent=playing?'❚❚':'▶';
+          holdScroll();   /* pause/play must never move the reading position */
         }
       }
     });
@@ -311,6 +312,7 @@ $('btnReload').onclick=()=>{
 /* tap on the video itself = play/pause, without ever showing YouTube's overlay UI */
 $('shield').addEventListener('pointerdown',e=>{
   e.preventDefault();
+  holdScroll();
   if(!player)return; playing?player.pauseVideo():player.playVideo();
 });
 /* custom seek bar */
@@ -369,7 +371,7 @@ if(window.visualViewport){
 }
 window.addEventListener('resize',placeFloater);
 /* pointerdown + preventDefault = tap works but textarea keeps focus, keyboard stays open */
-const noSteal=fn=>e=>{e.preventDefault();fn()};
+const noSteal=fn=>e=>{e.preventDefault();holdScroll();fn()};
 $('fPlay').addEventListener('pointerdown',noSteal(()=>{
   if(!player)return; playing?player.pauseVideo():player.playVideo();
 }));
