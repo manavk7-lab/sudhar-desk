@@ -55,7 +55,9 @@ h1{font-size:26px;margin:2px 0 4px}
 #videoBox{background:#000;flex-shrink:0;transition:height .25s;height:29vh;position:relative;overflow:hidden}
 #videoBox iframe{position:absolute;top:-60px;left:0;width:100%;height:calc(100% + 120px);border:0}
 #shield{position:absolute;inset:0;z-index:5}
-#seek{display:block;width:100%;margin:0;height:20px;accent-color:var(--saffron);background:var(--ink)}
+#seekrow{display:flex;align-items:center;background:var(--ink);padding-right:8px}
+#seek{display:block;flex:1;margin:0;height:20px;accent-color:var(--saffron);background:var(--ink)}
+#tlabel{color:var(--paper);font-size:12px;font-weight:600;padding-left:8px;white-space:nowrap;font-variant-numeric:tabular-nums}
 #videoBox.mini{height:0;overflow:hidden}
 #videoBox.pip{
   position:fixed;right:10px;left:auto;width:190px;height:107px;z-index:65;
@@ -128,7 +130,10 @@ h1{font-size:26px;margin:2px 0 4px}
     <button class="sbtn" id="btnMini">▾ hide</button>
   </div>
   <div id="videoBox"><div id="player"></div><div id="shield"></div></div>
-  <input type="range" id="seek" min="0" max="1000" value="0">
+  <div id="seekrow">
+    <input type="range" id="seek" min="0" max="1000" value="0">
+    <span id="tlabel">0:00 / 0:00</span>
+  </div>
   <div class="docbar">
     <span id="saveState">Loading Doc…</span>
     <button id="btnFmin">A−</button>
@@ -255,8 +260,15 @@ async function openDesk(p){
     if(player){player.destroy();player=null}
     player=new YT.Player('player',{
       videoId:p.yt,
-      playerVars:{playsinline:1,rel:0,controls:0,fs:0,disablekb:1,iv_load_policy:3,start:Math.floor(start)},
-      events:{onStateChange:e=>{playing=(e.data===YT.PlayerState.PLAYING);$('btnPlay').textContent=playing?'❚❚':'▶';$('fPlay').textContent=playing?'❚❚':'▶'}}
+      playerVars:{playsinline:1,rel:0,controls:0,fs:0,disablekb:1,iv_load_policy:3,vq:'hd1080',start:Math.floor(start)},
+      events:{
+        onReady:e=>{try{e.target.setPlaybackQuality('hd1080')}catch(_){}},
+        onStateChange:e=>{
+          playing=(e.data===YT.PlayerState.PLAYING);
+          if(playing){try{e.target.setPlaybackQuality('hd1080')}catch(_){}}
+          $('btnPlay').textContent=playing?'❚❚':'▶';$('fPlay').textContent=playing?'❚❚':'▶';
+        }
+      }
     });
   };
   boot();
@@ -312,11 +324,27 @@ $('seek').addEventListener('change',()=>{
   seekDrag=false;
 });
 setInterval(()=>{
-  if(player&&player.getDuration&&!seekDrag){
+  if(player&&player.getDuration){
     const d=player.getDuration();
-    if(d>0)$('seek').value=Math.round(player.getCurrentTime()/d*1000);
+    if(d>0){
+      if(!seekDrag)$('seek').value=Math.round(player.getCurrentTime()/d*1000);
+      $('tlabel').textContent=fmt(player.getCurrentTime())+' / '+fmt(d);
+    }
   }
 },1000);
+
+/* keep the transcript exactly where you were — the keyboard opening/closing
+   must not scroll the text away from your reading position */
+let taScroll=0, freezeUntil=0;
+setInterval(()=>{
+  if(Date.now()>freezeUntil) taScroll=$('docEdit').scrollTop;
+},400);
+function holdScroll(){
+  freezeUntil=Date.now()+900;
+  setTimeout(()=>{$('docEdit').scrollTop=taScroll},150);
+  setTimeout(()=>{$('docEdit').scrollTop=taScroll},500);
+}
+if(window.visualViewport)visualViewport.addEventListener('resize',holdScroll);
 
 /* ---- floating play controls: ride above the keyboard, never close it ---- */
 function placeFloater(){
