@@ -2,7 +2,7 @@
 <html lang="gu">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
 <title>Sudhar Desk — video + doc</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -55,7 +55,7 @@ h1{font-size:26px;margin:2px 0 4px}
 #videoBox{background:#000;flex-shrink:0;transition:height .25s;height:29vh}
 #videoBox.mini{height:0;overflow:hidden}
 #videoBox.pip{
-  position:fixed;left:10px;width:190px;height:107px;z-index:65;
+  position:fixed;right:10px;left:auto;width:190px;height:107px;z-index:65;
   border-radius:12px;overflow:hidden;transition:none;
   box-shadow:0 6px 18px rgba(0,0,0,.4);
 }
@@ -303,7 +303,7 @@ function placeFloater(){
   const kbOpen = vv && vv.height < window.innerHeight-160;
   if(kbOpen && !vb.classList.contains('mini')){
     vb.classList.add('pip');
-    vb.style.top=(bottomEdge-107-12)+'px';
+    vb.style.top=((vv?vv.offsetTop:0)+96)+'px';
   }else{
     vb.classList.remove('pip');
     vb.style.top='';
