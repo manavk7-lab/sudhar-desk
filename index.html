@@ -52,7 +52,10 @@ h1{font-size:26px;margin:2px 0 4px}
 .strip .ttl{flex:1;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sbtn{color:var(--paper);font-size:13px;font-weight:700;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.1)}
 .sbtn.accent{background:var(--saffron)}
-#videoBox{background:#000;flex-shrink:0;transition:height .25s;height:29vh}
+#videoBox{background:#000;flex-shrink:0;transition:height .25s;height:29vh;position:relative;overflow:hidden}
+#videoBox iframe{position:absolute;top:-60px;left:0;width:100%;height:calc(100% + 120px);border:0}
+#shield{position:absolute;inset:0;z-index:5}
+#seek{display:block;width:100%;margin:0;height:20px;accent-color:var(--saffron);background:var(--ink)}
 #videoBox.mini{height:0;overflow:hidden}
 #videoBox.pip{
   position:fixed;right:10px;left:auto;width:190px;height:107px;z-index:65;
@@ -124,7 +127,8 @@ h1{font-size:26px;margin:2px 0 4px}
     <button class="sbtn" id="btnSpeed">1×</button>
     <button class="sbtn" id="btnMini">▾ hide</button>
   </div>
-  <div id="videoBox"><div id="player"></div></div>
+  <div id="videoBox"><div id="player"></div><div id="shield"></div></div>
+  <input type="range" id="seek" min="0" max="1000" value="0">
   <div class="docbar">
     <span id="saveState">Loading Doc…</span>
     <button id="btnFmin">A−</button>
@@ -251,7 +255,7 @@ async function openDesk(p){
     if(player){player.destroy();player=null}
     player=new YT.Player('player',{
       videoId:p.yt,
-      playerVars:{playsinline:1,rel:0,start:Math.floor(start)},
+      playerVars:{playsinline:1,rel:0,controls:0,fs:0,disablekb:1,iv_load_policy:3,start:Math.floor(start)},
       events:{onStateChange:e=>{playing=(e.data===YT.PlayerState.PLAYING);$('btnPlay').textContent=playing?'❚❚':'▶';$('fPlay').textContent=playing?'❚❚':'▶'}}
     });
   };
@@ -291,6 +295,28 @@ $('btnReload').onclick=()=>{
   if(dirty&&!confirm('Unsaved edits will be replaced by Doc content. Continue?'))return;
   setState('Loading Doc…','');loadDoc();
 };
+
+/* tap on the video itself = play/pause, without ever showing YouTube's overlay UI */
+$('shield').addEventListener('pointerdown',e=>{
+  e.preventDefault();
+  if(!player)return; playing?player.pauseVideo():player.playVideo();
+});
+/* custom seek bar */
+let seekDrag=false;
+$('seek').addEventListener('input',()=>{seekDrag=true});
+$('seek').addEventListener('change',()=>{
+  if(player&&player.getDuration){
+    const d=player.getDuration();
+    if(d>0)player.seekTo($('seek').value/1000*d,true);
+  }
+  seekDrag=false;
+});
+setInterval(()=>{
+  if(player&&player.getDuration&&!seekDrag){
+    const d=player.getDuration();
+    if(d>0)$('seek').value=Math.round(player.getCurrentTime()/d*1000);
+  }
+},1000);
 
 /* ---- floating play controls: ride above the keyboard, never close it ---- */
 function placeFloater(){
