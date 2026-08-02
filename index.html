@@ -179,6 +179,7 @@ BUILTIN_PAIRS.forEach(b=>{
 let gas=JSON.parse(sget('desk-gas')||'{"url":"","token":""}');
 let cur=null,player=null,ytReady=false,playing=false,poll=null;
 let dirty=false,saveTimer=null,lastSavedText='';
+let docReady=false;   /* position recording stays OFF until the Doc is loaded and restored */
 const speeds=[1,0.75,1.25,1.5];let sp=0;
 
 const ytId=u=>{const m=(u||'').match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/);return m?m[1]:(/^[\w-]{11}$/.test((u||'').trim())?u.trim():null)};
@@ -248,6 +249,8 @@ window.onYouTubeIframeAPIReady=()=>{ytReady=true};
 /* ---- desk ---- */
 async function openDesk(p){
   cur=p;dirty=false;lastSavedText='';
+  docReady=false;
+  cur.savedScroll=+(sget('desk-s-'+p.yt)||-1);   /* read the remembered spot FIRST */
   $('home').classList.remove('active');$('fab').style.display='none';
   $('desk').classList.add('active');
   $('floater').classList.add('show');placeFloater();
@@ -289,10 +292,11 @@ async function loadDoc(){
     const ta=$('docEdit');
     const posn=Math.min(+(sget('desk-c-'+cur.yt)||0),r.text.length);
     ta.setSelectionRange(posn,posn);
-    const sav=+(sget('desk-s-'+cur.yt)||-1);
+    const sav=(cur&&cur.savedScroll!==undefined)?cur.savedScroll:-1;
     const applyScroll=()=>{
       const v = sav>=0 ? sav : Math.max(0,(posn/Math.max(1,r.text.length))*ta.scrollHeight-ta.clientHeight/2);
-      ta.scrollTop=v; taScroll=v;   /* sync the pin so nothing drags it back to top */
+      ta.scrollTop=v; taScroll=v;
+      docReady=true;   /* only now may positions be recorded again */
     };
     requestAnimationFrame(applyScroll);
     setTimeout(applyScroll,600);
@@ -344,12 +348,13 @@ setInterval(()=>{
    must not scroll the text away from your reading position */
 let taScroll=0, freezeUntil=0, sTick=0;
 setInterval(()=>{
-  if(Date.now()>freezeUntil){
+  if(docReady && Date.now()>freezeUntil){
     taScroll=$('docEdit').scrollTop;
     if(cur && (++sTick%5===0)) sset('desk-s-'+cur.yt,String(taScroll));  /* persist every ~2s */
   }
 },400);
 function holdScroll(){
+  if(!docReady)return;
   freezeUntil=Date.now()+900;
   setTimeout(()=>{$('docEdit').scrollTop=taScroll},150);
   setTimeout(()=>{$('docEdit').scrollTop=taScroll},500);
@@ -389,7 +394,7 @@ $('fRew').addEventListener('pointerdown',noSteal(()=>{
 
 /* remember cursor position per video */
 function saveCursor(){
-  if(!cur)return;
+  if(!cur||!docReady)return;
   sset('desk-c-'+cur.yt,String($('docEdit').selectionStart||0));
   sset('desk-s-'+cur.yt,String($('docEdit').scrollTop||0));
 }
@@ -463,6 +468,7 @@ async function saveDoc(){
 }
 async function closeDesk(){
   saveCursor();
+  docReady=false;
   clearTimeout(saveTimer);
   if(dirty)await saveDoc();
   clearInterval(poll);
