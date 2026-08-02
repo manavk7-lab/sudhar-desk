@@ -180,6 +180,7 @@ let gas=JSON.parse(sget('desk-gas')||'{"url":"","token":""}');
 let cur=null,player=null,ytReady=false,playing=false,poll=null;
 let dirty=false,saveTimer=null,lastSavedText='';
 let docReady=false;   /* position recording stays OFF until the Doc is loaded and restored */
+let userTouched=false; /* the user touching the text cancels any further auto-positioning */
 const speeds=[1,0.75,1.25,1.5];let sp=0;
 
 const ytId=u=>{const m=(u||'').match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/);return m?m[1]:(/^[\w-]{11}$/.test((u||'').trim())?u.trim():null)};
@@ -249,8 +250,9 @@ window.onYouTubeIframeAPIReady=()=>{ytReady=true};
 /* ---- desk ---- */
 async function openDesk(p){
   cur=p;dirty=false;lastSavedText='';
-  docReady=false;
-  cur.savedScroll=+(sget('desk-s-'+p.yt)||-1);   /* read the remembered spot FIRST */
+  docReady=false; userTouched=false;
+  cur.savedRatio=+(sget('desk-r-'+p.yt)||-1);    /* percentage anchor — layout-independent */
+  cur.savedScroll=+(sget('desk-s-'+p.yt)||-1);   /* pixel fallback */
   $('home').classList.remove('active');$('fab').style.display='none';
   $('desk').classList.add('active');
   $('floater').classList.add('show');placeFloater();
@@ -292,15 +294,23 @@ async function loadDoc(){
     const ta=$('docEdit');
     const posn=Math.min(+(sget('desk-c-'+cur.yt)||0),r.text.length);
     ta.setSelectionRange(posn,posn);
+    const ratio=(cur&&cur.savedRatio!==undefined)?cur.savedRatio:-1;
     const sav=(cur&&cur.savedScroll!==undefined)?cur.savedScroll:-1;
+    let announced=false;
     const applyScroll=()=>{
-      const v = sav>=0 ? sav : Math.max(0,(posn/Math.max(1,r.text.length))*ta.scrollHeight-ta.clientHeight/2);
+      if(userTouched){docReady=true;return}   /* user took over — stop repositioning */
+      const range=Math.max(0,ta.scrollHeight-ta.clientHeight);
+      let v;
+      if(ratio>=0&&ratio<=1) v=ratio*range;
+      else if(sav>=0) v=Math.min(sav,range);
+      else v=Math.max(0,(posn/Math.max(1,r.text.length))*ta.scrollHeight-ta.clientHeight/2);
       ta.scrollTop=v; taScroll=v;
-      docReady=true;   /* only now may positions be recorded again */
+      docReady=true;
+      if(!announced&&range>0){announced=true;toast('લખાણ '+Math.round(v/range*100)+'% પર પાછું ખૂલ્યું');}
     };
     requestAnimationFrame(applyScroll);
-    setTimeout(applyScroll,600);
-    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>setTimeout(applyScroll,60));
+    [600,1500,3000].forEach(t=>setTimeout(applyScroll,t));
+    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>setTimeout(applyScroll,80));
     if(matchMedia('(pointer:fine)').matches)ta.focus();  /* desktop only — avoids popping the phone keyboard */
     setState('Loaded from Doc ✓','ok');
   }catch(e){setState('Doc load failed — check URL/secret','err')}
@@ -349,8 +359,13 @@ setInterval(()=>{
 let taScroll=0, freezeUntil=0, sTick=0;
 setInterval(()=>{
   if(docReady && Date.now()>freezeUntil){
-    taScroll=$('docEdit').scrollTop;
-    if(cur && (++sTick%5===0)) sset('desk-s-'+cur.yt,String(taScroll));  /* persist every ~2s */
+    const el=$('docEdit');
+    taScroll=el.scrollTop;
+    if(cur && (++sTick%5===0)){
+      sset('desk-s-'+cur.yt,String(taScroll));
+      const range=el.scrollHeight-el.clientHeight;
+      if(range>0)sset('desk-r-'+cur.yt,String(taScroll/range));
+    }
   }
 },400);
 function holdScroll(){
@@ -395,9 +410,14 @@ $('fRew').addEventListener('pointerdown',noSteal(()=>{
 /* remember cursor position per video */
 function saveCursor(){
   if(!cur||!docReady)return;
-  sset('desk-c-'+cur.yt,String($('docEdit').selectionStart||0));
-  sset('desk-s-'+cur.yt,String($('docEdit').scrollTop||0));
+  const el=$('docEdit');
+  sset('desk-c-'+cur.yt,String(el.selectionStart||0));
+  sset('desk-s-'+cur.yt,String(el.scrollTop||0));
+  const range=el.scrollHeight-el.clientHeight;
+  if(range>0)sset('desk-r-'+cur.yt,String(el.scrollTop/range));
 }
+$('docEdit').addEventListener('pointerdown',()=>{userTouched=true});
+$('docEdit').addEventListener('touchstart',()=>{userTouched=true},{passive:true});
 ['keyup','click','touchend'].forEach(ev=>$('docEdit').addEventListener(ev,saveCursor));
 
 /* autosave: 4s after typing stops */
