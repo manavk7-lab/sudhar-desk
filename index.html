@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
 <title>Sudhar Desk — video + doc</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#231F1A">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sudhar Desk">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -14,17 +22,21 @@
 html,body{height:100%}
 body{font-family:system-ui,sans-serif;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;overflow:hidden}
 button{font-family:inherit;border:none;background:none;cursor:pointer;color:inherit}
-input,textarea{font-family:inherit;font-size:inherit}
+input,textarea,select{font-family:inherit;font-size:inherit}
+kbd{font-family:ui-monospace,Menlo,monospace;font-size:11px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:5px;padding:1px 6px;white-space:nowrap}
 
 #warn{display:none;background:#7A2E0E;color:#fff;font-size:13px;padding:9px 12px;line-height:1.5}
 
 /* ---- home ---- */
 #home{flex:1;overflow-y:auto;padding:20px 16px 90px;display:none}
 #home.active{display:block}
+#homeInner{max-width:720px;margin:0 auto}
 .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--saffron);font-weight:600}
 h1{font-size:26px;margin:2px 0 4px}
 .sub{color:var(--ink-soft);font-size:14px;margin-bottom:10px}
-#setBtn{color:var(--saffron);font-size:13px;font-weight:600;margin-bottom:16px;display:block}
+.homeLinks{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.homeLinks button{color:var(--saffron);font-size:13px;font-weight:600}
+#installBtn{display:none}
 .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;width:100%;text-align:left;display:block}
 .card b{font-size:16px;display:block;margin-bottom:4px}
 .card .meta{font-size:13px;color:var(--ink-soft)}
@@ -33,16 +45,21 @@ h1{font-size:26px;margin:2px 0 4px}
 .fab{position:fixed;right:18px;bottom:22px;background:var(--saffron);color:#fff;border-radius:999px;padding:14px 22px;font-size:16px;font-weight:600;box-shadow:0 6px 18px rgba(180,82,10,.35);z-index:30}
 
 /* ---- sheets ---- */
-.overlay{position:fixed;inset:0;background:rgba(35,31,26,.45);display:none;z-index:40;align-items:flex-end}
+.overlay{position:fixed;inset:0;background:rgba(35,31,26,.45);display:none;z-index:80;align-items:flex-end;justify-content:center}
 .overlay.open{display:flex}
-.panel{background:var(--paper);width:100%;border-radius:20px 20px 0 0;padding:22px 18px 30px;max-height:88vh;overflow-y:auto}
+.panel{background:var(--paper);width:100%;max-width:640px;border-radius:20px 20px 0 0;padding:22px 18px 30px;max-height:88vh;overflow-y:auto}
 .panel h2{font-size:19px;margin-bottom:14px}
+.panel h3{font-size:15px;margin:18px 0 8px}
 .field{margin-bottom:13px}
 .field label{display:block;font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
-.field input{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff;font-size:15px}
+.field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff;font-size:15px}
 .hint{font-size:12px;color:var(--ink-soft);line-height:1.5;margin-top:6px}
 .primary{width:100%;background:var(--saffron);color:#fff;border-radius:12px;padding:14px;font-size:16px;font-weight:600;margin-top:4px}
 .ghost{width:100%;color:var(--ink-soft);padding:12px;font-size:14px}
+.keytable{width:100%;border-collapse:collapse;font-size:14px}
+.keytable td{padding:7px 4px;border-bottom:1px solid var(--line)}
+.keytable td:first-child{white-space:nowrap;width:1%;padding-right:14px}
+.keytable kbd{background:#fff;border-color:var(--line);color:var(--ink);font-size:12px}
 
 /* ---- desk ---- */
 #desk{flex:1;display:none;flex-direction:column;min-height:0}
@@ -50,8 +67,11 @@ h1{font-size:26px;margin:2px 0 4px}
 .strip{display:flex;align-items:center;gap:6px;background:var(--ink);color:var(--paper);padding:6px 10px;flex-shrink:0}
 .strip .back{font-size:20px;padding:0 6px}
 .strip .ttl{flex:1;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sbtn{color:var(--paper);font-size:13px;font-weight:700;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.1)}
+.sbtn{color:var(--paper);font-size:13px;font-weight:700;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.1);white-space:nowrap}
 .sbtn.accent{background:var(--saffron)}
+#deskBody{flex:1;display:flex;flex-direction:column;min-height:0}
+#mediaCol{flex-shrink:0;display:flex;flex-direction:column;background:var(--ink)}
+#docCol{flex:1;display:flex;flex-direction:column;min-height:0;min-width:0}
 #videoBox{background:#000;flex-shrink:0;transition:height .25s;height:29vh;position:relative;overflow:hidden}
 #videoBox iframe{position:absolute;top:-60px;left:0;width:100%;height:calc(100% + 120px);border:0}
 #shield{position:absolute;inset:0;z-index:5}
@@ -65,36 +85,67 @@ h1{font-size:26px;margin:2px 0 4px}
   box-shadow:0 6px 18px rgba(0,0,0,.4);
 }
 #player{width:100%;height:100%}
+#sidePanel{display:none;color:var(--paper);padding:14px 16px 18px;font-size:13px;line-height:1.5}
+#sideTransport{display:flex;gap:8px;margin-bottom:16px}
+#sideTransport button{flex:1;padding:12px 0;border-radius:10px;font-size:16px;font-weight:800;background:rgba(255,255,255,.1);color:var(--paper)}
+#sideTransport button.accent{background:var(--saffron)}
+.keys div{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.08);color:#D9CFC0}
+.keys div span:last-child{text-align:right}
+#syncLine{margin-top:14px;font-size:12px;color:#BFB3A2}
+
+/* side-by-side layout: video column left, transcript right */
+#desk.side #deskBody{flex-direction:row}
+#desk.side #mediaCol{width:clamp(320px,38vw,620px);overflow-y:auto;border-right:1px solid #000}
+#desk.side #videoBox{height:auto;aspect-ratio:16/9}
+#desk.side #videoBox.mini{height:auto}
+#desk.side #sidePanel{display:block}
+#desk.side #btnMini{display:none}
+#desk.side #docEdit{padding:22px 28px 140px}
+
 .docbar{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--paper);border-bottom:1px solid var(--line);flex-shrink:0}
-#saveState{font-size:12px;color:var(--ink-soft);flex:1}
+#saveState{font-size:12px;color:var(--ink-soft);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #saveState.ok{color:var(--ok)}
 #saveState.err{color:#A33}
-#btnReload,#btnSaveNow,#btnFmin,#btnFplus{font-size:12px;color:var(--saffron);font-weight:700;padding:4px 8px}
+#syncDot{font-size:12px;color:var(--ink-soft);white-space:nowrap}
+#syncDot.on{color:var(--ok)}
+.dbtn{font-size:12px;color:var(--saffron);font-weight:700;padding:4px 8px;white-space:nowrap}
 #btnFmin,#btnFplus{border:1px solid var(--line);border-radius:8px;background:#fff}
+#conflict{display:none;background:#7A2E0E;color:#fff;padding:10px 12px;font-size:13px;line-height:1.5;flex-shrink:0}
+#conflict.show{display:block}
+#conflict button{background:#fff;color:#7A2E0E;font-weight:700;font-size:12px;border-radius:8px;padding:6px 10px;margin:6px 6px 0 0}
 #docEdit{
   flex:1;width:100%;border:none;outline:none;resize:none;background:#fff;
   font-family:'Noto Serif Gujarati',serif;font-size:17.5px;line-height:1.75;
   padding:16px 16px 120px;color:var(--ink);
 }
-#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:60}
+#mirror{position:absolute;left:-99999px;top:0;visibility:hidden;white-space:pre-wrap;overflow-wrap:break-word;word-wrap:break-word;box-sizing:border-box}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:90;max-width:92vw;text-align:center}
 #toast.show{opacity:1}
 #floater{position:fixed;right:12px;top:60vh;display:none;gap:10px;z-index:70}
 #floater.show{display:flex}
 #floater button{border-radius:999px;padding:13px 17px;font-size:17px;font-weight:800;box-shadow:0 4px 14px rgba(0,0,0,.35)}
 #fPlay{background:var(--saffron);color:#fff}
 #fRew{background:var(--ink);color:var(--paper)}
+@media (max-width:560px){ #btnLayout,#btnFull{display:none} }
+#desk.side ~ #floater{display:none!important}
 </style>
 </head>
 <body>
 
-<div id="warn">⚠ Open this page from a <b>http://</b> or <b>https://</b> address — YouTube blocks playback for local files (Error 153). Easiest: host it on GitHub Pages, or run <b>python3 -m http.server</b> on your Mac and open <b>http://&lt;mac-ip&gt;:8000/sudhar-desk.html</b> on the phone.</div>
+<div id="warn">⚠ Open this page from a <b>http://</b> or <b>https://</b> address — YouTube blocks playback for local files (Error 153). Easiest: host it on GitHub Pages, or run <b>python3 -m http.server</b> on your Mac and open <b>http://&lt;mac-ip&gt;:8000/</b> on the phone.</div>
 
 <div id="home" class="active">
+ <div id="homeInner">
   <div class="eyebrow">Sudhar Desk</div>
   <h1>Video + Doc, one screen</h1>
-  <div class="sub">Small player on top, your transcript below — edits auto-save into your Google Doc.</div>
-  <button id="setBtn">⚙ Doc sync settings</button>
+  <div class="sub">Player and your transcript together — edits auto-save into your Google Doc, and your place follows you to every device.</div>
+  <div class="homeLinks">
+    <button id="setBtn">⚙ Settings</button>
+    <button id="keysBtn">⌨ Shortcuts</button>
+    <button id="installBtn">⤓ Install app</button>
+  </div>
   <div id="list"></div>
+ </div>
 </div>
 <button class="fab" id="fab">+ Add pair</button>
 
@@ -111,37 +162,92 @@ h1{font-size:26px;margin:2px 0 4px}
 
 <div class="overlay" id="setSheet">
   <div class="panel">
-    <h2>Google Doc sync</h2>
-    <div class="hint" style="margin-bottom:12px">One-time: deploy <b>doc-sync.gs</b> as a Web App (Execute as Me, access Anyone), then paste its /exec URL and your SECRET here. The transcript loads from your Doc and every edit auto-saves back into it.</div>
+    <h2>Settings</h2>
+    <h3>Google Doc sync</h3>
+    <div class="hint" style="margin-bottom:12px">Deploy <b>doc-sync.gs</b> as a Web App (Execute as Me, access Anyone), then paste its /exec URL and your SECRET here. The same Web App also carries your place across devices.</div>
     <div class="field"><label>Apps Script Web App URL</label><input type="text" id="setUrl" placeholder="https://script.google.com/macros/s/.../exec"></div>
     <div class="field"><label>Secret token</label><input type="text" id="setToken" placeholder="same SECRET as in the script"></div>
+    <h3>This device</h3>
+    <div class="field"><label>Device name (shown on your other devices)</label><input type="text" id="setDevName" placeholder="Mac"></div>
+    <div class="field"><label>On resume, replay the last…</label>
+      <select id="setAutoRew">
+        <option value="0">Off — continue exactly where paused</option>
+        <option value="1">1 second</option>
+        <option value="2">2 seconds</option>
+        <option value="3">3 seconds</option>
+      </select>
+    </div>
     <button class="primary" id="setSave">Save settings</button>
     <button class="ghost" id="setClose">Close</button>
   </div>
 </div>
 
+<div class="overlay" id="keysSheet">
+  <div class="panel">
+    <h2>Keyboard shortcuts</h2>
+    <div class="hint" style="margin-bottom:10px">They work while you are typing in the transcript, so you never have to leave your line.</div>
+    <table class="keytable">
+      <tr><td><kbd>Esc</kbd></td><td>Play / pause</td></tr>
+      <tr><td><kbd>Tab</kbd></td><td>Back 5 seconds</td></tr>
+      <tr><td><kbd>Shift</kbd> + <kbd>Tab</kbd></td><td>Forward 5 seconds</td></tr>
+      <tr><td><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>S</kbd></td><td>Save to Doc now</td></tr>
+      <tr><td><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>.</kbd></td><td>Change speed (1× → 0.75× → 1.25× → 1.5×)</td></tr>
+    </table>
+    <button class="ghost" id="keysClose" style="margin-top:10px">Close</button>
+  </div>
+</div>
+
 <div id="desk">
   <div class="strip">
-    <button class="back" id="btnBack">‹</button>
+    <button class="back" id="btnBack" title="Back to list">‹</button>
     <div class="ttl" id="deskTitle"></div>
-    <button class="sbtn" id="btnRew">↺5</button>
-    <button class="sbtn accent" id="btnPlay">▶</button>
-    <button class="sbtn" id="btnSpeed">1×</button>
+    <button class="sbtn" id="btnRew" title="Back 5 s (Tab)">↺5</button>
+    <button class="sbtn accent" id="btnPlay" title="Play / pause (Esc)">▶</button>
+    <button class="sbtn" id="btnSpeed" title="Speed (⌘/Ctrl + .)">1×</button>
+    <button class="sbtn" id="btnLayout" title="Video beside / above text">⇆</button>
+    <button class="sbtn" id="btnFull" title="Full screen">⛶</button>
     <button class="sbtn" id="btnMini">▾ hide</button>
   </div>
-  <div id="videoBox"><div id="player"></div><div id="shield"></div></div>
-  <div id="seekrow">
-    <input type="range" id="seek" min="0" max="1000" value="0">
-    <span id="tlabel">0:00 / 0:00</span>
+  <div id="deskBody">
+    <div id="mediaCol">
+      <div id="videoBox"><div id="player"></div><div id="shield"></div></div>
+      <div id="seekrow">
+        <input type="range" id="seek" min="0" max="1000" value="0">
+        <span id="tlabel">0:00 / 0:00</span>
+      </div>
+      <div id="sidePanel">
+        <div id="sideTransport">
+          <button id="sRew" title="Back 5 s (Tab)">↺ 5</button>
+          <button id="sPlay" class="accent" title="Play / pause (Esc)">▶</button>
+          <button id="sFwd" title="Forward 5 s (Shift+Tab)">5 ↻</button>
+        </div>
+        <div class="keys">
+          <div><span><kbd>Esc</kbd></span><span>play / pause</span></div>
+          <div><span><kbd>Tab</kbd></span><span>back 5 s</span></div>
+          <div><span><kbd>Shift</kbd>+<kbd>Tab</kbd></span><span>forward 5 s</span></div>
+          <div><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>S</kbd></span><span>save now</span></div>
+          <div><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>.</kbd></span><span>speed</span></div>
+        </div>
+        <div id="syncLine"></div>
+      </div>
+    </div>
+    <div id="docCol">
+      <div id="conflict">
+        <div><b>This Doc was changed on another device</b> after this screen loaded it. Saving here would overwrite those changes.</div>
+        <button id="cfLoad">Load the Doc's version</button>
+        <button id="cfKeep">Keep this screen's text (overwrite)</button>
+      </div>
+      <div class="docbar">
+        <span id="saveState">Loading Doc…</span>
+        <span id="syncDot" title="Cross-device sync"></span>
+        <button class="dbtn" id="btnFmin">A−</button>
+        <button class="dbtn" id="btnFplus">A+</button>
+        <button class="dbtn" id="btnSaveNow">⤓ save now</button>
+        <button class="dbtn" id="btnReload">↻ reload</button>
+      </div>
+      <textarea id="docEdit" spellcheck="false" placeholder="Transcript loads here from your Google Doc…"></textarea>
+    </div>
   </div>
-  <div class="docbar">
-    <span id="saveState">Loading Doc…</span>
-    <button id="btnFmin">A−</button>
-    <button id="btnFplus">A+</button>
-    <button id="btnSaveNow">⤓ save now</button>
-    <button id="btnReload">↻ reload</button>
-  </div>
-  <textarea id="docEdit" spellcheck="false" placeholder="Transcript loads here from your Google Doc…"></textarea>
 </div>
 
 <div id="floater">
@@ -149,22 +255,36 @@ h1{font-size:26px;margin:2px 0 4px}
   <button id="fPlay">▶</button>
 </div>
 
+<div id="mirror"></div>
 <div id="toast"></div>
 
 <script>
-/* storage */
+/* ================= storage & helpers ================= */
 const mem={};
 const sget=k=>{try{return localStorage.getItem(k)}catch(e){return mem[k]??null}};
 const sset=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){mem[k]=v}};
+const jget=(k,d)=>{try{const v=sget(k);return v?JSON.parse(v):d}catch(e){return d}};
 
 const $=id=>document.getElementById(id);
-const toast=m=>{const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)};
-const fmt=s=>{s=Math.floor(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+let toastTimer=null;
+const toast=(m,ms)=>{const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),ms||2200)};
+const fmt=s=>{s=Math.floor(s||0);const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=String(s%60).padStart(2,'0');return h?h+':'+String(m).padStart(2,'0')+':'+x:m+':'+x};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
 if(!/^https?:$/.test(location.protocol)) $('warn').style.display='block';
 
-let pairs=JSON.parse(sget('desk-pairs')||'[]');
+/* ================= device identity ================= */
+const DEV=sget('desk-dev')||(()=>{const d=Math.random().toString(36).slice(2,10);sset('desk-dev',d);return d})();
+const ua=navigator.userAgent;
+const guessName=(/iPad/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1))?'iPad'
+  :/iPhone/.test(ua)?'iPhone'
+  :/Android/.test(ua)?(/Mobile/.test(ua)?'Phone':'Tablet')
+  :/Mac/.test(ua)?'Mac':/Windows/.test(ua)?'PC':'Device';
+let devName=sget('desk-devname')||guessName;
+let autoRew=+(sget('desk-autorew')||0);
 
+/* ================= library ================= */
+let pairs=jget('desk-pairs',[]);
 /* ===== BUILT-IN LIBRARY =====
    Pre-loaded video+doc pairs baked into the app itself.
    Format: {yt:'11charVideoId', doc:'GoogleDocId', title:'…'}
@@ -172,29 +292,32 @@ let pairs=JSON.parse(sget('desk-pairs')||'[]');
 const BUILTIN_PAIRS=[
   {yt:'xQQp0lBsa-g',doc:'1XbvIIM8mmJXPx46QgwgL7cH-0klyGM2iHAkQKzIQX5k',title:'યથાર્થ ગીતા સાર - 5'}
 ];
-let hidden=JSON.parse(sget('desk-hidden')||'[]');
+let hidden=jget('desk-hidden',[]);
 BUILTIN_PAIRS.forEach(b=>{
   if(!hidden.includes(b.yt)&&!pairs.find(p=>p.yt===b.yt))pairs.push(b);
 });
-let gas=JSON.parse(sget('desk-gas')||'{"url":"","token":""}');
-let cur=null,player=null,ytReady=false,playing=false,poll=null;
-let dirty=false,saveTimer=null,lastSavedText='';
-let docReady=false;   /* position recording stays OFF until the Doc is loaded and restored */
-let userTouched=false; /* the user touching the text cancels any further auto-positioning */
+let gas=jget('desk-gas',{url:'',token:''});
+let cur=null,player=null,ytReady=false,playing=false;
+let dirty=false,saveTimer=null,lastSavedText='',saving=false;
+let docReady=false;    /* position recording stays OFF until the Doc is loaded and placed */
+let userTouched=false; /* the user touching the text cancels further auto-positioning */
 const speeds=[1,0.75,1.25,1.5];let sp=0;
 
-const ytId=u=>{const m=(u||'').match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/);return m?m[1]:(/^[\w-]{11}$/.test((u||'').trim())?u.trim():null)};
+const ytId=u=>{const m=(u||'').match(/(?:v=|youtu\.be\/|shorts\/|embed\/|live\/)([\w-]{11})/);return m?m[1]:(/^[\w-]{11}$/.test((u||'').trim())?u.trim():null)};
 const docId=u=>{const m=(u||'').match(/\/d\/([\w-]{20,})/);return m?m[1]:null};
 
-/* ---- home ---- */
+/* ================= home ================= */
 function renderHome(){
   const L=$('list');L.innerHTML='';
   if(!pairs.length){L.innerHTML='<div class="empty">Nothing yet.<br>Tap <b>+ Add pair</b> — paste the YouTube link and the Google Doc link for that video.</div>';return}
   pairs.forEach((p,i)=>{
-    const at=+(sget('desk-t-'+p.yt)||0);
+    const lp=localPos(p.yt);
+    const at=lp?lp.time:0;
+    const where=lp&&lp.name&&lp.dev!==DEV?' · last on '+lp.name:'';
     const c=document.createElement('button');
     c.className='card';
-    c.innerHTML=`<span class="del" data-i="${i}">remove</span><b>${p.title}</b><span class="meta">⏱ resume at ${fmt(at)}</span>`;
+    c.innerHTML=`<span class="del" data-i="${i}">remove</span><b></b><span class="meta">⏱ resume at ${fmt(at)}${where}</span>`;
+    c.querySelector('b').textContent=p.title;
     c.onclick=e=>{
       if(e.target.dataset.i!==undefined){
         if(confirm('Remove this pair?')){
@@ -222,18 +345,40 @@ $('btnAdd').onclick=()=>{
   $('inYt').value=$('inDoc').value=$('inTitle').value='';
   renderHome();
 };
-$('setBtn').onclick=()=>{$('setUrl').value=gas.url;$('setToken').value=gas.token;$('setSheet').classList.add('open')};
+$('setBtn').onclick=()=>{
+  $('setUrl').value=gas.url;$('setToken').value=gas.token;
+  $('setDevName').value=devName;$('setAutoRew').value=String(autoRew);
+  $('setSheet').classList.add('open');
+};
 $('setClose').onclick=()=>$('setSheet').classList.remove('open');
 $('setSave').onclick=()=>{
   gas={url:$('setUrl').value.trim(),token:$('setToken').value.trim()};
   sset('desk-gas',JSON.stringify(gas));
-  $('setSheet').classList.remove('open');toast('Sync configured');
+  devName=$('setDevName').value.trim()||guessName;sset('desk-devname',devName);
+  autoRew=+$('setAutoRew').value||0;sset('desk-autorew',String(autoRew));
+  syncOK=null;
+  $('setSheet').classList.remove('open');toast('Settings saved');
 };
+$('keysBtn').onclick=()=>$('keysSheet').classList.add('open');
+$('keysClose').onclick=()=>$('keysSheet').classList.remove('open');
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
 
-/* ---- Apps Script bridge ---- */
+/* install as an app (Chrome / Edge on Mac, Windows, Android) */
+let installEvt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEvt=e;$('installBtn').style.display='inline-block'});
+$('installBtn').onclick=async()=>{
+  if(!installEvt){toast('Use the browser menu → Install / Add to Home Screen');return}
+  installEvt.prompt();await installEvt.userChoice;installEvt=null;$('installBtn').style.display='none';
+};
+window.addEventListener('appinstalled',()=>{$('installBtn').style.display='none';toast('Installed ✓')});
+if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+
+/* ================= Apps Script bridge ================= */
+const gasUrl=params=>gas.url+'?'+Object.entries({token:gas.token,...params}).map(([k,v])=>k+'='+encodeURIComponent(v)).join('&');
 async function gasGetText(dId){
-  const u=gas.url+'?token='+encodeURIComponent(gas.token)+'&docId='+encodeURIComponent(dId);
-  const res=await fetch(u,{redirect:'follow'});
+  const res=await fetch(gasUrl({docId:dId}),{redirect:'follow'});
   return await res.json();
 }
 async function gasPost(payload){
@@ -243,131 +388,357 @@ async function gasPost(payload){
   return await res.json();
 }
 
-/* ---- YouTube ---- */
+/* ================= YouTube ================= */
 const tag=document.createElement('script');tag.src='https://www.youtube.com/iframe_api';document.head.appendChild(tag);
 window.onYouTubeIframeAPIReady=()=>{ytReady=true};
+const ytState=()=>{try{return player&&player.getPlayerState?player.getPlayerState():-1}catch(e){return -1}};
+const ytStarted=()=>{const s=ytState();return s===1||s===2||s===3};   /* playing / paused / buffering */
+function setPlayIcons(){const g=playing?'❚❚':'▶';$('btnPlay').textContent=g;$('fPlay').textContent=g;$('sPlay').textContent=g}
 
-/* ---- desk ---- */
+/* ======== text mirror: maps characters <-> pixel positions ========
+   The reading position is stored as a CHARACTER index, not pixels or %,
+   so it lands on the same words on a phone, an iPad or the Mac. */
+let mir=null;
+function invalidateMirror(){mir=null}
+function buildMirror(){
+  const ta=$('docEdit');
+  const key=ta.value.length+'|'+ta.clientWidth+'|'+fsz;
+  if(mir&&mir.key===key&&mir.text===ta.value)return mir;
+  const m=$('mirror'),cs=getComputedStyle(ta);
+  ['fontFamily','fontSize','fontWeight','lineHeight','letterSpacing','wordSpacing','paddingTop','paddingLeft','paddingRight','tabSize']
+    .forEach(k=>m.style[k]=cs[k]);
+  m.style.width=ta.clientWidth+'px';
+  const lines=ta.value.split('\n');
+  const frag=document.createDocumentFragment();
+  const starts=[];let off=0;
+  lines.forEach(l=>{const d=document.createElement('div');d.textContent=l||'​';frag.appendChild(d);starts.push(off);off+=l.length+1});
+  m.textContent='';m.appendChild(frag);
+  const tops=[],hs=[];
+  for(const d of m.children){tops.push(d.offsetTop);hs.push(d.offsetHeight)}
+  mir={key,text:ta.value,starts,lens:lines.map(l=>l.length),tops,hs};
+  m.textContent='';   /* keep the DOM light; the numbers are cached */
+  return mir;
+}
+function topChar(y){
+  const M=buildMirror();const n=M.tops.length;if(!n)return 0;
+  let lo=0,hi=n-1;
+  while(lo<hi){const mid=(lo+hi+1)>>1;if(M.tops[mid]<=y+2)lo=mid;else hi=mid-1}
+  const f=clamp((y-M.tops[lo])/Math.max(1,M.hs[lo]),0,1);
+  return M.starts[lo]+Math.round(f*M.lens[lo]);
+}
+function charTop(pos){
+  const M=buildMirror();const n=M.starts.length;if(!n)return 0;
+  let lo=0,hi=n-1;
+  while(lo<hi){const mid=(lo+hi+1)>>1;if(M.starts[mid]<=pos)lo=mid;else hi=mid-1}
+  const f=M.lens[lo]?clamp((pos-M.starts[lo])/M.lens[lo],0,1):0;
+  /* snap to the start of the visual line so the first line is never cut */
+  const lh=parseFloat(getComputedStyle($('docEdit')).lineHeight)||fsz*1.75;
+  const y=M.tops[lo]+f*M.hs[lo];
+  return M.tops[lo]+Math.floor((y-M.tops[lo])/lh)*lh;
+}
+
+/* ================= position (local + cross-device) =================
+   pos = {t, dev, name, time, top, cur, textT}
+   t      when this position was last changed by a human
+   time   video seconds        top  first visible character
+   cur    cursor character     textT when this device last saved the Doc */
+let posState=null,quietUntil=0,lastTop=0,lastTopScroll=-1,lastTopLen=-1;
+let loadedTextT=0;
+function localPos(yt){
+  let p=jget('desk-pos-'+yt,null);
+  if(!p){ /* migrate older per-device keys */
+    const t=+(sget('desk-t-'+yt)||0),c=+(sget('desk-c-'+yt)||0),r=+(sget('desk-r-'+yt)||-1);
+    if(t||c||r>=0)p={t:0,dev:DEV,name:devName,time:t,top:null,cur:c,ratio:r,textT:0};
+  }
+  return p;
+}
+function measure(){
+  const ta=$('docEdit');
+  if(Math.abs(ta.scrollTop-lastTopScroll)>8||ta.value.length!==lastTopLen){
+    lastTop=topChar(ta.scrollTop);lastTopScroll=ta.scrollTop;lastTopLen=ta.value.length;
+  }
+  return {top:lastTop,cur:ta.selectionStart||0};
+}
+function videoTime(){
+  if(player&&player.getCurrentTime&&ytStarted())return player.getCurrentTime();
+  return posState?posState.time:0;
+}
+/* records the current place; only a real change bumps the timestamp */
+function recordPos(push){
+  if(!cur)return;
+  const prev=posState;
+  const m=docReady?measure():{top:prev?prev.top:0,cur:prev?prev.cur:0},time=videoTime();
+  const changed=!prev||Math.abs(time-(prev.time||0))>1.5||Math.abs(m.top-(prev.top??-999))>40||m.cur!==prev.cur;
+  if(changed&&Date.now()>quietUntil){
+    posState={t:Date.now(),dev:DEV,name:devName,time,top:m.top,cur:m.cur,textT:Math.max(loadedTextT,prev&&prev.textT||0)};
+  }else if(prev){
+    posState={...prev,time:prev.dev===DEV?time:prev.time};
+  }
+  if(posState){sset('desk-pos-'+cur.yt,JSON.stringify(posState));sset('desk-t-'+cur.yt,String(posState.time))}
+  if(push)pushPos(push==='now');
+}
+
+/* ---- sync over the Apps Script Web App ---- */
+let syncOK=null,lastPushT=0,lastPushAt=0,pulling=false,lastPull=0;
+function showSync(){
+  const d=$('syncDot');
+  if(!gas.url){d.textContent='';d.className='';$('syncLine').textContent='';return}
+  if(syncOK===true){d.textContent='⇅ synced';d.className='on'}
+  else if(syncOK===false){d.textContent='⇅ off';d.className=''}
+  else {d.textContent='⇅ …';d.className=''}
+  $('syncLine').textContent=syncOK===false
+    ?'Cross-device sync is off — update the Apps Script (doc-sync.gs) to turn it on.'
+    :syncOK?('Your place is shared with your other devices · this one: '+devName):'';
+}
+function pushPos(force,keepalive){
+  if(!cur||!gas.url||syncOK===false||!posState)return;
+  if(posState.dev!==DEV||posState.t<=lastPushT)return;   /* nothing new from this device */
+  if(!force&&Date.now()-lastPushAt<8000)return;
+  lastPushT=posState.t;lastPushAt=Date.now();
+  const p={...posState};delete p.ratio;
+  fetch(gasUrl({action:'setpos',key:cur.yt,data:JSON.stringify(p)}),{redirect:'follow',keepalive:!!keepalive})
+    .then(r=>r.json()).then(j=>{if(j&&'pos' in j){syncOK=true;showSync()}}).catch(()=>{});
+}
+async function pullPos(force){
+  if(!cur||!gas.url||syncOK===false||pulling)return;
+  if(!force&&Date.now()-lastPull<3000)return;
+  pulling=true;lastPull=Date.now();
+  const yt=cur.yt;
+  try{
+    const r=await (await fetch(gasUrl({action:'getpos',key:yt}),{redirect:'follow'})).json();
+    if(!cur||cur.yt!==yt)return;
+    if(!r||!('pos' in r)){syncOK=false;showSync();return}   /* old script: no position support */
+    syncOK=true;showSync();
+    const p=r.pos;
+    if(p&&p.dev!==DEV&&p.t>(posState?posState.t:0))await applyRemote(p);
+  }catch(e){}finally{pulling=false}
+}
+async function applyRemote(p){
+  if(playing||dirty||saving||!docReady)return;    /* this device is busy — the other one can wait */
+  quietUntil=Date.now()+2500;
+  userTouched=false;
+  if(p.textT&&p.textT>loadedTextT){await loadDoc(p,true)}
+  else placeView(p);
+  seekPaused(p.time);
+  posState={...p};
+  sset('desk-pos-'+cur.yt,JSON.stringify(posState));
+  setTimeout(()=>{ /* re-measure on this screen without claiming a new change */
+    if(cur&&posState&&posState.t===p.t){const m=measure();posState={...posState,top:m.top,cur:m.cur};sset('desk-pos-'+cur.yt,JSON.stringify(posState))}
+  },1800);
+  toast('↪ Continued from '+(p.name||'other device')+' · '+fmt(p.time),2600);
+}
+function seekPaused(t){
+  if(!player||!player.getPlayerState){pendingSeek=t;return}
+  if(ytStarted())player.seekTo(t,true);              /* paused video stays paused */
+  else{try{player.cueVideoById({videoId:cur.yt,startSeconds:Math.floor(t)})}catch(e){}}
+  updateSeekUi(t);
+}
+let pendingSeek=null;
+
+/* ================= desk ================= */
 async function openDesk(p){
-  cur=p;dirty=false;lastSavedText='';
-  docReady=false; userTouched=false;
-  cur.savedRatio=+(sget('desk-r-'+p.yt)||-1);    /* percentage anchor — layout-independent */
-  cur.savedScroll=+(sget('desk-s-'+p.yt)||-1);   /* pixel fallback */
+  cur=p;dirty=false;lastSavedText='';saving=false;
+  docReady=false;userTouched=false;invalidateMirror();
+  posState=localPos(p.yt);loadedTextT=0;lastPushT=posState?posState.t:0;
+  hideConflict();
   $('home').classList.remove('active');$('fab').style.display='none';
-  $('desk').classList.add('active');
+  $('desk').classList.add('active');applyLayout();
   $('floater').classList.add('show');placeFloater();
   $('deskTitle').textContent=p.title;
-  $('docEdit').value='';setState('Loading Doc…','');
-  loadDoc();
-  const start=+(sget('desk-t-'+p.yt)||0);
+  $('docEdit').value='';setState('Loading Doc…','');showSync();
+  const start=posState?posState.time:0;
   const boot=()=>{
     if(!ytReady){setTimeout(boot,150);return}
     if(player){player.destroy();player=null}
+    if(!$('player')){const d=document.createElement('div');d.id='player';$('videoBox').prepend(d)}
     player=new YT.Player('player',{
       videoId:p.yt,
       playerVars:{playsinline:1,rel:0,controls:0,fs:0,disablekb:1,iv_load_policy:3,vq:'hd1080',start:Math.floor(start)},
       events:{
-        onReady:e=>{try{e.target.setPlaybackQuality('hd1080')}catch(_){}},
+        onReady:e=>{
+          try{e.target.setPlaybackQuality('hd1080')}catch(_){}
+          try{e.target.setPlaybackRate(speeds[sp])}catch(_){}
+          if(pendingSeek!=null){seekPaused(pendingSeek);pendingSeek=null}
+        },
         onStateChange:e=>{
+          const was=playing;
           playing=(e.data===YT.PlayerState.PLAYING);
           if(playing){try{e.target.setPlaybackQuality('hd1080')}catch(_){}}
-          $('btnPlay').textContent=playing?'❚❚':'▶';$('fPlay').textContent=playing?'❚❚':'▶';
+          setPlayIcons();
           holdScroll();   /* pause/play must never move the reading position */
+          if(was&&!playing)recordPos('now');
         }
       }
     });
   };
   boot();
-  clearInterval(poll);
-  poll=setInterval(()=>{
-    if(player&&player.getCurrentTime){const t=player.getCurrentTime();if(t>0)sset('desk-t-'+p.yt,String(t))}
-  },3000);
+  await loadDoc(posState,false);
+  pullPos(true);
   if(start>2)toast('Resuming at '+fmt(start));
 }
-async function loadDoc(){
-  if(!gas.url){setState('Set up Doc sync in ⚙ settings first','err');return}
+
+/* load the Doc text and put the view back on `anchor` */
+async function loadDoc(anchor,silent){
+  if(!gas.url){setState('Set up Doc sync in ⚙ Settings first','err');return}
+  setState(silent?'Updating from Doc…':'Loading Doc…','');
   try{
     const r=await gasGetText(cur.doc);
     if(r.error){setState('Doc load failed: '+r.error,'err');return}
-    $('docEdit').value=r.text;lastSavedText=r.text;dirty=false;
-    /* restore last cursor + exact reading position */
     const ta=$('docEdit');
-    const posn=Math.min(+(sget('desk-c-'+cur.yt)||0),r.text.length);
-    ta.setSelectionRange(posn,posn);
-    const ratio=(cur&&cur.savedRatio!==undefined)?cur.savedRatio:-1;
-    const sav=(cur&&cur.savedScroll!==undefined)?cur.savedScroll:-1;
-    let announced=false;
-    const applyScroll=()=>{
-      if(userTouched){docReady=true;return}   /* user took over — stop repositioning */
-      const range=Math.max(0,ta.scrollHeight-ta.clientHeight);
-      let v;
-      if(ratio>=0&&ratio<=1) v=ratio*range;
-      else if(sav>=0) v=Math.min(sav,range);
-      else v=Math.max(0,(posn/Math.max(1,r.text.length))*ta.scrollHeight-ta.clientHeight/2);
-      ta.scrollTop=v; taScroll=v;
-      docReady=true;
-      if(!announced&&range>0){announced=true;toast('લખાણ '+Math.round(v/range*100)+'% પર પાછું ખૂલ્યું');}
-    };
-    requestAnimationFrame(applyScroll);
-    [600,1500,3000].forEach(t=>setTimeout(applyScroll,t));
-    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>setTimeout(applyScroll,80));
-    if(matchMedia('(pointer:fine)').matches)ta.focus();  /* desktop only — avoids popping the phone keyboard */
-    setState('Loaded from Doc ✓','ok');
+    ta.value=r.text;lastSavedText=r.text;dirty=false;loadedTextT=Date.now();
+    invalidateMirror();lastTopScroll=-1;
+    placeView(anchor||{});
+    if(matchMedia('(pointer:fine)').matches)ta.focus({preventScroll:true});  /* desktop only — avoids popping the phone keyboard */
+    setState(silent?'Updated from Doc ✓':'Loaded from Doc ✓','ok');
   }catch(e){setState('Doc load failed — check URL/secret','err')}
 }
+/* put the cursor and the first visible line back; retried while fonts settle */
+let placeGen=0;
+function placeView(p){
+  const gen=++placeGen;    /* a newer placement cancels older pending retries */
+  const ta=$('docEdit'),L=ta.value.length;
+  const c=clamp(p.cur||0,0,L);
+  ta.setSelectionRange(c,c);
+  quietUntil=Math.max(quietUntil,Date.now()+3000);   /* settling scroll is not a user change */
+  docReady=true;
+  const apply=()=>{
+    if(gen!==placeGen||!cur)return;
+    if(userTouched){docReady=true;return}
+    invalidateMirror();
+    const range=Math.max(0,ta.scrollHeight-ta.clientHeight);
+    let v;
+    if(p.top!=null)v=charTop(clamp(p.top,0,L));
+    else if(p.ratio>=0&&p.ratio<=1)v=p.ratio*range;
+    else v=charTop(c)-ta.clientHeight*0.35;
+    ta.scrollTop=clamp(v,0,range);taScroll=ta.scrollTop;lastTopScroll=-1;
+  };
+  requestAnimationFrame(apply);
+  [400,1200,2500].forEach(t=>setTimeout(apply,t));
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>setTimeout(apply,60));
+}
 function setState(msg,cls){const s=$('saveState');s.textContent=msg;s.className=cls}
-/* font size — remembered across sessions */
+
+/* keep the same words at the top whenever the text re-wraps */
+function keepAnchor(fn){
+  if(!docReady){fn();return}
+  const ta=$('docEdit');const top=topChar(ta.scrollTop);
+  fn();invalidateMirror();
+  requestAnimationFrame(()=>{ta.scrollTop=charTop(top);taScroll=ta.scrollTop;lastTopScroll=-1});
+}
+
+/* font size — remembered on this device */
 let fsz=+(sget('desk-font')||17.5);
 function applyFont(){$('docEdit').style.fontSize=fsz+'px'}
 applyFont();
-$('btnFmin').onclick=()=>{fsz=Math.max(12,fsz-1.5);sset('desk-font',String(fsz));applyFont()};
-$('btnFplus').onclick=()=>{fsz=Math.min(36,fsz+1.5);sset('desk-font',String(fsz));applyFont()};
-$('btnSaveNow').onclick=()=>{clearTimeout(saveTimer);dirty=true;saveDoc()};
+$('btnFmin').onclick=()=>keepAnchor(()=>{fsz=Math.max(12,fsz-1.5);sset('desk-font',String(fsz));applyFont()});
+$('btnFplus').onclick=()=>keepAnchor(()=>{fsz=Math.min(36,fsz+1.5);sset('desk-font',String(fsz));applyFont()});
+$('btnSaveNow').onclick=()=>saveNow();
 $('btnReload').onclick=()=>{
   if(dirty&&!confirm('Unsaved edits will be replaced by Doc content. Continue?'))return;
-  setState('Loading Doc…','');loadDoc();
+  hideConflict();const m=docReady?measure():{};loadDoc({top:m.top,cur:m.cur},true);
 };
 
-/* tap on the video itself = play/pause, without ever showing YouTube's overlay UI */
-$('shield').addEventListener('pointerdown',e=>{
-  e.preventDefault();
-  holdScroll();
-  if(!player)return; playing?player.pauseVideo():player.playVideo();
+/* ================= layout: side-by-side or stacked ================= */
+let layoutMode=sget('desk-layout')||'auto';    /* auto | side | stack */
+const wantSide=()=>layoutMode==='side'||(layoutMode==='auto'&&innerWidth>=980&&innerWidth>innerHeight*1.05);
+function applyLayout(){
+  const side=wantSide();
+  $('btnLayout').textContent=side?'☰':'⇆';
+  $('btnLayout').title=side?'Video above text':'Video beside text';
+  if($('desk').classList.contains('side')===side)return;
+  keepAnchor(()=>{$('desk').classList.toggle('side',side)});
+  placeFloater();
+}
+$('btnLayout').onclick=()=>{
+  layoutMode=wantSide()?'stack':'side';sset('desk-layout',layoutMode);applyLayout();
+};
+$('btnFull').onclick=()=>{
+  const d=document;
+  if(d.fullscreenElement||d.webkitFullscreenElement){(d.exitFullscreen||d.webkitExitFullscreen).call(d)}
+  else{
+    const el=d.documentElement;
+    const req=el.requestFullscreen||el.webkitRequestFullscreen;
+    if(!req){toast('Full screen not supported here');return}
+    Promise.resolve(req.call(el)).then(()=>{
+      /* keep Esc for play/pause in full screen (Chrome: hold Esc to leave full screen) */
+      if(navigator.keyboard&&navigator.keyboard.lock)navigator.keyboard.lock(['Escape']).then(()=>toast('Full screen · hold Esc to exit',2600)).catch(()=>{});
+    }).catch(()=>{});
+  }
+};
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&navigator.keyboard&&navigator.keyboard.unlock)navigator.keyboard.unlock()});
+let lastW=innerWidth;
+window.addEventListener('resize',()=>{
+  if(!cur)return;
+  applyLayout();
+  if(innerWidth!==lastW&&docReady){   /* width changed → text re-wrapped → keep the same words on top */
+    lastW=innerWidth;const top=lastTop;invalidateMirror();
+    requestAnimationFrame(()=>{$('docEdit').scrollTop=charTop(top);taScroll=$('docEdit').scrollTop;lastTopScroll=-1});
+  }
 });
+
+/* ================= transport ================= */
+function togglePlay(){
+  if(!player||!player.getCurrentTime)return;
+  if(playing){player.pauseVideo();return}
+  if(autoRew>0&&ytStarted())player.seekTo(Math.max(0,player.getCurrentTime()-autoRew),true);
+  player.playVideo();
+}
+function skip(d){
+  if(!player||!player.getCurrentTime)return;
+  const t=clamp(player.getCurrentTime()+d,0,(player.getDuration&&player.getDuration())||1e9);
+  player.seekTo(t,true);updateSeekUi(t);
+  setTimeout(()=>recordPos('now'),300);
+}
+function cycleSpeed(){
+  sp=(sp+1)%speeds.length;if(player&&player.setPlaybackRate)player.setPlaybackRate(speeds[sp]);
+  $('btnSpeed').textContent=speeds[sp]+'×';toast('Speed '+speeds[sp]+'×',1200);
+}
+/* every on-screen control: tapping it must NOT take the cursor out of the text */
+const keepFocus=el=>el.addEventListener('pointerdown',e=>{e.preventDefault();holdScroll()});
+['btnRew','btnPlay','btnSpeed','btnLayout','btnFull','btnMini','sRew','sPlay','sFwd','btnFmin','btnFplus','btnSaveNow','seek'].forEach(id=>{if(id!=='seek')keepFocus($(id))});
+$('btnPlay').onclick=togglePlay;$('sPlay').onclick=togglePlay;
+$('btnRew').onclick=()=>skip(-5);$('sRew').onclick=()=>skip(-5);$('sFwd').onclick=()=>skip(5);
+$('btnSpeed').onclick=cycleSpeed;
+$('btnMini').onclick=()=>{
+  const mini=$('videoBox').classList.toggle('mini');
+  $('btnMini').textContent=mini?'▴ video':'▾ hide';
+};
+/* tap on the video itself = play/pause, without ever showing YouTube's overlay UI */
+$('shield').addEventListener('pointerdown',e=>{e.preventDefault();holdScroll();togglePlay()});
+
+/* ---- keyboard: works while typing in the transcript ---- */
+document.addEventListener('keydown',e=>{
+  if(!cur||e.isComposing||e.keyCode===229)return;
+  if(document.querySelector('.overlay.open')){if(e.key==='Escape')document.querySelectorAll('.overlay.open').forEach(o=>o.classList.remove('open'));return}
+  const mod=e.metaKey||e.ctrlKey;
+  if(e.key==='Escape'&&!mod&&!e.altKey){e.preventDefault();togglePlay();return}
+  if(e.key==='Tab'&&!mod&&!e.altKey){e.preventDefault();skip(e.shiftKey?5:-5);return}
+  if(mod&&!e.altKey&&(e.key==='s'||e.key==='S')){e.preventDefault();saveNow();return}
+  if(mod&&!e.altKey&&e.key==='.'){e.preventDefault();cycleSpeed();return}
+},true);
+
 /* custom seek bar */
 let seekDrag=false;
 $('seek').addEventListener('input',()=>{seekDrag=true});
 $('seek').addEventListener('change',()=>{
   if(player&&player.getDuration){
     const d=player.getDuration();
-    if(d>0)player.seekTo($('seek').value/1000*d,true);
+    if(d>0){player.seekTo($('seek').value/1000*d,true);setTimeout(()=>recordPos('now'),300)}
   }
   seekDrag=false;
 });
-setInterval(()=>{
-  if(player&&player.getDuration){
-    const d=player.getDuration();
-    if(d>0){
-      if(!seekDrag)$('seek').value=Math.round(player.getCurrentTime()/d*1000);
-      $('tlabel').textContent=fmt(player.getCurrentTime())+' / '+fmt(d);
-    }
-  }
-},1000);
+function updateSeekUi(t){
+  if(!player||!player.getDuration)return;
+  const d=player.getDuration();if(!(d>0))return;
+  if(t==null)t=player.getCurrentTime();
+  if(!seekDrag)$('seek').value=Math.round(t/d*1000);
+  $('tlabel').textContent=fmt(t)+' / '+fmt(d);
+}
+setInterval(()=>updateSeekUi(),1000);
 
-/* keep the transcript exactly where you were — the keyboard opening/closing
-   must not scroll the text away from your reading position */
-let taScroll=0, freezeUntil=0, sTick=0;
-setInterval(()=>{
-  if(docReady && Date.now()>freezeUntil){
-    const el=$('docEdit');
-    taScroll=el.scrollTop;
-    if(cur && (++sTick%5===0)){
-      sset('desk-s-'+cur.yt,String(taScroll));
-      const range=el.scrollHeight-el.clientHeight;
-      if(range>0)sset('desk-r-'+cur.yt,String(taScroll/range));
-    }
-  }
-},400);
+/* ================= reading position hold ================= */
+let taScroll=0,freezeUntil=0;
+setInterval(()=>{if(docReady&&Date.now()>freezeUntil)taScroll=$('docEdit').scrollTop},400);
 function holdScroll(){
   if(!docReady)return;
   freezeUntil=Date.now()+900;
@@ -376,16 +747,27 @@ function holdScroll(){
 }
 if(window.visualViewport)visualViewport.addEventListener('resize',holdScroll);
 
-/* ---- floating play controls: ride above the keyboard, never close it ---- */
+/* record locally every 2 s, share at most every 8 s */
+setInterval(()=>{if(cur&&docReady)recordPos(true)},2000);
+/* follow the other device when this one is idle */
+setInterval(()=>{if(cur&&!document.hidden&&!playing)pullPos()},15000);
+document.addEventListener('visibilitychange',()=>{
+  if(!cur)return;
+  if(document.hidden){recordPos();pushPos(true,true);if(dirty){clearTimeout(saveTimer);saveDoc()}}
+  else pullPos(true);
+});
+window.addEventListener('focus',()=>{if(cur)pullPos()});
+
+/* ================= floating controls (phone) ================= */
 function placeFloater(){
   const f=$('floater');
   const vv=window.visualViewport;
-  const bottomEdge = vv ? (vv.offsetTop+vv.height) : window.innerHeight;
-  f.style.top = Math.max(80, bottomEdge-66) + 'px';
+  const bottomEdge=vv?(vv.offsetTop+vv.height):window.innerHeight;
+  f.style.top=Math.max(80,bottomEdge-66)+'px';
   /* keyboard open? → video becomes a floating mini-player so it stays visible while typing */
   const vb=$('videoBox');
-  const kbOpen = vv && vv.height < window.innerHeight-160;
-  if(kbOpen && !vb.classList.contains('mini')){
+  const kbOpen=vv&&vv.height<window.innerHeight-160;
+  if(kbOpen&&!vb.classList.contains('mini')&&!$('desk').classList.contains('side')){
     vb.classList.add('pip');
     vb.style.top=((vv?vv.offsetTop:0)+96)+'px';
   }else{
@@ -400,33 +782,28 @@ if(window.visualViewport){
 window.addEventListener('resize',placeFloater);
 /* pointerdown + preventDefault = tap works but textarea keeps focus, keyboard stays open */
 const noSteal=fn=>e=>{e.preventDefault();holdScroll();fn()};
-$('fPlay').addEventListener('pointerdown',noSteal(()=>{
-  if(!player)return; playing?player.pauseVideo():player.playVideo();
-}));
-$('fRew').addEventListener('pointerdown',noSteal(()=>{
-  if(player&&player.getCurrentTime)player.seekTo(Math.max(0,player.getCurrentTime()-5),true);
-}));
+$('fPlay').addEventListener('pointerdown',noSteal(togglePlay));
+$('fRew').addEventListener('pointerdown',noSteal(()=>skip(-5)));
 
-/* remember cursor position per video */
-function saveCursor(){
-  if(!cur||!docReady)return;
-  const el=$('docEdit');
-  sset('desk-c-'+cur.yt,String(el.selectionStart||0));
-  sset('desk-s-'+cur.yt,String(el.scrollTop||0));
-  const range=el.scrollHeight-el.clientHeight;
-  if(range>0)sset('desk-r-'+cur.yt,String(el.scrollTop/range));
-}
-$('docEdit').addEventListener('pointerdown',()=>{userTouched=true});
-$('docEdit').addEventListener('touchstart',()=>{userTouched=true},{passive:true});
-['keyup','click','touchend'].forEach(ev=>$('docEdit').addEventListener(ev,saveCursor));
-
-/* autosave: 4s after typing stops */
-$('docEdit').addEventListener('input',()=>{
-  saveCursor();
-  dirty=true;setState('Editing…','');
+/* ================= text events ================= */
+const ta0=$('docEdit');
+ta0.addEventListener('pointerdown',()=>{userTouched=true});
+ta0.addEventListener('touchstart',()=>{userTouched=true},{passive:true});
+ta0.addEventListener('keydown',()=>{userTouched=true});
+ta0.addEventListener('wheel',()=>{userTouched=true},{passive:true});
+ta0.addEventListener('input',()=>{
+  dirty=true;invalidateMirror();setState('Editing…','');
   clearTimeout(saveTimer);
   saveTimer=setTimeout(saveDoc,4000);
 });
+
+/* ================= saving ================= */
+const norm=s=>String(s||'').replace(/\r\n?/g,'\n').replace(/[ \t ]+$/gm,'').trim();
+function hideConflict(){$('conflict').classList.remove('show')}
+function saveNow(){clearTimeout(saveTimer);dirty=true;saveDoc()}
+$('cfLoad').onclick=()=>{hideConflict();const m=measure();dirty=false;loadDoc({top:m.top,cur:m.cur},true)};
+$('cfKeep').onclick=()=>{hideConflict();saveDoc(true)};
+
 /* Hidden-form POST: a real form submission, so CORS never applies.
    The reply can't be read, so we confirm by reading the Doc back. */
 function formPost(text){
@@ -449,65 +826,80 @@ function formPost(text){
 async function verifySaved(text){
   try{
     const chk=await gasGetText(cur.doc);
-    return chk&&typeof chk.text==='string'&&chk.text.trim()===text.trim();
+    return chk&&typeof chk.text==='string'&&norm(chk.text)===norm(text);
   }catch(e){return false}
 }
-async function saveDoc(){
-  if(!cur||!dirty)return;
+async function saveDoc(force){
+  if(!cur||!dirty||saving)return;
   const text=$('docEdit').value;
   if(text===lastSavedText){dirty=false;setState('Saved ✓','ok');return}
-  setState('Saving…','');
-  const done=how=>{
-    lastSavedText=text;dirty=false;
-    setState('Saved to Doc ✓ '+how+new Date().toLocaleTimeString().slice(0,5),'ok');
-  };
-  /* 1 — normal POST (works when Apps Script returns readable CORS headers) */
+  saving=true;
   try{
-    const r=await gasPost({docId:cur.doc,fullText:text});
-    if(!r.error){done('');return}
-    setState('Save failed: '+r.error,'err');
-    if(r.error==='auth'||r.error==='no-docId')return;    // config issue — retrying won't help
-  }catch(e){}
-  /* 2 — no-cors POST: request goes out, reply unreadable; verify by reading back */
-  setState('Verifying save…','');
-  try{
-    await fetch(gas.url,{method:'POST',mode:'no-cors',
-      headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify({token:gas.token,docId:cur.doc,fullText:text})});
-    await new Promise(r=>setTimeout(r,2000));
-    if(await verifySaved(text)){done('(verified) ');return}
-  }catch(e){}
-  /* 3 — hidden form submission: no CORS involved at all */
-  setState('Retrying save…','');
-  try{
-    await formPost(text);
-    if(await verifySaved(text)){done('(verified) ');return}
-  }catch(e){}
-  setState('Save failed — will retry','err');
-  clearTimeout(saveTimer);saveTimer=setTimeout(saveDoc,8000);
+    /* 0 — never overwrite edits made on another device */
+    if(!force){
+      setState('Checking Doc…','');
+      try{
+        const chk=await gasGetText(cur.doc);
+        if(chk&&typeof chk.text==='string'&&norm(chk.text)!==norm(lastSavedText)&&norm(chk.text)!==norm(text)){
+          $('conflict').classList.add('show');setState('Not saved — Doc changed elsewhere','err');return;
+        }
+      }catch(e){}
+    }
+    setState('Saving…','');
+    const done=how=>{
+      lastSavedText=text;dirty=false;hideConflict();
+      loadedTextT=Date.now();
+      setState('Saved to Doc ✓ '+how+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),'ok');
+      if(docReady){
+        const m=measure();
+        posState={t:Date.now(),dev:DEV,name:devName,time:videoTime(),top:m.top,cur:m.cur,textT:loadedTextT};
+        sset('desk-pos-'+cur.yt,JSON.stringify(posState));pushPos(true);
+      }
+    };
+    /* 1 — normal POST (works when Apps Script returns readable CORS headers) */
+    try{
+      const r=await gasPost({docId:cur.doc,fullText:text});
+      if(!r.error){done('');return}
+      setState('Save failed: '+r.error,'err');
+      if(r.error==='auth'||r.error==='no-docId')return;    // config issue — retrying won't help
+    }catch(e){}
+    /* 2 — no-cors POST: request goes out, reply unreadable; verify by reading back */
+    setState('Verifying save…','');
+    try{
+      await fetch(gas.url,{method:'POST',mode:'no-cors',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({token:gas.token,docId:cur.doc,fullText:text})});
+      await new Promise(r=>setTimeout(r,2000));
+      if(await verifySaved(text)){done('(verified) ');return}
+    }catch(e){}
+    /* 3 — hidden form submission: no CORS involved at all */
+    setState('Retrying save…','');
+    try{
+      await formPost(text);
+      if(await verifySaved(text)){done('(verified) ');return}
+    }catch(e){}
+    setState('Save failed — will retry','err');
+    clearTimeout(saveTimer);saveTimer=setTimeout(()=>saveDoc(force),8000);
+  }finally{
+    saving=false;
+    if(dirty&&$('docEdit').value!==text&&!$('conflict').classList.contains('show')){clearTimeout(saveTimer);saveTimer=setTimeout(saveDoc,1500)}
+  }
 }
 async function closeDesk(){
-  saveCursor();
+  recordPos();pushPos(true);
   docReady=false;
   clearTimeout(saveTimer);
   if(dirty)await saveDoc();
-  clearInterval(poll);
-  if(player){player.destroy();player=null}
+  if(player){try{player.destroy()}catch(e){}player=null}
+  playing=false;setPlayIcons();
   cur=null;
-  $('desk').classList.remove('active');
+  $('desk').classList.remove('active','side');
   $('floater').classList.remove('show');
   $('home').classList.add('active');$('fab').style.display='';
   renderHome();
 }
 $('btnBack').onclick=closeDesk;
-window.addEventListener('beforeunload',()=>{if(dirty)saveDoc()});
-$('btnPlay').onclick=()=>{if(!player)return;playing?player.pauseVideo():player.playVideo()};
-$('btnRew').onclick=()=>{if(player&&player.getCurrentTime)player.seekTo(Math.max(0,player.getCurrentTime()-5),true)};
-$('btnSpeed').onclick=()=>{sp=(sp+1)%speeds.length;if(player&&player.setPlaybackRate)player.setPlaybackRate(speeds[sp]);$('btnSpeed').textContent=speeds[sp]+'×'};
-$('btnMini').onclick=()=>{
-  const mini=$('videoBox').classList.toggle('mini');
-  $('btnMini').textContent=mini?'▴ video':'▾ hide';
-};
+window.addEventListener('beforeunload',()=>{if(cur){recordPos();pushPos(true,true)}if(dirty)saveDoc()});
 
 renderHome();
 </script>
