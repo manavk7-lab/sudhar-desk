@@ -479,7 +479,7 @@ function recordPos(push){
 }
 
 /* ---- sync over the Apps Script Web App ---- */
-let syncOK=null,lastPushT=0,lastPushAt=0,pulling=false,lastPull=0;
+let syncOK=null,syncOffAt=0,lastPushT=0,lastPushAt=0,pulling=false,lastPull=0;
 function showSync(){
   const d=$('syncDot');
   if(!gas.url){d.textContent='';d.className='';$('syncLine').textContent='';return}
@@ -500,14 +500,15 @@ function pushPos(force,keepalive){
     .then(r=>r.json()).then(j=>{if(j&&'pos' in j){syncOK=true;showSync()}}).catch(()=>{});
 }
 async function pullPos(force){
-  if(!cur||!gas.url||syncOK===false||pulling)return;
+  if(!cur||!gas.url||pulling)return;
+  if(syncOK===false&&Date.now()-syncOffAt<120000)return;   /* re-check an 'off' script every 2 min */
   if(!force&&Date.now()-lastPull<3000)return;
   pulling=true;lastPull=Date.now();
   const yt=cur.yt;
   try{
     const r=await (await fetch(gasUrl({action:'getpos',key:yt}),{redirect:'follow'})).json();
     if(!cur||cur.yt!==yt)return;
-    if(!r||!('pos' in r)){syncOK=false;showSync();return}   /* old script: no position support */
+    if(!r||!('pos' in r)){syncOK=false;syncOffAt=Date.now();showSync();return}   /* old script: no position support */
     syncOK=true;showSync();
     const p=r.pos;
     if(p&&p.dev!==DEV&&p.t>(posState?posState.t:0))await applyRemote(p);
