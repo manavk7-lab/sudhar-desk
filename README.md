@@ -7,9 +7,9 @@ Live: https://manavk7-lab.github.io/sudhar-desk/
 ## Keyboard (works while typing)
 | Key | Action |
 |---|---|
-| `Esc` | play / pause (in full screen: hold Esc to leave full screen) |
-| `Tab` | back 5 s |
-| `Shift`+`Tab` | forward 5 s |
+| `Tab` | play / pause |
+| `Esc` | back 5 s (in full screen: hold Esc to leave full screen) |
+| `Shift`+`Esc` | forward 5 s |
 | `⌘/Ctrl`+`S` | save to Doc now |
 | `⌘/Ctrl`+`.` | speed 1× → 0.75× → 1.25× → 1.5× |
 

@@ -205,9 +205,9 @@ h1{font-size:26px;margin:2px 0 4px}
     <h2>Keyboard shortcuts</h2>
     <div class="hint" style="margin-bottom:10px">They work while you are typing in the transcript, so you never have to leave your line.</div>
     <table class="keytable">
-      <tr><td><kbd>Esc</kbd></td><td>Play / pause</td></tr>
-      <tr><td><kbd>Tab</kbd></td><td>Back 5 seconds</td></tr>
-      <tr><td><kbd>Shift</kbd> + <kbd>Tab</kbd></td><td>Forward 5 seconds</td></tr>
+      <tr><td><kbd>Tab</kbd></td><td>Play / pause</td></tr>
+      <tr><td><kbd>Esc</kbd></td><td>Back 5 seconds</td></tr>
+      <tr><td><kbd>Shift</kbd> + <kbd>Esc</kbd></td><td>Forward 5 seconds</td></tr>
       <tr><td><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>S</kbd></td><td>Save to Doc now</td></tr>
       <tr><td><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>.</kbd></td><td>Change speed (1× → 0.75× → 1.25× → 1.5×)</td></tr>
       <tr><td colspan="2" style="padding-top:14px;color:var(--ink-soft);font-size:13px">Videos with follow-along (the spoken word lights up):</td></tr>
@@ -223,8 +223,8 @@ h1{font-size:26px;margin:2px 0 4px}
   <div class="strip">
     <button class="back" id="btnBack" title="Back to list">‹</button>
     <div class="ttl" id="deskTitle"></div>
-    <button class="sbtn" id="btnRew" title="Back 5 s (Tab)">↺5</button>
-    <button class="sbtn accent" id="btnPlay" title="Play / pause (Esc)">▶</button>
+    <button class="sbtn" id="btnRew" title="Back 5 s (Esc)">↺5</button>
+    <button class="sbtn accent" id="btnPlay" title="Play / pause (Tab)">▶</button>
     <button class="sbtn" id="btnSpeed" title="Speed (⌘/Ctrl + .)">1×</button>
     <button class="sbtn" id="btnLayout" title="Video beside / above text">⇆</button>
     <button class="sbtn" id="btnFull" title="Full screen">⛶</button>
@@ -239,14 +239,14 @@ h1{font-size:26px;margin:2px 0 4px}
       </div>
       <div id="sidePanel">
         <div id="sideTransport">
-          <button id="sRew" title="Back 5 s (Tab)">↺ 5</button>
-          <button id="sPlay" class="accent" title="Play / pause (Esc)">▶</button>
-          <button id="sFwd" title="Forward 5 s (Shift+Tab)">5 ↻</button>
+          <button id="sRew" title="Back 5 s (Esc)">↺ 5</button>
+          <button id="sPlay" class="accent" title="Play / pause (Tab)">▶</button>
+          <button id="sFwd" title="Forward 5 s (Shift+Esc)">5 ↻</button>
         </div>
         <div class="keys">
-          <div><span><kbd>Esc</kbd></span><span>play / pause</span></div>
-          <div><span><kbd>Tab</kbd></span><span>back 5 s</span></div>
-          <div><span><kbd>Shift</kbd>+<kbd>Tab</kbd></span><span>forward 5 s</span></div>
+          <div><span><kbd>Tab</kbd></span><span>play / pause</span></div>
+          <div><span><kbd>Esc</kbd></span><span>back 5 s</span></div>
+          <div><span><kbd>Shift</kbd>+<kbd>Esc</kbd></span><span>forward 5 s</span></div>
           <div><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>S</kbd></span><span>save now</span></div>
           <div><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>.</kbd></span><span>speed</span></div>
           <div class="fol-key"><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>J</kbd></span><span>go to spoken words</span></div>
@@ -697,7 +697,7 @@ $('btnFull').onclick=()=>{
     const req=el.requestFullscreen||el.webkitRequestFullscreen;
     if(!req){toast('Full screen not supported here');return}
     Promise.resolve(req.call(el)).then(()=>{
-      /* keep Esc for play/pause in full screen (Chrome: hold Esc to leave full screen) */
+      /* keep Esc for rewind in full screen (Chrome: hold Esc to leave full screen) */
       if(navigator.keyboard&&navigator.keyboard.lock)navigator.keyboard.lock(['Escape']).then(()=>toast('Full screen · hold Esc to exit',2600)).catch(()=>{});
     }).catch(()=>{});
   }
@@ -749,8 +749,8 @@ document.addEventListener('keydown',e=>{
   if(!cur||e.isComposing||e.keyCode===229)return;
   if(document.querySelector('.overlay.open')){if(e.key==='Escape')document.querySelectorAll('.overlay.open').forEach(o=>o.classList.remove('open'));return}
   const mod=e.metaKey||e.ctrlKey;
-  if(e.key==='Escape'&&!mod&&!e.altKey){e.preventDefault();togglePlay();return}
-  if(e.key==='Tab'&&!mod&&!e.altKey){e.preventDefault();skip(e.shiftKey?5:-5);return}
+  if(e.key==='Tab'&&!mod&&!e.altKey){e.preventDefault();if(!e.repeat)togglePlay();return}
+  if(e.key==='Escape'&&!mod&&!e.altKey){e.preventDefault();skip(e.shiftKey?5:-5);return}
   if(mod&&!e.altKey&&(e.key==='s'||e.key==='S')){e.preventDefault();saveNow();return}
   if(mod&&!e.altKey&&e.key==='.'){e.preventDefault();cycleSpeed();return}
   if(mod&&!e.altKey&&(e.key==='j'||e.key==='J')&&Fol.on()){e.preventDefault();Fol.goNow();return}
