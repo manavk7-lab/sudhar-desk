@@ -195,6 +195,8 @@ h1{font-size:26px;margin:2px 0 4px}
         <option value="3">3 seconds</option>
       </select>
     </div>
+    <button class="ghost" id="setLink" style="color:var(--saffron);font-weight:700">📱 Link another phone / iPad / computer</button>
+    <div class="hint" id="setLinkHint" style="display:none;margin:-4px 0 10px">Send this link to yourself (e.g. WhatsApp “Message yourself”) and open it on the other device — it fills in these settings there. Keep it private: it contains your secret.</div>
     <button class="primary" id="setSave">Save settings</button>
     <button class="ghost" id="setClose">Close</button>
   </div>
@@ -315,7 +317,7 @@ let devName=sget('desk-devname')||guessName;
 let autoRew=+(sget('desk-autorew')||0);
 
 /* ================= library ================= */
-let pairs=jget('desk-pairs',[]);
+const APP_VERSION='2026-10-08c';
 /* ===== BUILT-IN LIBRARY =====
    Pre-loaded video+doc pairs baked into the app itself.
    Format: {yt:'11charVideoId', doc:'GoogleDocId', title:'…'}
@@ -324,10 +326,21 @@ const BUILTIN_PAIRS=[
   {yt:'n7WAOZ91KMc',doc:'1eaUsAkYG7w_14-RbnTn2GW9zUn3pX_pAf-9EeWz1O-Q',title:'શાશ્વત સંવાદ - 6'},
   {yt:'xQQp0lBsa-g',doc:'1XbvIIM8mmJXPx46QgwgL7cH-0klyGM2iHAkQKzIQX5k',title:'યથાર્થ ગીતા સાર - 5'}
 ];
-let hidden=jget('desk-hidden',[]);
-BUILTIN_PAIRS.forEach(b=>{
-  if(!hidden.includes(b.yt)&&!pairs.find(p=>p.yt===b.yt))pairs.push(b);
-});
+/* The list lives in `lib` (videoId → entry). Every add/remove is stamped with a time
+   and sent to the Apps Script, so all devices end up with the same list; for each
+   video the most recent change wins. Removed videos are kept as {del:true}. */
+let lib=jget('desk-lib',null);
+if(!lib){   /* first run of this version: carry over this device's old list */
+  lib={};const now=Date.now();
+  jget('desk-pairs',[]).forEach((p,i)=>{lib[p.yt]={yt:p.yt,doc:p.doc,title:p.title,added:now-i,t:now-i,del:false}});
+  jget('desk-hidden',[]).forEach(y=>{if(lib[y])lib[y].del=true;else lib[y]={yt:y,doc:'',title:'',added:0,t:now,del:true}});
+}
+BUILTIN_PAIRS.forEach((b,i)=>{if(!lib[b.yt])lib[b.yt]={yt:b.yt,doc:b.doc,title:b.title,added:BUILTIN_PAIRS.length-i,t:0,del:false}});
+const saveLib=()=>sset('desk-lib',JSON.stringify(lib));
+saveLib();
+let pairs=[];
+function buildPairs(){pairs=Object.values(lib).filter(e=>!e.del&&e.doc).sort((a,b)=>b.added-a.added)}
+buildPairs();
 let gas=jget('desk-gas',{url:'',token:''});
 let cur=null,player=null,ytReady=false,playing=false;
 let dirty=false,saveTimer=null,lastSavedText='',saving=false;
@@ -352,10 +365,9 @@ function renderHome(){
     c.querySelector('b').textContent=p.title;
     c.onclick=e=>{
       if(e.target.dataset.i!==undefined){
-        if(confirm('Remove this pair?')){
-          const rem=pairs[+e.target.dataset.i];
-          if(rem&&!hidden.includes(rem.yt)){hidden.push(rem.yt);sset('desk-hidden',JSON.stringify(hidden));}
-          pairs.splice(+e.target.dataset.i,1);sset('desk-pairs',JSON.stringify(pairs));renderHome();
+        const rem=pairs[+e.target.dataset.i];
+        if(rem&&confirm('Remove "'+rem.title+'" from the list on all your devices?\n(The Google Doc is not touched.)')){
+          libChange({...rem,del:true});
         }
         return;
       }
@@ -370,12 +382,9 @@ $('btnAdd').onclick=()=>{
   const y=ytId($('inYt').value),d=docId($('inDoc').value);
   if(!y){toast('Enter a valid YouTube link');return}
   if(!d){toast('Enter a valid Google Doc link');return}
-  pairs.unshift({yt:y,doc:d,title:$('inTitle').value.trim()||('Video '+y)});
-  hidden=hidden.filter(h=>h!==y);sset('desk-hidden',JSON.stringify(hidden));
-  sset('desk-pairs',JSON.stringify(pairs));
+  libChange({yt:y,doc:d,title:$('inTitle').value.trim()||('Video '+y),added:Date.now(),del:false});
   $('sheet').classList.remove('open');
   $('inYt').value=$('inDoc').value=$('inTitle').value='';
-  renderHome();
 };
 $('setBtn').onclick=()=>{
   $('setUrl').value=gas.url;$('setToken').value=gas.token;
@@ -388,7 +397,7 @@ $('setSave').onclick=()=>{
   sset('desk-gas',JSON.stringify(gas));
   devName=$('setDevName').value.trim()||guessName;sset('desk-devname',devName);
   autoRew=+$('setAutoRew').value||0;sset('desk-autorew',String(autoRew));
-  syncOK=null;
+  syncOK=null;libSync=null;libPull();
   $('setSheet').classList.remove('open');toast('Settings saved');
 };
 $('keysBtn').onclick=()=>$('keysSheet').classList.add('open');
@@ -938,7 +947,7 @@ async function closeDesk(){
   $('desk').classList.remove('active','side');
   $('floater').classList.remove('show');
   $('home').classList.add('active');$('fab').style.display='';
-  renderHome();
+  renderHome();libPull();checkVersion();
 }
 $('btnBack').onclick=closeDesk;
 window.addEventListener('beforeunload',()=>{if(cur){recordPos();pushPos(true,true)}if(dirty)saveDoc()});
@@ -1071,6 +1080,70 @@ const Fol=(()=>{
   return {load,clear,realign,edited,style,onPlay,goNow,playFrom,on:()=>!!R,_state:()=>({wi,si,R,follow,mode})};
 })();
 window.Fol=Fol;
+
+/* ================= shared video list ================= */
+let libSync=null,libPulling=false;
+function libChange(e){
+  e={...e,t:Date.now()};
+  lib[e.yt]={...(lib[e.yt]||{}),...e};saveLib();buildPairs();renderHome();
+  libPush(lib[e.yt]);
+}
+function libPush(e){
+  if(!gas.url||libSync===false)return;
+  fetch(gasUrl({action:'setlib',key:e.yt,data:JSON.stringify(e)}),{redirect:'follow'})
+    .then(r=>r.json()).then(j=>{
+      if(j&&j.entry){libSync=true;if(j.stale&&j.entry.t>(lib[e.yt]||{}).t){lib[e.yt]=j.entry;saveLib();buildPairs();if(!cur)renderHome()}}
+    }).catch(()=>{});
+}
+async function libPull(){
+  if(!gas.url||libPulling)return;
+  libPulling=true;
+  try{
+    const r=await (await fetch(gasUrl({action:'getlib'}),{redirect:'follow'})).json();
+    if(!r||!Array.isArray(r.lib)){libSync=false;return}   /* old Apps Script: list stays per-device */
+    libSync=true;
+    const server={};r.lib.forEach(e=>{if(e&&e.yt)server[e.yt]=e});
+    let changed=false;
+    for(const y in server){const s=server[y],l=lib[y];if(!l||(s.t||0)>(l.t||0)){lib[y]=s;changed=true}}
+    for(const y in lib){const l=lib[y],s=server[y];if((l.t||0)>0&&(!s||(l.t||0)>(s.t||0)))libPush(l)}
+    if(changed){saveLib();buildPairs();if(!cur)renderHome()}
+  }catch(e){}finally{libPulling=false}
+}
+
+/* ================= stay up to date ================= */
+async function checkVersion(){
+  try{
+    const v=(await (await fetch('version.txt?'+Date.now(),{cache:'no-store'})).text()).trim();
+    if(!v||v===APP_VERSION)return;
+    let tried=null;try{tried=sessionStorage.getItem('desk-upd')}catch(e){}
+    if(!cur&&!dirty&&tried!==v){try{sessionStorage.setItem('desk-upd',v)}catch(e){}location.reload();return}
+    if(tried===v)return;   /* already reloaded once for this version — GitHub is still serving the old page; next open will have it */
+    toast('A new version is ready — it loads when you go back to the list',3500);
+  }catch(e){}
+}
+
+/* ================= link another device ================= */
+(function(){
+  const m=location.hash.match(/^#setup=(.+)$/);
+  if(!m)return;
+  try{
+    const g=JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1])))));
+    if(g&&g.url&&g.token){gas={url:g.url,token:g.token};sset('desk-gas',JSON.stringify(gas));setTimeout(()=>toast('This device is linked ✓ — your videos will appear here'),300)}
+  }catch(e){setTimeout(()=>toast('That setup link did not work — copy it again'),300)}
+  history.replaceState(null,'',location.pathname);
+})();
+$('setLink').onclick=async()=>{
+  if(!gas.url||!gas.token){toast('Fill in and save the sync settings on this device first');return}
+  const link=location.origin+location.pathname+'#setup='+encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(gas)))));
+  $('setLinkHint').style.display='block';
+  if(navigator.share){try{await navigator.share({title:'Sudhar Desk setup',text:'Open on your other device to set up Sudhar Desk:',url:link});return}catch(e){if(e&&e.name==='AbortError')return}}
+  try{await navigator.clipboard.writeText(link);toast('Setup link copied — paste it to yourself on WhatsApp')}catch(e){prompt('Copy this link:',link)}
+};
+
+window.addEventListener('focus',()=>{if(!cur){libPull();checkVersion()}});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!cur){libPull();checkVersion()}});
+setInterval(()=>{if(!cur&&!document.hidden)libPull()},60000);
+libPull();checkVersion();
 
 renderHome();
 </script>

@@ -1,11 +1,13 @@
 /**
- * Sudhar Desk — Google Doc sync + cross-device position (v2)
+ * Sudhar Desk — Google Doc sync + cross-device position + shared video list (v3)
  *
  * What it does
  *   GET  ?token&docId                 → { text }            read the Doc
  *   POST {token, docId, fullText}     → { ok }              write the Doc (JSON or hidden-form)
  *   GET  ?token&action=getpos&key     → { pos }             where you were (video time + text spot)
  *   GET  ?token&action=setpos&key&data→ { ok, pos }         save where you are, for your other devices
+ *   GET  ?token&action=getlib         → { lib }             the video list, shared by all devices
+ *   GET  ?token&action=setlib&key&data→ { ok, entry }       add / remove / rename one video in the list
  *
  * UPDATE (keeps the same /exec URL):
  * 1. script.google.com → open the "sudhar-desk doc sync" project.
@@ -81,6 +83,28 @@ function doGet(e) {
       lock.releaseLock();
     }
     return out({ ok: true, pos: d });
+  }
+
+  // ---- shared video list (same on every device) ----
+  if (p.action === 'getlib') {
+    var all = PropertiesService.getScriptProperties().getProperties();
+    var lib = [];
+    for (var k in all) if (k.indexOf('lib_') === 0) { try { lib.push(JSON.parse(all[k])); } catch (err) {} }
+    return out({ lib: lib });
+  }
+  if (p.action === 'setlib') {
+    if (!p.key || !/^[\w-]{6,40}$/.test(p.key)) return out({ error: 'bad-key' });
+    var e2;
+    try { e2 = JSON.parse(p.data || ''); } catch (err) { return out({ error: 'bad-json' }); }
+    var pr = PropertiesService.getScriptProperties();
+    var lk = LockService.getScriptLock();
+    lk.waitLock(5000);
+    try {
+      var prev = pr.getProperty('lib_' + p.key);
+      if (prev) { var o2 = JSON.parse(prev); if (o2.t && e2.t && o2.t > e2.t) return out({ ok: true, stale: true, entry: o2 }); }
+      pr.setProperty('lib_' + p.key, JSON.stringify(e2));
+    } finally { lk.releaseLock(); }
+    return out({ ok: true, entry: e2 });
   }
 
   // ---- read the Doc ----
