@@ -2,8 +2,8 @@
    Network-first for the app's own files, so every update on GitHub shows up
    immediately; the cached copy is only used when there is no connection.
    YouTube, Google Fonts and Apps Script requests are never touched. */
-const CACHE = 'sudhar-desk-v2';
-const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
+const CACHE = 'sudhar-desk-v3';
+const SHELL = ['./', './index.html', './align.js', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));

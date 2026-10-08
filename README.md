@@ -35,3 +35,16 @@ Needs `apps-script/doc-sync.gs` (v2) deployed. With the old script the app still
 1. script.google.com → project "sudhar-desk doc sync".
 2. Replace all code with `apps-script/doc-sync.gs`, put your existing SECRET back on the `const SECRET` line.
 3. Deploy → Manage deployments → ✏️ → Version: New version → Deploy (same /exec URL).
+
+## Follow-along (spoken word lights up)
+Videos that have `sync/<videoId>.tsv` get it automatically: as the video plays, the sentence
+being spoken is shaded and the word is highlighted in the transcript.
+- The times come from YouTube's auto-captions (word level) and are matched to the transcript
+  in the browser, so corrections never break it — after typing pauses it re-matches (~20 ms).
+- **◎ follow** scrolls the text with the speech; any scroll, click or typing pauses that for 5 s.
+  Pressing play always brings the spoken words into view if they are off-screen.
+- **✦** chooses word+sentence / sentence / word / off.
+- `⌘/Ctrl+J` go to the spoken words · `⌘/Ctrl+Enter` play from the cursor's word · `⌥/Alt+click` play from a word.
+- Phone: the ◎ button floats next to ↺5.
+
+Currently: `n7WAOZ91KMc` (શાશ્વત સંવાદ - 6).

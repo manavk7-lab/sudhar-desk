@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
 <title>Sudhar Desk — video + doc</title>
 <link rel="manifest" href="manifest.webmanifest">
+<script src="align.js"></script>
 <meta name="theme-color" content="#231F1A">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -91,6 +92,8 @@ h1{font-size:26px;margin:2px 0 4px}
 #sideTransport button.accent{background:var(--saffron)}
 .keys div{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.08);color:#D9CFC0}
 .keys div span:last-child{text-align:right}
+.keys .fol-key{display:none}
+#desk.has-sync .keys .fol-key{display:flex}
 #syncLine{margin-top:14px;font-size:12px;color:#BFB3A2}
 
 /* side-by-side layout: video column left, transcript right */
@@ -101,6 +104,7 @@ h1{font-size:26px;margin:2px 0 4px}
 #desk.side #sidePanel{display:block}
 #desk.side #btnMini{display:none}
 #desk.side #docEdit{padding:22px 28px 140px}
+@media (max-width:560px){ #btnHlMode{display:none!important} #btnFollow .lbl{display:none} .docbar{gap:4px} }
 
 .docbar{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--paper);border-bottom:1px solid var(--line);flex-shrink:0}
 #saveState{font-size:12px;color:var(--ink-soft);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -113,11 +117,25 @@ h1{font-size:26px;margin:2px 0 4px}
 #conflict{display:none;background:#7A2E0E;color:#fff;padding:10px 12px;font-size:13px;line-height:1.5;flex-shrink:0}
 #conflict.show{display:block}
 #conflict button{background:#fff;color:#7A2E0E;font-weight:700;font-size:12px;border-radius:8px;padding:6px 10px;margin:6px 6px 0 0}
+#docWrap{flex:1;position:relative;min-height:0;background:#fff}
 #docEdit{
-  flex:1;width:100%;border:none;outline:none;resize:none;background:#fff;
+  position:absolute;inset:0;width:100%;height:100%;border:none;outline:none;resize:none;background:transparent;
   font-family:'Noto Serif Gujarati',serif;font-size:17.5px;line-height:1.75;
-  padding:16px 16px 120px;color:var(--ink);
+  padding:16px 16px 120px;color:var(--ink);z-index:1;
 }
+/* follow-along highlight: a copy of the text with transparent letters sits under the editor */
+#hl{position:absolute;left:0;top:0;bottom:0;right:0;overflow:hidden;pointer-events:none;color:transparent;
+  white-space:pre-wrap;overflow-wrap:break-word;word-wrap:break-word;box-sizing:border-box;z-index:0}
+#hl .sen{background:rgba(180,82,10,.09);border-radius:4px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+#hl .w{background:#F2D29E;border-radius:4px;box-shadow:0 0 0 2px #F2D29E;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+#hl.only-sen .w{background:none;box-shadow:none}
+#hl.only-word .sen{background:none}
+#hl.off{display:none}
+.dbtn.fol{display:none}
+#desk.has-sync .dbtn.fol{display:inline-block}
+#btnFollow.on{background:var(--saffron);color:#fff;border-radius:8px}
+#fGo{display:none;background:#fff;color:var(--saffron);border:2px solid var(--saffron)}
+#desk.has-sync ~ #floater #fGo{display:block}
 #mirror{position:absolute;left:-99999px;top:0;visibility:hidden;white-space:pre-wrap;overflow-wrap:break-word;word-wrap:break-word;box-sizing:border-box}
 #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:90;max-width:92vw;text-align:center}
 #toast.show{opacity:1}
@@ -192,6 +210,10 @@ h1{font-size:26px;margin:2px 0 4px}
       <tr><td><kbd>Shift</kbd> + <kbd>Tab</kbd></td><td>Forward 5 seconds</td></tr>
       <tr><td><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>S</kbd></td><td>Save to Doc now</td></tr>
       <tr><td><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>.</kbd></td><td>Change speed (1× → 0.75× → 1.25× → 1.5×)</td></tr>
+      <tr><td colspan="2" style="padding-top:14px;color:var(--ink-soft);font-size:13px">Videos with follow-along (the spoken word lights up):</td></tr>
+      <tr><td><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>J</kbd></td><td>Go to the spoken words and follow them</td></tr>
+      <tr><td><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>Enter</kbd></td><td>Play from the word at your cursor</td></tr>
+      <tr><td><kbd>⌥</kbd>/<kbd>Alt</kbd> + click</td><td>Play from the word you click</td></tr>
     </table>
     <button class="ghost" id="keysClose" style="margin-top:10px">Close</button>
   </div>
@@ -227,6 +249,9 @@ h1{font-size:26px;margin:2px 0 4px}
           <div><span><kbd>Shift</kbd>+<kbd>Tab</kbd></span><span>forward 5 s</span></div>
           <div><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>S</kbd></span><span>save now</span></div>
           <div><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>.</kbd></span><span>speed</span></div>
+          <div class="fol-key"><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>J</kbd></span><span>go to spoken words</span></div>
+          <div class="fol-key"><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>↵</kbd></span><span>play from cursor</span></div>
+          <div class="fol-key"><span><kbd>⌥</kbd>/<kbd>Alt</kbd>+click</span><span>play from that word</span></div>
         </div>
         <div id="syncLine"></div>
       </div>
@@ -240,17 +265,23 @@ h1{font-size:26px;margin:2px 0 4px}
       <div class="docbar">
         <span id="saveState">Loading Doc…</span>
         <span id="syncDot" title="Cross-device sync"></span>
+        <button class="dbtn fol" id="btnFollow" title="Follow the spoken words (⌘/Ctrl + J)">◎ follow</button>
+        <button class="dbtn fol" id="btnHlMode" title="What to highlight">✦ word+sentence</button>
         <button class="dbtn" id="btnFmin">A−</button>
         <button class="dbtn" id="btnFplus">A+</button>
         <button class="dbtn" id="btnSaveNow">⤓ save now</button>
         <button class="dbtn" id="btnReload">↻ reload</button>
       </div>
-      <textarea id="docEdit" spellcheck="false" placeholder="Transcript loads here from your Google Doc…"></textarea>
+      <div id="docWrap">
+        <div id="hl" aria-hidden="true"></div>
+        <textarea id="docEdit" spellcheck="false" placeholder="Transcript loads here from your Google Doc…"></textarea>
+      </div>
     </div>
   </div>
 </div>
 
 <div id="floater">
+  <button id="fGo" title="Show the spoken words">◎</button>
   <button id="fRew">↺5</button>
   <button id="fPlay">▶</button>
 </div>
@@ -290,6 +321,7 @@ let pairs=jget('desk-pairs',[]);
    Format: {yt:'11charVideoId', doc:'GoogleDocId', title:'…'}
    These appear on every device automatically; ones you remove stay removed. */
 const BUILTIN_PAIRS=[
+  {yt:'n7WAOZ91KMc',doc:'1eaUsAkYG7w_14-RbnTn2GW9zUn3pX_pAf-9EeWz1O-Q',title:'શાશ્વત સંવાદ - 6'},
   {yt:'xQQp0lBsa-g',doc:'1XbvIIM8mmJXPx46QgwgL7cH-0klyGM2iHAkQKzIQX5k',title:'યથાર્થ ગીતા સાર - 5'}
 ];
 let hidden=jget('desk-hidden',[]);
@@ -567,12 +599,14 @@ async function openDesk(p){
           if(playing){try{e.target.setPlaybackQuality('hd1080')}catch(_){}}
           setPlayIcons();
           holdScroll();   /* pause/play must never move the reading position */
+          if(!was&&playing)Fol.onPlay();
           if(was&&!playing)recordPos('now');
         }
       }
     });
   };
   boot();
+  Fol.load(p.yt);
   await loadDoc(posState,false);
   pullPos(true);
   if(start>2)toast('Resuming at '+fmt(start));
@@ -589,6 +623,7 @@ async function loadDoc(anchor,silent){
     ta.value=r.text;lastSavedText=r.text;dirty=false;loadedTextT=Date.now();
     invalidateMirror();lastTopScroll=-1;
     placeView(anchor||{});
+    Fol.realign();
     if(matchMedia('(pointer:fine)').matches)ta.focus({preventScroll:true});  /* desktop only — avoids popping the phone keyboard */
     setState(silent?'Updated from Doc ✓':'Loaded from Doc ✓','ok');
   }catch(e){setState('Doc load failed — check URL/secret','err')}
@@ -629,7 +664,7 @@ function keepAnchor(fn){
 
 /* font size — remembered on this device */
 let fsz=+(sget('desk-font')||17.5);
-function applyFont(){$('docEdit').style.fontSize=fsz+'px'}
+function applyFont(){$('docEdit').style.fontSize=fsz+'px';if(window.Fol)Fol.style()}
 applyFont();
 $('btnFmin').onclick=()=>keepAnchor(()=>{fsz=Math.max(12,fsz-1.5);sset('desk-font',String(fsz));applyFont()});
 $('btnFplus').onclick=()=>keepAnchor(()=>{fsz=Math.min(36,fsz+1.5);sset('desk-font',String(fsz));applyFont()});
@@ -648,6 +683,7 @@ function applyLayout(){
   $('btnLayout').title=side?'Video above text':'Video beside text';
   if($('desk').classList.contains('side')===side)return;
   keepAnchor(()=>{$('desk').classList.toggle('side',side)});
+  if(window.Fol)Fol.style();
   placeFloater();
 }
 $('btnLayout').onclick=()=>{
@@ -671,6 +707,7 @@ let lastW=innerWidth;
 window.addEventListener('resize',()=>{
   if(!cur)return;
   applyLayout();
+  Fol.style();
   if(innerWidth!==lastW&&docReady){   /* width changed → text re-wrapped → keep the same words on top */
     lastW=innerWidth;const top=lastTop;invalidateMirror();
     requestAnimationFrame(()=>{$('docEdit').scrollTop=charTop(top);taScroll=$('docEdit').scrollTop;lastTopScroll=-1});
@@ -696,7 +733,7 @@ function cycleSpeed(){
 }
 /* every on-screen control: tapping it must NOT take the cursor out of the text */
 const keepFocus=el=>el.addEventListener('pointerdown',e=>{e.preventDefault();holdScroll()});
-['btnRew','btnPlay','btnSpeed','btnLayout','btnFull','btnMini','sRew','sPlay','sFwd','btnFmin','btnFplus','btnSaveNow','seek'].forEach(id=>{if(id!=='seek')keepFocus($(id))});
+['btnRew','btnPlay','btnSpeed','btnLayout','btnFull','btnMini','sRew','sPlay','sFwd','btnFmin','btnFplus','btnSaveNow','btnFollow','btnHlMode','seek'].forEach(id=>{if(id!=='seek')keepFocus($(id))});
 $('btnPlay').onclick=togglePlay;$('sPlay').onclick=togglePlay;
 $('btnRew').onclick=()=>skip(-5);$('sRew').onclick=()=>skip(-5);$('sFwd').onclick=()=>skip(5);
 $('btnSpeed').onclick=cycleSpeed;
@@ -716,6 +753,8 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Tab'&&!mod&&!e.altKey){e.preventDefault();skip(e.shiftKey?5:-5);return}
   if(mod&&!e.altKey&&(e.key==='s'||e.key==='S')){e.preventDefault();saveNow();return}
   if(mod&&!e.altKey&&e.key==='.'){e.preventDefault();cycleSpeed();return}
+  if(mod&&!e.altKey&&(e.key==='j'||e.key==='J')&&Fol.on()){e.preventDefault();Fol.goNow();return}
+  if(mod&&!e.altKey&&e.key==='Enter'&&Fol.on()){e.preventDefault();Fol.playFrom($('docEdit').selectionStart||0);return}
 },true);
 
 /* custom seek bar */
@@ -793,6 +832,7 @@ ta0.addEventListener('touchstart',()=>{userTouched=true},{passive:true});
 ta0.addEventListener('keydown',()=>{userTouched=true});
 ta0.addEventListener('wheel',()=>{userTouched=true},{passive:true});
 ta0.addEventListener('input',()=>{
+  Fol.edited();
   dirty=true;invalidateMirror();setState('Editing…','');
   clearTimeout(saveTimer);
   saveTimer=setTimeout(saveDoc,4000);
@@ -893,6 +933,7 @@ async function closeDesk(){
   if(dirty)await saveDoc();
   if(player){try{player.destroy()}catch(e){}player=null}
   playing=false;setPlayIcons();
+  Fol.clear();
   cur=null;
   $('desk').classList.remove('active','side');
   $('floater').classList.remove('show');
@@ -901,6 +942,135 @@ async function closeDesk(){
 }
 $('btnBack').onclick=closeDesk;
 window.addEventListener('beforeunload',()=>{if(cur){recordPos();pushPos(true,true)}if(dirty)saveDoc()});
+
+/* ================= follow-along: light up the spoken sentence & word =================
+   Works for any video that has sync/<videoId>.tsv (caption word times). The times are
+   matched to the transcript as it is now, and re-matched after every edit. */
+const Fol=(()=>{
+  const hl=$('hl'),inner=document.createElement('div');hl.appendChild(inner);
+  const ta=$('docEdit');
+  let caps=null,R=null,yt=null,wi=-2,si=-2,dirtyR=true,lastNav=0,realignT=null;
+  let mode=sget('desk-hlmode')||'both';
+  let follow=sget('desk-follow')!=='0';
+  const MODES=['both','sentence','word','off'];
+  const LBL={both:'✦ word+sentence',sentence:'✦ sentence',word:'✦ word',off:'✦ off'};
+  const GU={both:'શબ્દ અને વાક્ય બંને ઝળકશે',sentence:'ફક્ત વાક્ય ઝળકશે',word:'ફક્ત શબ્દ ઝળકશે',off:'હાઇલાઇટ બંધ'};
+  function ui(){
+    $('btnHlMode').textContent=LBL[mode];
+    hl.className=mode==='sentence'?'only-sen':mode==='word'?'only-word':mode==='off'?'off':'';
+    $('btnFollow').classList.toggle('on',follow);
+    $('btnFollow').innerHTML='◎<span class="lbl"> '+(follow?'following':'follow')+'</span>';
+  }
+  function style(){
+    const cs=getComputedStyle(ta);
+    ['fontFamily','fontSize','fontWeight','lineHeight','letterSpacing','wordSpacing','tabSize','paddingTop','paddingRight','paddingBottom','paddingLeft','textIndent']
+      .forEach(k=>inner.style[k]=cs[k]);
+    inner.style.boxSizing='border-box';
+    inner.style.width=ta.clientWidth+'px';
+    hl.scrollTop=ta.scrollTop;
+  }
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(style);
+  ta.addEventListener('scroll',()=>{hl.scrollTop=ta.scrollTop},{passive:true});
+  /* anything the person does in the text pauses auto-follow for a few seconds */
+  const nav=()=>{lastNav=Date.now()};
+  ['wheel','touchmove','mousedown','keydown'].forEach(ev=>ta.addEventListener(ev,nav,{passive:true}));
+  ta.addEventListener('click',e=>{if(e.altKey&&R){e.preventDefault();playFrom(ta.selectionStart||0)}});
+
+  async function load(id){
+    clear();yt=id;
+    try{
+      const r=await fetch('sync/'+id+'.tsv',{cache:'no-cache'});
+      if(!r.ok||yt!==id)return;
+      const c=SudharAlign.parseTsv(await r.text());
+      if(!c.length||yt!==id)return;
+      caps=c;$('desk').classList.add('has-sync');ui();style();realign();
+    }catch(e){}
+  }
+  function clear(){caps=null;R=null;yt=null;wi=si=-2;inner.textContent='';$('desk').classList.remove('has-sync');clearTimeout(realignT)}
+  function realign(){
+    if(!caps)return;
+    const text=ta.value;
+    if(!text){R=null;inner.textContent='';return}
+    R=SudharAlign.align(text,caps);R.text=text;
+    dirtyR=true;tick();
+  }
+  /* while typing: shift the ranges at once, re-match properly when typing pauses */
+  function edited(){
+    if(!R)return;
+    const text=ta.value,d=text.length-R.text.length;
+    if(d){
+      const pos=ta.selectionStart||0,from=d>0?pos-d:pos;
+      const mv=o=>{if(o.s>=from){o.s=Math.max(from,o.s+d);o.e=Math.max(o.s,o.e+d)}else if(o.e>from)o.e=Math.max(o.s,Math.min(text.length,o.e+d))};
+      R.words.forEach(mv);R.sent.forEach(mv);
+    }
+    R.text=text;dirtyR=true;render();
+    clearTimeout(realignT);realignT=setTimeout(realign,1200);
+  }
+  const nowMs=()=>(player&&player.getCurrentTime&&ytStarted())?player.getCurrentTime()*1000:(posState?posState.time*1000:0);
+  function tick(){
+    if(!R||!R.words.length)return;
+    const w=SudharAlign.wordAt(R.words,nowMs()+150);
+    const s=w>=0?SudharAlign.sentAt(R.sent,R.words[w].s):-1;
+    const jump=wi>=0&&Math.abs(w-wi)>40;   /* a seek-bar jump, not normal speech */
+    if(w!==wi||s!==si||dirtyR){wi=w;si=s;render()}
+    if(jump&&follow)keepInView(true);
+    else if(playing)keepInView(false);
+  }
+  function render(){
+    dirtyR=false;
+    if(!R)return;
+    const text=R.text;
+    if(wi<0||text!==ta.value){inner.textContent=text+'​';hl.scrollTop=ta.scrollTop;return}
+    const w=R.words[wi],S=si>=0?R.sent[si]:null;
+    let ss=w.s,se=w.e;
+    if(S&&S.s<=w.s&&S.e>=w.e){ss=S.s;se=S.e}
+    const sen=document.createElement('span');sen.className='sen';
+    const mk=document.createElement('span');mk.className='w';mk.textContent=text.slice(w.s,w.e);
+    sen.append(text.slice(ss,w.s),mk,text.slice(w.e,se));
+    inner.replaceChildren(text.slice(0,ss),sen,text.slice(se)+'​');
+    hl.scrollTop=ta.scrollTop;
+  }
+  /* bring the spoken words into view (when following and the person isn't busy) */
+  function keepInView(force){
+    if(!force&&(!follow||Date.now()-lastNav<5000))return;
+    const mk=inner.querySelector('.w');if(!mk)return;
+    const y=mk.offsetTop,h=ta.clientHeight,top=ta.scrollTop;
+    if(force||y<top+h*0.1||y>top+h*0.72){
+      const v=Math.max(0,y-h*0.3);
+      ta.scrollTo({top:v,behavior:Math.abs(v-top)>h*3?'auto':'smooth'});
+      taScroll=v;
+    }
+  }
+  function onPlay(){
+    if(!R)return;
+    /* pressing play always shows where Guruji is, if that is off-screen */
+    setTimeout(()=>{tick();const mk=inner.querySelector('.w');if(!mk)return;
+      const y=mk.offsetTop,h=ta.clientHeight,top=ta.scrollTop;if(y<top||y>top+h-40)keepInView(true)},650);
+  }
+  function goNow(){
+    if(!R)return;
+    follow=true;sset('desk-follow','1');ui();lastNav=0;tick();keepInView(true);
+  }
+  function playFrom(pos){
+    if(!R||!R.words.length||!player||!player.seekTo)return;
+    const w=R.words[SudharAlign.wordAtChar(R.words,pos)];
+    const t=Math.max(0,w.t/1000-0.4);
+    player.seekTo(t,true);updateSeekUi(t);
+    if(!playing)player.playVideo();
+    lastNav=Date.now();
+    setTimeout(()=>{tick();recordPos('now')},300);
+  }
+  $('btnHlMode').onclick=()=>{mode=MODES[(MODES.indexOf(mode)+1)%MODES.length];sset('desk-hlmode',mode);ui();toast(GU[mode],1500)};
+  $('btnFollow').onclick=()=>{
+    if(!follow){goNow();toast('બોલાતા શબ્દો સાથે લખાણ આગળ વધશે',1800);return}
+    follow=false;sset('desk-follow','0');ui();toast('Follow off — the text stays where you put it',1800);
+  };
+  $('fGo').addEventListener('pointerdown',e=>{e.preventDefault();goNow()});
+  setInterval(()=>{if(cur&&R)tick()},150);
+  ui();
+  return {load,clear,realign,edited,style,onPlay,goNow,playFrom,on:()=>!!R,_state:()=>({wi,si,R,follow,mode})};
+})();
+window.Fol=Fol;
 
 renderHome();
 </script>
