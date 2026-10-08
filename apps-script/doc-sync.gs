@@ -2,7 +2,7 @@
  * Sudhar Desk — Google Doc sync + cross-device position + shared video list (v3)
  *
  * What it does
- *   GET  ?token&docId                 → { text }            read the Doc
+ *   GET  ?token&docId                 → { text, saved }     read the Doc (+ which device saved it last)
  *   POST {token, docId, fullText}     → { ok }              write the Doc (JSON or hidden-form)
  *   GET  ?token&action=getpos&key     → { pos }             where you were (video time + text spot)
  *   GET  ?token&action=setpos&key&data→ { ok, pos }         save where you are, for your other devices
@@ -38,6 +38,10 @@ function doPost(e) {
   if (req.fullText !== undefined && req.fullText !== null) {
     body.setText(String(req.fullText));
     doc.saveAndClose();
+    if (req.dev) {   // remember who saved last, so other screens can say "changed on Mac at 7:55"
+      PropertiesService.getScriptProperties().setProperty('save_' + req.docId,
+        JSON.stringify({ dev: String(req.dev).slice(0, 20), name: String(req.name || '').slice(0, 40), t: Date.now() }));
+    }
     return out({ ok: true, mode: 'full' });
   }
 
@@ -110,7 +114,8 @@ function doGet(e) {
   // ---- read the Doc ----
   if (!p.docId) return out({ error: 'no-docId' });
   var doc = DocumentApp.openById(p.docId);
-  return out({ text: doc.getBody().getText() });
+  var sv = PropertiesService.getScriptProperties().getProperty('save_' + p.docId);
+  return out({ text: doc.getBody().getText(), saved: sv ? JSON.parse(sv) : null });
 }
 
 function escapeRegex_(s) {

@@ -116,6 +116,7 @@ h1{font-size:26px;margin:2px 0 4px}
 #btnFmin,#btnFplus{border:1px solid var(--line);border-radius:8px;background:#fff}
 #conflict{display:none;background:#7A2E0E;color:#fff;padding:10px 12px;font-size:13px;line-height:1.5;flex-shrink:0}
 #conflict.show{display:block}
+#cfInfo q{display:block;background:rgba(255,255,255,.12);border-radius:6px;padding:4px 8px;margin-top:4px;font-family:'Noto Serif Gujarati',serif;quotes:none}
 #conflict button{background:#fff;color:#7A2E0E;font-weight:700;font-size:12px;border-radius:8px;padding:6px 10px;margin:6px 6px 0 0}
 #docWrap{flex:1;position:relative;min-height:0;background:#fff}
 #docEdit{
@@ -260,7 +261,8 @@ h1{font-size:26px;margin:2px 0 4px}
     </div>
     <div id="docCol">
       <div id="conflict">
-        <div><b>This Doc was changed on another device</b> after this screen loaded it. Saving here would overwrite those changes.</div>
+        <div><b id="cfTitle">This Doc was changed on another device</b> — the same lines were changed here too, so they can't be combined automatically.</div>
+        <div id="cfInfo" style="margin-top:6px;font-size:12.5px;opacity:.95"></div>
         <button id="cfLoad">Load the Doc's version</button>
         <button id="cfKeep">Keep this screen's text (overwrite)</button>
       </div>
@@ -317,7 +319,7 @@ let devName=sget('desk-devname')||guessName;
 let autoRew=+(sget('desk-autorew')||0);
 
 /* ================= library ================= */
-const APP_VERSION='2026-10-08c';
+const APP_VERSION='2026-10-08d';
 /* ===== BUILT-IN LIBRARY =====
    Pre-loaded video+doc pairs baked into the app itself.
    Format: {yt:'11charVideoId', doc:'GoogleDocId', title:'…'}
@@ -849,6 +851,95 @@ ta0.addEventListener('input',()=>{
 
 /* ================= saving ================= */
 const norm=s=>String(s||'').replace(/\r\n?/g,'\n').replace(/[ \t ]+$/gm,'').trim();
+/* comparison form: ignores differences nobody can see (spaces, line-end spaces, invisible marks) */
+const canon=s=>norm(String(s||'').normalize('NFC').replace(/[​﻿]/g,'').replace(/[ \t ]+/g,' ').replace(/ *\n */g,'\n'));
+/* every version this screen has sent to the Doc — so its own saves are never mistaken for someone else's
+   (on a weak phone signal a save can reach Google while the reply never arrives) */
+const sentRecent=[];
+const noteSent=t=>{const c=canon(t);if(!sentRecent.includes(c)){sentRecent.push(c);if(sentRecent.length>8)sentRecent.shift()}};
+
+/* three-way merge by paragraph: base = what this screen last loaded/saved,
+   mine = this screen now, theirs = the Doc now. Returns merged text, or null when
+   both sides changed the same paragraph in different ways. */
+function hunksOf(a,b){
+  const A=a.map(canon),B=b.map(canon),n=A.length,m=B.length;
+  if(n*m>9e6)return null;
+  const W=m+1,L=new Uint16Array((n+1)*W);
+  for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)L[i*W+j]=A[i]===B[j]?L[(i+1)*W+j+1]+1:Math.max(L[(i+1)*W+j],L[i*W+j+1]);
+  const H=[];let i=0,j=0,hs=-1,hb=-1;
+  const close=()=>{if(hs>=0){H.push({s:hs,e:i,rep:b.slice(hb,j)});hs=-1}};
+  while(i<n||j<m){
+    if(i<n&&j<m&&A[i]===B[j]){close();i++;j++;continue}
+    if(hs<0){hs=i;hb=j}
+    if(j<m&&(i>=n||L[i*W+j+1]>=L[(i+1)*W+j]))j++;else i++;
+  }
+  close();return H;
+}
+function charMerge(base,mine,theirs){
+  const span=(a,b)=>{let p=0;while(p<a.length&&p<b.length&&a[p]===b[p])p++;let q=0;while(q<a.length-p&&q<b.length-p&&a[a.length-1-q]===b[b.length-1-q])q++;return{s:p,e:a.length-q,rep:b.slice(p,b.length-q)}};
+  const x=span(base,mine),y=span(base,theirs);
+  if(x.s<y.e&&y.s<x.e)return null;
+  if(x.s===y.s&&(x.s===x.e||y.s===y.e))return null;
+  const [f,l]=x.s<y.s?[x,y]:[y,x];
+  return base.slice(0,f.s)+f.rep+base.slice(f.e,l.s)+l.rep+base.slice(l.e);
+}
+function merge3(base,mine,theirs){
+  const B=base.split('\n'),M=mine.split('\n'),T=theirs.split('\n');
+  const h1=hunksOf(B,M),h2=hunksOf(B,T);
+  if(!h1||!h2)return null;
+  const out=[...h1.map(h=>({...h,o:1}))];
+  for(const t of h2){
+    const clash=out.find(h=>h.o===1&&((h.s<t.e&&t.s<h.e)||(h.s===t.s&&(h.s===h.e||t.s===t.e))));
+    if(!clash){out.push(t);continue}
+    if(clash.s===t.s&&clash.e===t.e&&canon(clash.rep.join('\n'))===canon(t.rep.join('\n')))continue;   /* same change on both */
+    if(clash.e-clash.s===1&&t.e-t.s===1&&clash.s===t.s&&clash.rep.length===1&&t.rep.length===1){   /* same paragraph: try by character */
+      const cm=charMerge(B[t.s],clash.rep[0],t.rep[0]);
+      if(cm!=null){clash.rep=[cm];continue}
+    }
+    return null;
+  }
+  out.sort((a,b)=>b.s-a.s||b.e-a.e);
+  const R=B.slice();
+  for(const h of out)R.splice(h.s,h.e-h.s,...h.rep);
+  return R.join('\n');
+}
+/* keep the cursor and the reading position on the same words after the text changes underneath */
+function findNear(text,anchor,guess){
+  if(!anchor)return Math.min(guess,text.length);
+  let best=-1,bd=1e12,i=text.indexOf(anchor);
+  while(i>=0){const d=Math.abs(i-guess);if(d<bd){bd=d;best=i}if(i>guess)break;i=text.indexOf(anchor,i+1)}
+  return best<0?Math.min(guess,text.length):best;
+}
+function applyMerged(merged){
+  const ta=$('docEdit'),old=ta.value,c=ta.selectionStart||0,top=docReady?measure().top:0;
+  const ca=old.slice(Math.max(0,c-24),c),ta2=old.slice(top,top+24);
+  ta.value=merged;
+  const nc=findNear(merged,ca,c-ca.length)+ca.length;ta.setSelectionRange(nc,nc);
+  const nt=findNear(merged,ta2,top);
+  invalidateMirror();lastTopScroll=-1;
+  requestAnimationFrame(()=>{ta.scrollTop=charTop(nt);taScroll=ta.scrollTop});
+  Fol.realign();
+}
+const whoSaved=sv=>{
+  if(!sv||!sv.t)return '';
+  const at=new Date(sv.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  return sv.dev===DEV?'from another window / tab on this '+devName+' at '+at:'on '+(sv.name||'another device')+' at '+at;
+};
+function showConflict(docText,mine,sv){
+  const D=docText.split('\n'),M=mine.split('\n');let k=0;
+  while(k<D.length&&k<M.length&&canon(D[k])===canon(M[k]))k++;
+  const d=D[k]||'',m=M[k]||'';let p=0;while(p<d.length&&p<m.length&&d[p]===m[p])p++;
+  const cut=t=>{const s=Math.max(0,p-35);return (s?'…':'')+t.slice(s,s+90)+(t.length>s+90?'…':'')};
+  const who=whoSaved(sv);
+  $('cfTitle').textContent=sv&&sv.dev===DEV?'This Doc was changed in another window or tab on this device':'This Doc was changed on another device';
+  const info=$('cfInfo');info.textContent='';
+  if(who)info.append('Last saved '+who+'. ');
+  info.append('First difference:');
+  const q1=document.createElement('q');q1.textContent='Doc: '+cut(d);
+  const q2=document.createElement('q');q2.textContent='Here: '+cut(m);
+  info.append(q1,q2);
+  $('conflict').classList.add('show');
+}
 function hideConflict(){$('conflict').classList.remove('show')}
 function saveNow(){clearTimeout(saveTimer);dirty=true;saveDoc()}
 $('cfLoad').onclick=()=>{hideConflict();const m=measure();dirty=false;loadDoc({top:m.top,cur:m.cur},true)};
@@ -867,7 +958,7 @@ function formPost(text){
     const f=document.createElement('form');
     f.id='gasForm';f.method='POST';f.action=gas.url;f.target='gasFrame';f.style.display='none';
     const add=(n,v)=>{const t=document.createElement('textarea');t.name=n;t.value=v;f.appendChild(t)};
-    add('token',gas.token);add('docId',cur.doc);add('fullText',text);
+    add('token',gas.token);add('docId',cur.doc);add('fullText',text);add('dev',DEV);add('name',devName);
     document.body.appendChild(f);
     f.submit();
     setTimeout(resolve,2500);
@@ -881,7 +972,7 @@ async function verifySaved(text){
 }
 async function saveDoc(force){
   if(!cur||!dirty||saving)return;
-  const text=$('docEdit').value;
+  let text=$('docEdit').value;
   if(text===lastSavedText){dirty=false;setState('Saved ✓','ok');return}
   saving=true;
   try{
@@ -890,11 +981,21 @@ async function saveDoc(force){
       setState('Checking Doc…','');
       try{
         const chk=await gasGetText(cur.doc);
-        if(chk&&typeof chk.text==='string'&&norm(chk.text)!==norm(lastSavedText)&&norm(chk.text)!==norm(text)){
-          $('conflict').classList.add('show');setState('Not saved — Doc changed elsewhere','err');return;
+        if(chk&&typeof chk.text==='string'){
+          const dc=canon(chk.text);
+          if(dc===canon(text)){lastSavedText=text;dirty=false;hideConflict();setState('Saved ✓','ok');return}   /* the Doc already has it */
+          const ours=dc===canon(lastSavedText)||sentRecent.includes(dc);
+          if(!ours){
+            const merged=merge3(lastSavedText,text,chk.text);
+            if(merged==null){showConflict(chk.text,text,chk.saved);setState('Not saved — Doc changed elsewhere','err');return}
+            applyMerged(merged);text=merged;
+            const who=whoSaved(chk.saved);
+            toast('Combined with the changes made '+(who||'elsewhere')+' ✓',3200);
+          }
         }
       }catch(e){}
     }
+    noteSent(text);
     setState('Saving…','');
     const done=how=>{
       lastSavedText=text;dirty=false;hideConflict();
@@ -908,7 +1009,7 @@ async function saveDoc(force){
     };
     /* 1 — normal POST (works when Apps Script returns readable CORS headers) */
     try{
-      const r=await gasPost({docId:cur.doc,fullText:text});
+      const r=await gasPost({docId:cur.doc,fullText:text,dev:DEV,name:devName});
       if(!r.error){done('');return}
       setState('Save failed: '+r.error,'err');
       if(r.error==='auth'||r.error==='no-docId')return;    // config issue — retrying won't help
@@ -918,7 +1019,7 @@ async function saveDoc(force){
     try{
       await fetch(gas.url,{method:'POST',mode:'no-cors',
         headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body:JSON.stringify({token:gas.token,docId:cur.doc,fullText:text})});
+        body:JSON.stringify({token:gas.token,docId:cur.doc,fullText:text,dev:DEV,name:devName})});
       await new Promise(r=>setTimeout(r,2000));
       if(await verifySaved(text)){done('(verified) ');return}
     }catch(e){}
