@@ -45,6 +45,6 @@ being spoken is shaded and the word is highlighted in the transcript.
   Pressing play always brings the spoken words into view if they are off-screen.
 - **✦** chooses word+sentence / sentence / word / off.
 - `⌘/Ctrl+J` go to the spoken words · `⌘/Ctrl+Enter` play from the cursor's word · `⌥/Alt+click` play from a word.
-- Phone: the ◎ button floats next to ↺5.
+- Phone: use ◎ in the bar above the text.
 
 Currently: `n7WAOZ91KMc` (શાશ્વત સંવાદ - 6).
