@@ -366,7 +366,7 @@ let devName=sget('desk-devname')||guessName;
 let autoRew=+(sget('desk-autorew')||0);
 
 /* ================= library ================= */
-const APP_VERSION='2026-10-14b';
+const APP_VERSION='2026-10-14c';
 /* ===== BUILT-IN LIBRARY =====
    Pre-loaded video+doc pairs baked into the app itself.
    Format: {yt:'11charVideoId', doc:'GoogleDocId', title:'…'}
@@ -688,7 +688,7 @@ async function loadDoc(anchor,silent){
     ta.value=r.text;lastSavedText=r.text;dirty=false;loadedTextT=Date.now();
     invalidateMirror();lastTopScroll=-1;
     placeView(anchor||{});
-    Fol.realign();
+    Fol.realign();Rv.refresh();
     if(matchMedia('(pointer:fine)').matches)ta.focus({preventScroll:true});  /* desktop only — avoids popping the phone keyboard */
     setState(silent?'Updated from Doc ✓':'Loaded from Doc ✓','ok');
   }catch(e){setState('Doc load failed — check URL/secret','err')}
@@ -1399,8 +1399,9 @@ const Rv=(()=>{
   $('rvHear').onclick=hear;$('rvClose').onclick=close;
   $('rvAuto').onclick=()=>{showAuto=!showAuto;autoLbl();idx=-1;step(1)};
   function autoLbl(){const n=items().filter(i=>i.kind==='auto').length;$('rvAuto').textContent=!n?'':showAuto?'Hide the '+n+' fixes Claude already made':'Also show the '+n+' fixes Claude already made (to undo any)'}
-  ta.addEventListener('input',()=>{if(markAt){markAt=null;paint()}});
-  return {load,clear,step,decide,hear,close,style,on:()=>!!data&&$('rvBar').classList.contains('show'),has:()=>!!data,_st:()=>({data,st,idx})};
+  let uiT=null;
+  ta.addEventListener('input',()=>{if(markAt){markAt=null;paint()}clearTimeout(uiT);uiT=setTimeout(ui,1500)});
+  return {refresh:ui,load,clear,step,decide,hear,close,style,on:()=>!!data&&$('rvBar').classList.contains('show'),has:()=>!!data,_st:()=>({data,st,idx})};
 })();
 window.Rv=Rv;
 
