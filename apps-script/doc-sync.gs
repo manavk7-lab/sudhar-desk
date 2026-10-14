@@ -17,6 +17,11 @@
 
 const SECRET = 'PASTE-YOUR-EXISTING-SECRET-HERE';
 
+// Temporary hand-off for word-timing data (YouTube captions → Sudhar Desk repo).
+// Holds data for 6 hours only; set to '' to switch it off.
+const CAP_KEY = '';   // off by default; put a long random key here only while handing off caption data
+function capKeyOk_(k) { return CAP_KEY && k === CAP_KEY; }
+
 function doPost(e) {
   var req = {};
   try {
@@ -27,6 +32,12 @@ function doPost(e) {
     }
   } catch (err) {
     req = e.parameter || {};
+  }
+
+  if (req.action === 'putcap') {
+    if (!capKeyOk_(req.ck) || !req.key) return out({ error: 'auth' });
+    CacheService.getScriptCache().put('cap_' + req.key + '_' + (req.part || 0), String(req.data || ''), 21600);
+    return out({ ok: true });
   }
 
   if (req.token !== SECRET) return out({ error: 'auth' });
@@ -59,6 +70,10 @@ function doPost(e) {
 
 function doGet(e) {
   var p = e.parameter || {};
+  if (p.action === 'getcap') {
+    if (!capKeyOk_(p.ck) || !p.key) return out({ error: 'auth' });
+    return out({ data: CacheService.getScriptCache().get('cap_' + p.key + '_' + (p.part || 0)) });
+  }
   if (p.token !== SECRET) return out({ error: 'auth' });
 
   // ---- cross-device position ----
