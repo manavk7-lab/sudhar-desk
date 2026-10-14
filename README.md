@@ -48,3 +48,16 @@ being spoken is shaded and the word is highlighted in the transcript.
 - Phone: use ◎ in the bar above the text.
 
 Currently: `n7WAOZ91KMc` (શાશ્વત સંવાદ - 6).
+
+## ✎ Check list (spots to listen to)
+
+Videos with a `review/<videoId>.json` file show a green **✎ N to check** button. Claude read the
+whole transcript, compared it with what YouTube's speech recogniser heard, fixed the certain things
+(spellings like નહી→નહીં, કઈ→કંઈ, fillers, broken words) directly in the Doc, and listed the rest:
+
+- **⌥/Alt + ↓ / ↑** — next / previous spot; the video plays from 2 s before it
+- **⌥/Alt + Enter** — use the suggested fix (green) · **⌥/Alt + ⌫** — keep the text as it is
+- **⌥/Alt + H** — hear it again
+- "Also show the fixes Claude already made" lets you undo any automatic fix.
+
+Your decisions are remembered and shared with your other devices.

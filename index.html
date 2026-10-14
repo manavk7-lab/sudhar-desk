@@ -94,6 +94,8 @@ h1{font-size:26px;margin:2px 0 4px}
 .keys div span:last-child{text-align:right}
 .keys .fol-key{display:none}
 #desk.has-sync .keys .fol-key{display:flex}
+.keys .rv-key{display:none}
+#desk.has-rv .keys .rv-key{display:flex}
 #syncLine{margin-top:14px;font-size:12px;color:#BFB3A2}
 
 /* side-by-side layout: video column left, transcript right */
@@ -132,6 +134,28 @@ h1{font-size:26px;margin:2px 0 4px}
 #hl.only-sen .w{background:none;box-shadow:none}
 #hl.only-word .sen{background:none}
 #hl.off{display:none}
+/* proofreading list: spots Claude flagged, one at a time */
+#rvl{position:absolute;left:0;top:0;bottom:0;right:0;overflow:hidden;pointer-events:none;color:transparent;
+  white-space:pre-wrap;overflow-wrap:break-word;word-wrap:break-word;box-sizing:border-box;z-index:0}
+#rvl .m{background:rgba(63,107,68,.22);border-radius:4px;box-shadow:0 0 0 2px rgba(63,107,68,.55);-webkit-box-decoration-break:clone;box-decoration-break:clone}
+#btnRv{display:none;background:var(--ok);color:#fff;border-radius:8px}
+#btnRv.done{background:none;color:var(--ok)}
+#rvBar{display:none;background:#F3F7F1;border-bottom:1px solid var(--line);padding:7px 10px 8px;font-size:13px;flex-shrink:0}
+#rvBar.show{display:block}
+.rvTop{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.rvBtn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;font-weight:700;font-size:13px;white-space:nowrap}
+.rvBtn.yes{background:var(--ok);color:#fff;border-color:var(--ok)}
+#rvPos{font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+.rvConf{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--saffron-wash);color:var(--saffron)}
+.rvConf.unsure{background:#F9D9D2;color:#9A2B12}
+.rvConf.auto{background:#DCEBDD;color:var(--ok)}
+#rvWhy{color:var(--ink-soft);font-size:12px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+#rvTxt{font-family:'Noto Serif Gujarati',serif;font-size:15.5px;line-height:1.65;margin-top:5px}
+#rvTxt del{background:#F9D9D2;color:#7A2E0E;text-decoration:line-through;border-radius:3px;padding:0 2px}
+#rvTxt ins{background:#CFE5D1;text-decoration:none;border-radius:3px;padding:0 2px}
+#rvTxt .heard{display:block;font-family:system-ui,sans-serif;font-size:12px;color:var(--ink-soft)}
+#rvAuto{font-size:12px;color:var(--ok);font-weight:600}
+@media (max-width:560px){ #rvClose{display:none} .rvBtn{padding:6px 8px} #rvWhy{flex-basis:100%;order:9} #rvTxt{font-size:15px} }
 .dbtn.fol{display:none}
 #desk.has-sync .dbtn.fol{display:inline-block}
 #btnFollow.on{background:var(--saffron);color:#fff;border-radius:8px}
@@ -216,6 +240,11 @@ h1{font-size:26px;margin:2px 0 4px}
       <tr><td><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>J</kbd></td><td>Go to the spoken words and follow them</td></tr>
       <tr><td><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>Enter</kbd></td><td>Play from the word at your cursor</td></tr>
       <tr><td><kbd>⌥</kbd>/<kbd>Alt</kbd> + click</td><td>Play from the word you click</td></tr>
+      <tr><td colspan="2" style="padding-top:14px;color:var(--ink-soft);font-size:13px">Videos with a ✎ check list (spots Claude flagged):</td></tr>
+      <tr><td><kbd>⌥</kbd>/<kbd>Alt</kbd> + <kbd>↓</kbd> / <kbd>↑</kbd></td><td>Next / previous spot (plays it)</td></tr>
+      <tr><td><kbd>⌥</kbd>/<kbd>Alt</kbd> + <kbd>Enter</kbd></td><td>Use the suggested fix</td></tr>
+      <tr><td><kbd>⌥</kbd>/<kbd>Alt</kbd> + <kbd>⌫</kbd></td><td>Keep the text as it is</td></tr>
+      <tr><td><kbd>⌥</kbd>/<kbd>Alt</kbd> + <kbd>H</kbd></td><td>Hear the spot again</td></tr>
     </table>
     <button class="ghost" id="keysClose" style="margin-top:10px">Close</button>
   </div>
@@ -254,6 +283,9 @@ h1{font-size:26px;margin:2px 0 4px}
           <div class="fol-key"><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>J</kbd></span><span>go to spoken words</span></div>
           <div class="fol-key"><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>↵</kbd></span><span>play from cursor</span></div>
           <div class="fol-key"><span><kbd>⌥</kbd>/<kbd>Alt</kbd>+click</span><span>play from that word</span></div>
+          <div class="rv-key"><span><kbd>⌥</kbd>/<kbd>Alt</kbd>+<kbd>↓</kbd> <kbd>↑</kbd></span><span>next / previous spot to check</span></div>
+          <div class="rv-key"><span><kbd>⌥</kbd>/<kbd>Alt</kbd>+<kbd>↵</kbd></span><span>use the fix</span></div>
+          <div class="rv-key"><span><kbd>⌥</kbd>/<kbd>Alt</kbd>+<kbd>⌫</kbd></span><span>keep as it is</span></div>
         </div>
         <div id="syncLine"></div>
       </div>
@@ -270,12 +302,29 @@ h1{font-size:26px;margin:2px 0 4px}
         <span id="syncDot" title="Cross-device sync"></span>
         <button class="dbtn fol" id="btnFollow" title="Follow the spoken words (⌘/Ctrl + J)">◎ follow</button>
         <button class="dbtn fol" id="btnHlMode" title="What to highlight">✦ word+sentence</button>
+        <button class="dbtn" id="btnRv" title="Spots to check (⌥/Alt + ↓)">✎ check</button>
         <button class="dbtn" id="btnFmin">A−</button>
         <button class="dbtn" id="btnFplus">A+</button>
         <button class="dbtn" id="btnSaveNow">⤓ save now</button>
         <button class="dbtn" id="btnReload">↻ reload</button>
       </div>
+      <div id="rvBar">
+        <div class="rvTop">
+          <button class="rvBtn" id="rvPrev" title="Previous (⌥/Alt + ↑)">‹</button>
+          <span id="rvPos"></span>
+          <span class="rvConf" id="rvConf"></span>
+          <span id="rvWhy"></span>
+          <button class="rvBtn" id="rvHear" title="Hear it again (⌥/Alt + H)">▶ hear</button>
+          <button class="rvBtn yes" id="rvYes" title="Use the fix (⌥/Alt + Enter)">✓ fix</button>
+          <button class="rvBtn" id="rvNo" title="Keep the text as it is (⌥/Alt + Backspace)">✗ keep</button>
+          <button class="rvBtn" id="rvNext" title="Next (⌥/Alt + ↓)">›</button>
+          <button class="rvBtn" id="rvClose" title="Close the list">✕</button>
+        </div>
+        <div id="rvTxt"></div>
+        <div style="margin-top:4px"><button id="rvAuto"></button></div>
+      </div>
       <div id="docWrap">
+        <div id="rvl" aria-hidden="true"></div>
         <div id="hl" aria-hidden="true"></div>
         <textarea id="docEdit" spellcheck="false" placeholder="Transcript loads here from your Google Doc…"></textarea>
       </div>
@@ -317,7 +366,7 @@ let devName=sget('desk-devname')||guessName;
 let autoRew=+(sget('desk-autorew')||0);
 
 /* ================= library ================= */
-const APP_VERSION='2026-10-14a';
+const APP_VERSION='2026-10-14b';
 /* ===== BUILT-IN LIBRARY =====
    Pre-loaded video+doc pairs baked into the app itself.
    Format: {yt:'11charVideoId', doc:'GoogleDocId', title:'…'}
@@ -622,7 +671,7 @@ async function openDesk(p){
     });
   };
   boot();
-  Fol.load(p.yt);
+  Fol.load(p.yt);Rv.load(p.yt);
   await loadDoc(posState,false);
   pullPos(true);
   if(start>2)toast('Resuming at '+fmt(start));
@@ -680,7 +729,7 @@ function keepAnchor(fn){
 
 /* font size — remembered on this device */
 let fsz=+(sget('desk-font')||17.5);
-function applyFont(){$('docEdit').style.fontSize=fsz+'px';if(window.Fol)Fol.style()}
+function applyFont(){$('docEdit').style.fontSize=fsz+'px';if(window.Fol)Fol.style();if(window.Rv)Rv.style()}
 applyFont();
 $('btnFmin').onclick=()=>keepAnchor(()=>{fsz=Math.max(12,fsz-1.5);sset('desk-font',String(fsz));applyFont()});
 $('btnFplus').onclick=()=>keepAnchor(()=>{fsz=Math.min(36,fsz+1.5);sset('desk-font',String(fsz));applyFont()});
@@ -723,7 +772,7 @@ let lastW=innerWidth;
 window.addEventListener('resize',()=>{
   if(!cur)return;
   applyLayout();
-  Fol.style();
+  Fol.style();Rv.style();
   if(innerWidth!==lastW&&docReady){   /* width changed → text re-wrapped → keep the same words on top */
     lastW=innerWidth;const top=lastTop;invalidateMirror();
     requestAnimationFrame(()=>{$('docEdit').scrollTop=charTop(top);taScroll=$('docEdit').scrollTop;lastTopScroll=-1});
@@ -771,6 +820,13 @@ document.addEventListener('keydown',e=>{
   if(mod&&!e.altKey&&e.key==='.'){e.preventDefault();cycleSpeed();return}
   if(mod&&!e.altKey&&(e.key==='j'||e.key==='J')&&Fol.on()){e.preventDefault();Fol.goNow();return}
   if(mod&&!e.altKey&&e.key==='Enter'&&Fol.on()){e.preventDefault();Fol.playFrom($('docEdit').selectionStart||0);return}
+  if(e.altKey&&!mod&&Rv.has()){
+    if(e.code==='ArrowDown'){e.preventDefault();Rv.step(1);return}
+    if(e.code==='ArrowUp'){e.preventDefault();Rv.step(-1);return}
+    if(Rv.on()&&e.key==='Enter'){e.preventDefault();Rv.decide(true);return}
+    if(Rv.on()&&e.key==='Backspace'){e.preventDefault();Rv.decide(false);return}
+    if(Rv.on()&&e.code==='KeyH'){e.preventDefault();Rv.hear();return}
+  }
 },true);
 
 /* custom seek bar */
@@ -1048,7 +1104,7 @@ async function closeDesk(){
   if(dirty)await saveDoc();
   if(player){try{player.destroy()}catch(e){}player=null}
   playing=false;setPlayIcons();
-  Fol.clear();
+  Fol.clear();Rv.clear();
   cur=null;
   $('desk').classList.remove('active','side');
   $('floater').classList.remove('show');
@@ -1182,9 +1238,171 @@ const Fol=(()=>{
   };
   setInterval(()=>{if(cur&&R)tick()},150);
   ui();
-  return {load,clear,realign,edited,style,onPlay,goNow,playFrom,on:()=>!!R,_state:()=>({wi,si,R,follow,mode})};
+  /* time (ms) of the word at a character position, from the live alignment */
+  function timeAt(pos){if(!R||!R.words.length||R.text!==ta.value)return null;return R.words[SudharAlign.wordAtChar(R.words,pos)].t}
+  return {load,clear,realign,edited,style,onPlay,goNow,playFrom,timeAt,on:()=>!!R,_state:()=>({wi,si,R,follow,mode})};
 })();
 window.Fol=Fol;
+
+/* ================= ✎ check list: spots Claude flagged for a listen =================
+   review/<videoId>.json lists small suggested fixes {cur → alt}. The spot is found in the
+   text by its words, so it still works after other edits. "auto" items were already fixed
+   by Claude — they only show when asked, so a wrong auto-fix can be undone.
+   Decisions are kept on this device and shared with the other devices (key rv_<videoId>). */
+const Rv=(()=>{
+  const ta=$('docEdit'),layer=$('rvl'),inner=document.createElement('div');layer.appendChild(inner);
+  let data=null,yt=null,st={},stT=0,idx=-1,showAuto=false,markAt=null;
+  const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  const flex=s=>new RegExp(s.trim().split(/\s+/).map(esc).join('\\s+'),'g');
+  const items=()=>data?data.items:[];
+  function locate(it){
+    const m=[...ta.value.matchAll(flex(it.cur))];
+    if(m.length===1)return {s:m[0].index,e:m[0].index+m[0][0].length};
+    return null;
+  }
+  const isOpen=it=>(showAuto||it.kind!=='auto')&&!st[it.id]&&!!locate(it);
+  function counts(){let c=0,a=0;for(const it of items()){if(st[it.id])continue;if(it.kind==='auto'){a++;continue}if(locate(it))c++}return {c,a}}
+  function style(){
+    const cs=getComputedStyle(ta);
+    ['fontFamily','fontSize','fontWeight','lineHeight','letterSpacing','wordSpacing','tabSize','paddingTop','paddingRight','paddingBottom','paddingLeft','textIndent']
+      .forEach(k=>inner.style[k]=cs[k]);
+    inner.style.boxSizing='border-box';inner.style.width=ta.clientWidth+'px';layer.scrollTop=ta.scrollTop;
+  }
+  ta.addEventListener('scroll',()=>{layer.scrollTop=ta.scrollTop},{passive:true});
+  function paint(){
+    if(!markAt||!$('rvBar').classList.contains('show')){inner.textContent='';return}
+    const t=ta.value,{s,e}=markAt;
+    if(e>t.length){inner.textContent='';return}
+    const mk=document.createElement('span');mk.className='m';mk.textContent=t.slice(s,e);
+    inner.replaceChildren(t.slice(0,s),mk,t.slice(e)+'​');layer.scrollTop=ta.scrollTop;
+  }
+  /* the part of cur/alt that actually differs, widened to whole words */
+  function diff(a,b){
+    let p=0;while(p<a.length&&p<b.length&&a[p]===b[p])p++;
+    let q=0;while(q<a.length-p&&q<b.length-p&&a[a.length-1-q]===b[b.length-1-q])q++;
+    const wb=/[\s,.?!;:]/;
+    while(p>0&&!wb.test(a[p-1]))p--;
+    while(q>0&&!wb.test(a[a.length-q]))q--;
+    return {p,q};
+  }
+  function ui(){
+    const b=$('btnRv');
+    if(!data){b.style.display='none';$('desk').classList.remove('has-rv');return}
+    const {c}=counts();
+    b.style.display='inline-block';$('desk').classList.add('has-rv');
+    b.classList.toggle('done',c===0);
+    b.textContent=c?'✎ '+c+' to check':'✎ all checked ✓';
+  }
+  async function load(id){
+    clear();yt=id;
+    try{
+      const r=await fetch('review/'+id+'.json',{cache:'no-cache'});
+      if(!r.ok||yt!==id)return;
+      const d=await r.json();if(yt!==id||!d||!Array.isArray(d.items))return;
+      data=d;const L=jget('desk-rv-'+id,{t:0,st:{}});st=L.st||{};stT=L.t||0;
+      style();ui();pull();
+    }catch(e){}
+  }
+  function clear(){data=null;yt=null;st={};idx=-1;markAt=null;inner.textContent='';$('rvBar').classList.remove('show');ui()}
+  function saveSt(){
+    stT=Date.now();sset('desk-rv-'+yt,JSON.stringify({t:stT,st}));ui();
+    if(!gas.url)return;
+    fetch(gasUrl({action:'setpos',key:'rv_'+yt,data:JSON.stringify({t:stT,st})}),{redirect:'follow'}).catch(()=>{});
+  }
+  async function pull(){
+    if(!gas.url||!yt)return;const id=yt;
+    try{
+      const r=await (await fetch(gasUrl({action:'getpos',key:'rv_'+id}),{redirect:'follow'})).json();
+      if(yt!==id||!r||!r.pos||!r.pos.st)return;
+      let ch=false;for(const k in r.pos.st)if(!st[k]){st[k]=r.pos.st[k];ch=true}
+      if(ch){sset('desk-rv-'+id,JSON.stringify({t:Math.max(stT,r.pos.t||0),st}));ui();if($('rvBar').classList.contains('show'))show(true)}
+    }catch(e){}
+  }
+  function timeOf(it,pos){const t=window.Fol&&Fol.timeAt(pos);return t!=null?t:(it.t||0)}
+  function hear(){
+    const it=items()[idx];if(!it||!player||!player.seekTo)return;
+    const loc=locate(it);const t=Math.max(0,timeOf(it,loc?loc.s:0)/1000-2.5);
+    player.seekTo(t,true);updateSeekUi(t);if(!playing)player.playVideo();
+  }
+  function show(noPlay){
+    autoLbl();
+    const it=items()[idx];
+    if(!it){$('rvTxt').textContent='Nothing left to check here ✓';$('rvPos').textContent='';$('rvConf').textContent='';$('rvWhy').textContent='';markAt=null;paint();return}
+    const loc=locate(it),open=items().filter(isOpen);
+    $('rvPos').textContent=(open.indexOf(it)+1||'–')+'/'+open.length;
+    const conf=it.kind==='auto'?'fixed by Claude':it.conf==='unsure'?'listen':it.conf==='sure'?'sure':'likely';
+    $('rvConf').textContent=conf;$('rvConf').className='rvConf '+(it.kind==='auto'?'auto':it.conf);
+    $('rvWhy').textContent=it.why||'';
+    $('rvYes').textContent=it.kind==='auto'?'↶ undo':'✓ fix';
+    $('rvNo').textContent=it.kind==='auto'?'✓ ok':'✗ keep';
+    const {p,q}=diff(it.cur,it.alt);
+    const box=$('rvTxt');box.textContent='';
+    const pre=it.cur.slice(0,p),a=it.cur.slice(p,it.cur.length-q),b=it.alt.slice(p,it.alt.length-q),post=it.cur.slice(it.cur.length-q);
+    const del=document.createElement('del');del.textContent=a||' ';const ins=document.createElement('ins');ins.textContent=b||' ';
+    box.append('…'+pre,a?del:'',a&&b?' ':'',b?ins:'',post+'…');
+    if(it.heard!=null){const h=document.createElement('span');h.className='heard';h.textContent='YouTube heard: «'+(it.heard||'—')+'»';box.appendChild(h)}
+    if(!loc){markAt=null;paint();return}
+    markAt={s:loc.s+p,e:Math.max(loc.s+p+1,loc.e-q)};
+    if(markAt.e>loc.e)markAt.e=loc.e;
+    style();paint();
+    /* bring it into view, about a third down the page */
+    const y=charTop(markAt.s);ta.scrollTop=Math.max(0,y-ta.clientHeight*0.33);taScroll=ta.scrollTop;
+    if(matchMedia('(pointer:fine)').matches){ta.focus({preventScroll:true});ta.setSelectionRange(markAt.s,markAt.s)}
+    if(!noPlay)hear();
+  }
+  function step(d){
+    const L=items();if(!L.length)return;
+    if(!$('rvBar').classList.contains('show')){$('rvBar').classList.add('show');style()}
+    let start=idx;
+    if(start<0){ /* start at the first open spot from where you are reading */
+      const here=topChar(ta.scrollTop);
+      let best=-1;L.forEach((it,i)=>{if(best<0&&isOpen(it)){const l=locate(it);if(l&&l.s>=here)best=i}});
+      if(best<0)best=L.findIndex(isOpen);
+      idx=best;show();return;
+    }
+    for(let k=1;k<=L.length;k++){const i=(start+d*k+L.length*k)%L.length;if(isOpen(L[i])){idx=i;show();return}}
+    idx=-1;show();
+  }
+  function decide(useAlt){
+    const it=items()[idx];if(!it)return;
+    if(useAlt){
+      const loc=locate(it);if(!loc){toast('That text has changed — skipped');st[it.id]='x';saveSt();step(1);return}
+      const {p,q}=diff(it.cur,it.alt),txt=ta.value.slice(loc.s,loc.e);
+      /* replace only the differing words, keep whatever spacing/line breaks the Doc has around them */
+      const s=loc.s+p,e=loc.e-q,rep=it.alt.slice(p,it.alt.length-q);
+      if(txt.slice(0,p)!==it.cur.slice(0,p)||txt.slice(txt.length-q)!==it.cur.slice(it.cur.length-q)){
+        /* line breaks inside — replace the whole spot */
+        replaceRange(loc.s,loc.e,it.alt);
+      }else replaceRange(s,e,rep);
+      st[it.id]=it.kind==='auto'?'u':'y';
+    }else st[it.id]=it.kind==='auto'?'ok':'n';
+    saveSt();
+    if(playing)player.pauseVideo();
+    step(1);
+  }
+  function replaceRange(s,e,rep){
+    const fine=matchMedia('(pointer:fine)').matches;
+    if(fine){
+      ta.focus({preventScroll:true});ta.setSelectionRange(s,e);
+      let ok=false;try{ok=document.execCommand('insertText',false,rep)}catch(_){}
+      if(ok)return;
+    }
+    const top=ta.scrollTop;ta.setRangeText(rep,s,e,'end');ta.scrollTop=top;
+    ta.dispatchEvent(new Event('input',{bubbles:true}));
+  }
+  function close(){$('rvBar').classList.remove('show');markAt=null;paint();idx=-1}
+  const kf=el=>el.addEventListener('pointerdown',e=>{e.preventDefault()});
+  ['btnRv','rvPrev','rvNext','rvYes','rvNo','rvHear','rvClose','rvAuto'].forEach(id=>kf($(id)));
+  $('btnRv').onclick=()=>{if($('rvBar').classList.contains('show'))close();else{idx=-1;step(1)}};
+  $('rvNext').onclick=()=>step(1);$('rvPrev').onclick=()=>step(-1);
+  $('rvYes').onclick=()=>decide(true);$('rvNo').onclick=()=>decide(false);
+  $('rvHear').onclick=hear;$('rvClose').onclick=close;
+  $('rvAuto').onclick=()=>{showAuto=!showAuto;autoLbl();idx=-1;step(1)};
+  function autoLbl(){const n=items().filter(i=>i.kind==='auto').length;$('rvAuto').textContent=!n?'':showAuto?'Hide the '+n+' fixes Claude already made':'Also show the '+n+' fixes Claude already made (to undo any)'}
+  ta.addEventListener('input',()=>{if(markAt){markAt=null;paint()}});
+  return {load,clear,step,decide,hear,close,style,on:()=>!!data&&$('rvBar').classList.contains('show'),has:()=>!!data,_st:()=>({data,st,idx})};
+})();
+window.Rv=Rv;
 
 /* ================= shared video list ================= */
 let libSync=null,libPulling=false;
