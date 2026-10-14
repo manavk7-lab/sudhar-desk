@@ -242,8 +242,8 @@ h1{font-size:26px;margin:2px 0 4px}
       <tr><td><kbd>⌥</kbd>/<kbd>Alt</kbd> + click</td><td>Play from the word you click</td></tr>
       <tr><td colspan="2" style="padding-top:14px;color:var(--ink-soft);font-size:13px">Videos with a ✎ check list (spots Claude flagged):</td></tr>
       <tr><td><kbd>⌥</kbd>/<kbd>Alt</kbd> + <kbd>↓</kbd> / <kbd>↑</kbd></td><td>Next / previous spot (plays it)</td></tr>
-      <tr><td><kbd>⌥</kbd>/<kbd>Alt</kbd> + <kbd>Enter</kbd></td><td>Use the suggested fix</td></tr>
-      <tr><td><kbd>⌥</kbd>/<kbd>Alt</kbd> + <kbd>⌫</kbd></td><td>Keep the text as it is</td></tr>
+      <tr><td><kbd>⌥</kbd>/<kbd>Alt</kbd> + <kbd>Enter</kbd></td><td>OK — Claude's change is right (or use the suggestion)</td></tr>
+      <tr><td><kbd>⌥</kbd>/<kbd>Alt</kbd> + <kbd>⌫</kbd></td><td>Undo Claude's change (or keep the text)</td></tr>
       <tr><td><kbd>⌥</kbd>/<kbd>Alt</kbd> + <kbd>H</kbd></td><td>Hear the spot again</td></tr>
     </table>
     <button class="ghost" id="keysClose" style="margin-top:10px">Close</button>
@@ -284,8 +284,8 @@ h1{font-size:26px;margin:2px 0 4px}
           <div class="fol-key"><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>↵</kbd></span><span>play from cursor</span></div>
           <div class="fol-key"><span><kbd>⌥</kbd>/<kbd>Alt</kbd>+click</span><span>play from that word</span></div>
           <div class="rv-key"><span><kbd>⌥</kbd>/<kbd>Alt</kbd>+<kbd>↓</kbd> <kbd>↑</kbd></span><span>next / previous spot to check</span></div>
-          <div class="rv-key"><span><kbd>⌥</kbd>/<kbd>Alt</kbd>+<kbd>↵</kbd></span><span>use the fix</span></div>
-          <div class="rv-key"><span><kbd>⌥</kbd>/<kbd>Alt</kbd>+<kbd>⌫</kbd></span><span>keep as it is</span></div>
+          <div class="rv-key"><span><kbd>⌥</kbd>/<kbd>Alt</kbd>+<kbd>↵</kbd></span><span>ok · Claude is right</span></div>
+          <div class="rv-key"><span><kbd>⌥</kbd>/<kbd>Alt</kbd>+<kbd>⌫</kbd></span><span>undo the change</span></div>
         </div>
         <div id="syncLine"></div>
       </div>
@@ -315,8 +315,8 @@ h1{font-size:26px;margin:2px 0 4px}
           <span class="rvConf" id="rvConf"></span>
           <span id="rvWhy"></span>
           <button class="rvBtn" id="rvHear" title="Hear it again (⌥/Alt + H)">▶ hear</button>
-          <button class="rvBtn yes" id="rvYes" title="Use the fix (⌥/Alt + Enter)">✓ fix</button>
-          <button class="rvBtn" id="rvNo" title="Keep the text as it is (⌥/Alt + Backspace)">✗ keep</button>
+          <button class="rvBtn yes" id="rvYes" title="Claude is right (⌥/Alt + Enter)">✓ ok</button>
+          <button class="rvBtn" id="rvNo" title="Undo the change (⌥/Alt + Backspace)">↶ undo</button>
           <button class="rvBtn" id="rvNext" title="Next (⌥/Alt + ↓)">›</button>
           <button class="rvBtn" id="rvClose" title="Close the list">✕</button>
         </div>
@@ -366,7 +366,7 @@ let devName=sget('desk-devname')||guessName;
 let autoRew=+(sget('desk-autorew')||0);
 
 /* ================= library ================= */
-const APP_VERSION='2026-10-14c';
+const APP_VERSION='2026-10-14d';
 /* ===== BUILT-IN LIBRARY =====
    Pre-loaded video+doc pairs baked into the app itself.
    Format: {yt:'11charVideoId', doc:'GoogleDocId', title:'…'}
@@ -1262,6 +1262,7 @@ const Rv=(()=>{
   }
   const isOpen=it=>(showAuto||it.kind!=='auto')&&!st[it.id]&&!!locate(it);
   function counts(){let c=0,a=0;for(const it of items()){if(st[it.id])continue;if(it.kind==='auto'){a++;continue}if(locate(it))c++}return {c,a}}
+  const done=it=>it.kind==='auto'||it.kind==='applied';   /* already changed in the Doc by Claude */
   function style(){
     const cs=getComputedStyle(ta);
     ['fontFamily','fontSize','fontWeight','lineHeight','letterSpacing','wordSpacing','tabSize','paddingTop','paddingRight','paddingBottom','paddingLeft','textIndent']
@@ -1321,7 +1322,8 @@ const Rv=(()=>{
   function timeOf(it,pos){const t=window.Fol&&Fol.timeAt(pos);return t!=null?t:(it.t||0)}
   function hear(){
     const it=items()[idx];if(!it||!player||!player.seekTo)return;
-    const loc=locate(it);const t=Math.max(0,timeOf(it,loc?loc.s:0)/1000-2.5);
+    const loc=locate(it);const at=markAt&&loc&&markAt.s>=loc.s&&markAt.s<=loc.e?markAt.s:(loc?loc.s:0);
+    const t=Math.max(0,timeOf(it,at)/1000-2.5);
     player.seekTo(t,true);updateSeekUi(t);if(!playing)player.playVideo();
   }
   function show(noPlay){
@@ -1330,16 +1332,18 @@ const Rv=(()=>{
     if(!it){$('rvTxt').textContent='Nothing left to check here ✓';$('rvPos').textContent='';$('rvConf').textContent='';$('rvWhy').textContent='';markAt=null;paint();return}
     const loc=locate(it),open=items().filter(isOpen);
     $('rvPos').textContent=(open.indexOf(it)+1||'–')+'/'+open.length;
-    const conf=it.kind==='auto'?'fixed by Claude':it.conf==='unsure'?'listen':it.conf==='sure'?'sure':'likely';
+    const conf=it.kind==='auto'?'sure fix':it.conf==='unsure'?'changed · not sure':it.kind==='applied'?'changed':'likely';
     $('rvConf').textContent=conf;$('rvConf').className='rvConf '+(it.kind==='auto'?'auto':it.conf);
     $('rvWhy').textContent=it.why||'';
-    $('rvYes').textContent=it.kind==='auto'?'↶ undo':'✓ fix';
-    $('rvNo').textContent=it.kind==='auto'?'✓ ok':'✗ keep';
+    $('rvYes').textContent=done(it)?'✓ ok':'✓ fix';
+    $('rvNo').textContent=done(it)?'↶ undo':'✗ keep';
     const {p,q}=diff(it.cur,it.alt);
     const box=$('rvTxt');box.textContent='';
     const pre=it.cur.slice(0,p),a=it.cur.slice(p,it.cur.length-q),b=it.alt.slice(p,it.alt.length-q),post=it.cur.slice(it.cur.length-q);
-    const del=document.createElement('del');del.textContent=a||' ';const ins=document.createElement('ins');ins.textContent=b||' ';
-    box.append('…'+pre,a?del:'',a&&b?' ':'',b?ins:'',post+'…');
+    /* struck = what was there before, green = what it is (or would be) now */
+    const was=done(it)?b:a,now=done(it)?a:b;
+    const del=document.createElement('del');del.textContent=was;const ins=document.createElement('ins');ins.textContent=now;
+    box.append('…'+pre,was?del:'',was&&now?' ':'',now?ins:'',post+'…');
     if(it.heard!=null){const h=document.createElement('span');h.className='heard';h.textContent='YouTube heard: «'+(it.heard||'—')+'»';box.appendChild(h)}
     if(!loc){markAt=null;paint();return}
     markAt={s:loc.s+p,e:Math.max(loc.s+p+1,loc.e-q)};
@@ -1363,8 +1367,10 @@ const Rv=(()=>{
     for(let k=1;k<=L.length;k++){const i=(start+d*k+L.length*k)%L.length;if(isOpen(L[i])){idx=i;show();return}}
     idx=-1;show();
   }
-  function decide(useAlt){
+  /* agree: for a suggestion = use it; for a change Claude already made = keep it */
+  function decide(agree){
     const it=items()[idx];if(!it)return;
+    const useAlt=done(it)?!agree:agree;
     if(useAlt){
       const loc=locate(it);if(!loc){toast('That text has changed — skipped');st[it.id]='x';saveSt();step(1);return}
       const {p,q}=diff(it.cur,it.alt),txt=ta.value.slice(loc.s,loc.e);
@@ -1374,8 +1380,8 @@ const Rv=(()=>{
         /* line breaks inside — replace the whole spot */
         replaceRange(loc.s,loc.e,it.alt);
       }else replaceRange(s,e,rep);
-      st[it.id]=it.kind==='auto'?'u':'y';
-    }else st[it.id]=it.kind==='auto'?'ok':'n';
+      st[it.id]=done(it)?'u':'y';
+    }else st[it.id]=done(it)?'ok':'n';
     saveSt();
     if(playing)player.pauseVideo();
     step(1);
@@ -1398,7 +1404,7 @@ const Rv=(()=>{
   $('rvYes').onclick=()=>decide(true);$('rvNo').onclick=()=>decide(false);
   $('rvHear').onclick=hear;$('rvClose').onclick=close;
   $('rvAuto').onclick=()=>{showAuto=!showAuto;autoLbl();idx=-1;step(1)};
-  function autoLbl(){const n=items().filter(i=>i.kind==='auto').length;$('rvAuto').textContent=!n?'':showAuto?'Hide the '+n+' fixes Claude already made':'Also show the '+n+' fixes Claude already made (to undo any)'}
+  function autoLbl(){const n=items().filter(i=>i.kind==='auto').length;$('rvAuto').textContent=!n?'':showAuto?'Hide the '+n+' small spelling fixes':'Also show the '+n+' small spelling fixes (નહી→નહીં etc.)'}
   let uiT=null;
   ta.addEventListener('input',()=>{if(markAt){markAt=null;paint()}clearTimeout(uiT);uiT=setTimeout(ui,1500)});
   return {refresh:ui,load,clear,step,decide,hear,close,style,on:()=>!!data&&$('rvBar').classList.contains('show'),has:()=>!!data,_st:()=>({data,st,idx})};

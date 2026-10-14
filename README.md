@@ -51,13 +51,14 @@ Currently: `n7WAOZ91KMc` (શાશ્વત સંવાદ - 6).
 
 ## ✎ Check list (spots to listen to)
 
-Videos with a `review/<videoId>.json` file show a green **✎ N to check** button. Claude read the
-whole transcript, compared it with what YouTube's speech recogniser heard, fixed the certain things
-(spellings like નહી→નહીં, કઈ→કંઈ, fillers, broken words) directly in the Doc, and listed the rest:
+Videos with a `review/<videoId>.json` file show a green **✎ N to check** button. Claude read the whole
+transcript against what YouTube's speech recogniser heard and made its corrections **directly in the Doc**.
+Every changed spot is in the list so you can listen and confirm:
 
 - **⌥/Alt + ↓ / ↑** — next / previous spot; the video plays from 2 s before it
-- **⌥/Alt + Enter** — use the suggested fix (green) · **⌥/Alt + ⌫** — keep the text as it is
+- **⌥/Alt + Enter** — OK, the change is right · **⌥/Alt + ⌫** — undo it (back to the old words)
 - **⌥/Alt + H** — hear it again
-- "Also show the fixes Claude already made" lets you undo any automatic fix.
+- Struck red = the old words, green = what the Doc says now. "not sure" spots were Claude's best guess.
+- Small certain spelling fixes (નહી→નહીં …) are hidden; "Also show …" lists them too.
 
 Your decisions are remembered and shared with your other devices.
