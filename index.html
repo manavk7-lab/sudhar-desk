@@ -368,7 +368,7 @@ let devName=sget('desk-devname')||guessName;
 let autoRew=+(sget('desk-autorew')||0);
 
 /* ================= library ================= */
-const APP_VERSION='2026-10-14e';
+const APP_VERSION='2026-10-15a';
 /* ===== BUILT-IN LIBRARY =====
    Pre-loaded video+doc pairs baked into the app itself.
    Format: {yt:'11charVideoId', doc:'GoogleDocId', title:'…'}
@@ -1346,7 +1346,7 @@ const Rv=(()=>{
     const was=done(it)?b:a,now=done(it)?a:b;
     const del=document.createElement('del');del.textContent=was;const ins=document.createElement('ins');ins.textContent=now;
     box.append('…'+pre,was?del:'',was&&now?' ':'',now?ins:'',post+'…');
-    if(it.heard!=null){const h=document.createElement('span');h.className='heard';h.textContent='YouTube heard: «'+(it.heard||'—')+'»';box.appendChild(h)}
+    if(it.heard!=null){const h=document.createElement('span');h.className='heard';h.textContent=it.src==='asr'?'Heard — '+(it.heard||'—'):'YouTube heard: «'+(it.heard||'—')+'»';box.appendChild(h)}
     if(!loc){markAt=null;paint();return}
     markAt={s:loc.s+p,e:Math.max(loc.s+p+1,loc.e-q)};
     if(markAt.e>loc.e)markAt.e=loc.e;
