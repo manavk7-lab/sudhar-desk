@@ -77,8 +77,18 @@ Some examples Manav fixed:
 
 The topic (Vedanta, Sadguru teaching), the grammar and the sentence tell you the right word.
 
-## 9. Punctuation
-Manav moves full stops to where the speaker really pauses ("જોશે. પછી" → "જોશે પછી."). An automatic pass does not touch punctuation.
+## 9. Punctuation — full stops by pause AND meaning
+Manav: "when it is pause then it should be dot … but not always — apply your mind".
+Measured in his finished video 9 (0–1:34), with the pauses taken from the audio:
+- Where the speaker pauses ≥ 0.5 s, he has a full stop 55%, a comma 17%, nothing 28% → a pause alone is not a full stop.
+- Full stops he removed had no pause (79%); full stops he added sat at a pause (median 0.8 s).
+- His typical change is a **move**: the speaker says a few trailing words after the verb and only then pauses, so the stop
+  goes after them: "રાહ જોશે. પછી ફરી" → "રાહ જોશે પછી. ફરી", "દીધી. જાણે આવી" → "દીધી જાણે. આવી",
+  "બેસવાનું. આપણે બેસવું" → "બેસવાનું આપણે. બેસવું".
+- He keeps a full stop between two complete sentences even when the speaker runs them together, and he almost never adds commas.
+- The automatic pass (pause from the audio + reading the sentence, see PUNCT.md) matched his own choice about 3 times in 4
+  on a part it had not seen, and found about a third of his punctuation changes. Its changes are on the ✎ list ("dot moved",
+  "dot added at a pause") so a wrong one can be undone with Alt+Backspace.
 When typing, keep one space after . , ? ! — in video 9, 36 edits ended up as "અંદર.ભલે" or "નથી.તે".
 
 ## 10. How the speech-recogniser pass decides (for AI passes)
