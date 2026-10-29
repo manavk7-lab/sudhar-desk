@@ -19,8 +19,8 @@ mistakes the way Manav fixes them. He keeps the speaker's words — this is NOT 
    "કે છે" (= says) stays કે, તું (= was) stays, તી/તા stay, રે (= stay) stays, આયા/આયો stay, જાવ/થાવ stay,
    બી, કોક, ભઈ, તઈ, દાડો, જરાક, સદગુરુ, પહેલા, ઉડી, જોતા/કરતા/લેતા, હે (as "O …"), ના (for નહીં),
    the Surti "હ" for "સ" (હવાર, હમજો, હંભળાય — keep), numbers exactly as written (25, 12 — do not convert digits),
-   Sanskrit as he pronounces it (નિર્દોષમ હી સમમમ, સ્થિત પ્રજ્ઞ, ક્લેશાત) — only fix Sanskrit when the ASR
-   clearly broke a well-known phrase (તત્વમમાંસી→તત્વમસિ), and mark such fixes "likely".
+   Sanskrit words inside his Gujarati sentences as he says them (સ્થિત પ્રજ્ઞ, ક્લેશાત). BUT a recited mantra or shloka
+   is replaced with its standard text taken from the internet (RULES.md section 5, Manav's rule of 29 Oct 2026).
    "ત્યાં આગળે" / "અહીં આગળે" — the speaker says આગળે; never shorten it to આગળ (Manav corrects this).
    Rule of thumb: if a Gujarati listener would hear the same sounds, keep it. Only fix what is a DIFFERENT
    word from what was said, or a cut-off / garbled word.

@@ -43,7 +43,7 @@ Each line of the input file is one spot where an independent speech recogniser h
 8. Joins/splits: change only for the common particles (છેને → છે ને, આતો → આ તો, પડેને → પડે ને); otherwise keep the Doc.
 9. Do not touch punctuation, do not paraphrase, do not add quotation marks or brackets.
 10. Lessons from a test against Manav's finished video 1 (where the judge went wrong):
-   - Sanskrit as pronounced: do not add case endings the engines "complete" (ભવભય હરણ stayed; not હરણમ).
+   - (Superseded 29 Oct — see lesson 13.) Do not add case endings the engines "complete" inside the speaker's Gujarati.
    - તહીં stays તહીં (never ત્યાં); બેરાને stays; ભાવ stayed ભાવ though both engines heard ભાવના — when the Doc's
      word is a normal, meaningful word in that sentence, keep it even if both engines differ (write maybe at most).
    - A word both engines lack is often still spoken (બેસ બેસવાનું): delete only clear garbage.
@@ -62,9 +62,7 @@ Reply with only the counts of fix / maybe / ask.
      with one engine only, keep the Doc unless its word is clearly nonsense.
    - Never ADD a rhetorical "શું" (he removed every lone "શું?" between sentences — it is the speaker's habit). If the
      ⟪ ⟫ span is a lone "શું?" standing between two sentences and an engine lacks it → fix (delete).
-   - Sanskrit endings as pronounced: when S and/or G hear "-મ"/"-મ્"/"-ં" at the end of a shloka word the Doc writes
-     without it (સદગુરુ→સદગુરુમ, ગુરુ→ગુરુમ, મૂર્તિ→મૂર્તિમ, શ્રીગુરુ→શ્રીગુરુમ, ભવે→ભવેત) → add it, written as મ / ત
-     without halant (fix if both engines, maybe if one).
+   - (Superseded 29 Oct — see lesson 13: shlokas are replaced with their standard text, not written as pronounced.)
    - Keep "હમ્મ" when the Doc has it. Keep "કે છે" (never કહે છે), "ક્લોરોફોમ", "જોવે", "લેવાઈ", "તી".
    - આગળ vs આગળે: the speaker says both; change only if an engine clearly heard આગળે.
    - Ergative: if the change is between એને and એણે (or આને/આણે, તેને/તેણે, જેને/જેણે): એણે when એ is the DOER of a past
@@ -75,6 +73,5 @@ Reply with only the counts of fix / maybe / ask.
    - What he still had to fix himself: a closing કે / કે છે (= "he says") the Doc dropped (ભાઈ કે., હાજર રહેજે કે.) —
      put it back when an engine heard it; કોક where the Doc has કોઈ and an engine heard કોક; ય (see CANDS); એમણે for a doer.
    - Delete fillers when the engines lack them: a closing હા, the English સો ("so") opening a sentence, a lone શું.
-   - Upanishad / shloka lines: write the Sanskrit the way the speaker pronounces it. If S and G agree on a Sanskrit word and the
-     Doc has a different (textbook or garbled) form → fix to what they heard, written in Gujarati script without halant where the
-     Doc's style has none. If only one engine differs, keep the Doc unless the Doc's form is clearly garbled.
+   - Upanishad / shloka lines: see lesson 13.
+13. MANTRAS AND SHLOKAS (RULES.md section 5, Manav 29 Oct): a recited mantra/shloka is NOT judged word by word and NOT written as pronounced — it is replaced afterwards by its standard text from a reliable online source. For such lines write nothing (keep), unless a non-Sanskrit Gujarati word around it is wrong.

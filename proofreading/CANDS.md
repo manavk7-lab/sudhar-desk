@@ -15,9 +15,8 @@ KIND tells you what to decide:
   "બેસવાનું. શું આનંદ કરવાનો", "ગમે તેમ કરીને, શું જોગવાઈ કરવી પડશે". Decide "fix" with text "" to delete it, UNLESS it
   is part of a real question (the sentence asks something and ends with "?": "શું કીધું?", "શું જનોઈ ધારણ કરી છે?",
   "એટલે શું?", "તો શું થયું?") — then keep. When "શું" starts a statement (no question), delete it.
-- SKT — an engine heard a Sanskrit ending (-મ / -મ્) on a word in a shloka or Sanskrit phrase. Manav writes the ending as
-  pronounced (સદગુરુમ, ગુરુમ, મૂર્તિમ, શ્રીગુરુમ, ભવેત). Add it (written મ, no halant) when the word is in a Sanskrit phrase and
-  the ending is plausible as spoken: fix if both engines heard it, maybe if one. Keep for ordinary Gujarati.
+- SKT — (changed 29 Oct) do NOT add endings as pronounced any more. Whole mantras/shlokas are replaced with their standard
+  text from the internet in a separate step (RULES.md section 5). Write nothing for SKT lines.
 
 - YA — a lone "એ" inside a sentence. Manav corrected several of these to "ય" (= also / even), which the recognisers also
   write as એ:  તમારાથી ⟪એ⟫ બહુ ભૂલો થઈ છે → ય · તમારા શરીરમાંથી ⟪એ⟫ કશું વ્યય નહીં થાય → ય ·

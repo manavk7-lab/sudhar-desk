@@ -38,17 +38,36 @@ Manav deleted every one of these (8 out of 8) in video 9, and 5 other filler શ
 - Delete a lone શું? that stands as its own sentence between two sentences.
 - Never add a rhetorical શું. Real questions stay: એટલે શું? / શું કરવાનું? / તો શું થયું?
 
-## 5. Sanskrit as pronounced
-Write shlokas the way the speaker says them, with the endings he pronounces. Manav's own fixes in video 9:
-- સદગુરુ→**સદગુરુમ** (સદગુરુમ તમ નમામિ)
-- જ્ઞાન મૂર્તિ→**જ્ઞાન મૂર્તિમ**
-- ગુરુ→**ગુરુમ**
-- શ્રીગુરુ→**શ્રીગુરુમ**
-- વિમલમ અચલમ→**વિમલમચલમ**
-- શુદ્ધિ ભવે→**શુદ્ધિ ભવેત**
-- તત્વમસિ→**તત્વમઅસિ**
+## 5. Mantras and shlokas: the standard text, taken from the internet (rule from 29 Oct 2026)
+Manav: "always remember mantra should be replaced by getting from internet". Unlike everything else in this file, a mantra
+is NOT written the way the speaker pronounces it.
+- When the speaker recites a mantra, shloka or verse (shanti path, Gita, Upanishad, Gayatri, stotra), look it up in a
+  reliable source online and replace the transcript's version with that standard text, in Gujarati script with the proper
+  Sanskrit spelling: anusvara ં (ભદ્રં), visarga ઃ (દેવાઃ, શાન્તિઃ), halant ્ (સૃજામ્યહમ્), words joined as printed
+  (પશ્યેમાક્ષભિર્યજત્રાઃ).
+- Layout as printed, like Manav's own correction of the shanti path in ઉપનિષદ - 1: the mantra starts on a new line, one
+  printed line per line, "।" at the end of a line and "॥" at the end of a verse. The speaker's Gujarati carries on after it.
 
-Write the ending as મ / ત, with no halant. Fix a broken well-known phrase (તત્વમમાંસી→તત્વમસિ). Don't add an ending the speaker didn't say (in video 1, ભવભય હરણ stayed).
+      ૐ ભદ્રં કર્ણેભિઃ શૃણુયામ દેવાઃ ।
+      ભદ્રં પશ્યેમાક્ષભિર્યજત્રાઃ ।
+      સ્થિરૈરંગૈસ્તુષ્ટુવાંસસ્તનૂભિઃ ।
+      વ્યશેમ દેવહિતં યદાયુઃ ॥
+      સ્વસ્તિ ન ઇન્દ્રો વૃદ્ધશ્રવાઃ ।
+      સ્વસ્તિ નઃ પૂષા વિશ્વવેદાઃ ।
+      સ્વસ્તિ નસ્તાર્ક્ષ્યો અરિષ્ટનેમિઃ ।
+      સ્વસ્તિ નો બૃહસ્પતિર્દધાતુ ॥
+      ૐ શાન્તિઃ શાન્તિઃ શાન્તિઃ ॥
+
+  (It had been "ૐ ભદ્રમ કર્ણેભિહ શૃણુયામ દેવાહ, ભદ્રમ પશ્યેમાક્ષભી યત્રાહ. … ૐ શાંતિ શાંતિહ શાંતિહી.")
+- Write only what the speaker recites. If he says half a verse, write that half in the standard text; don't add lines he
+  skipped, and keep his own Gujarati words in between (આગળ કહે છે, …).
+- A short mantra phrase inside a Gujarati sentence gets the standard spelling where it stands (તત્સવિતુર્વરેણ્યં,
+  હરિ ૐ તત્ સત્).
+- Only the recited Sanskrit changes. The Gujarati translation or explanation around it stays as spoken, and so do Sanskrit
+  words used inside a Gujarati sentence (ભૂ સ્વરૂપ, ભુવ સ્વરૂપ).
+- If no reliable source can be found, leave the line as it is and put it on the ✎ list to check.
+- This replaces the old rule "Sanskrit as pronounced" (video 9: સદગુરુ→સદગુરુમ, ગુરુ→ગુરુમ, ભવે→ભવેત, …): verses like
+  those are now written in their standard form too (… સદ્ગુરું તં નમામિ).
 
 ## 6. Small words that get dropped — put them back
 Most common, in order: **છે**, એ, **કે**, **ય**, છું, છો, છીએ, નથી, જ, તો, કહે, પણ, અને.
@@ -120,8 +139,8 @@ What he still corrected after the pass, most common first:
 - **The speaker's closing કે / કે છે** (= "he says") at the end of a sentence gets dropped: ભાઈ **કે.**, હાજર રહેજે **કે.**,
   ગયો નથી **કે છે.** Put it back when a recogniser heard it.
 - **કોક**, not કોઈ, where the speaker says કોક.
-- **Sanskrit endings only when pronounced**: he took the મ back off સંતરામ (a name) and સર્વજ્ઞ (દાદા ભગવન સર્વજ્ઞ શરણમ
-  ગચ્છામિ). Add મ only in a shloka and only when it is heard.
+- **No Sanskrit endings on names or Gujarati words**: he took the મ back off સંતરામ (a name) and સર્વજ્ઞ (દાદા ભગવન
+  સર્વજ્ઞ શરણમ ગચ્છામિ). For whole mantras and shlokas, section 5 now applies (standard text from the internet).
 - Mishearings he fixed: વહી→વહે, મામૂલી→મહામૂલી, શીદ→શીત, ભાગી→ભાંગી, સ્વપ્ન→સ્વપ્નું, જોઈતી→જોઈએ, સેજ→સહેજ,
   સાધનસાધ્ય→સાધન સાધ્ય, ઉપર થઈ→ઉપરથી, આગળ→આગળે (ત્યાં આગળે).
 - He also removes asides that are not part of the talk (a remark to someone in the room).
