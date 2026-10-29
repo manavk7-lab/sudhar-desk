@@ -14,7 +14,10 @@ The goal is the speaker's exact words, not "better Gujarati". When in doubt, kee
 - Numbers stay as written (25, 33, 72). Don't convert digits to words.
 - Repeats the speaker means stay: ધીમે ધીમે, આમ આમ, બધી બધી, હવે હવે.
 - **હમ્મ** stays where he says it.
-- **આગળ / આગળે**: the speaker says both. In video 9 Manav changed one અહીંયા આગળ to **આગળે** and left four ત્યાં આગળ alone. Change it only when the audio has આગળે.
+- **આગળે, not આગળ, for "there / here"** (Manav, 29 Oct: "always check whether આગળે is needed — most of the time this is a mistake"):
+  after અહીંયા / અહીં / ત્યાં / જ્યાં / ક્યાં (meaning "at that place") the speaker says **આગળે**: અહીંયા આગળે કીધું છે, ત્યાં આગળે બેઠો.
+  Recognisers and captions write આગળ there, so change it every time. Keep **આગળ** when it means "forward / further / next":
+  આગળ વધે, આગળ કહે છે, આગળ આવશે, 32 ડગલા આગળ ચાલો, એનાથી આગળ.
 
 ## 2. Spellings he always fixes
 નહી→**નહીં**, કઈ/કાઈ→**કંઈ**, કઈક→**કંઈક**, અહી→**અહીં**, અહિયા→**અહીંયા**, છતા→**છતાં**, ક્યાય→**ક્યાંય**,

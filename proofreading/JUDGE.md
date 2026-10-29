@@ -75,3 +75,4 @@ Reply with only the counts of fix / maybe / ask.
    - Delete fillers when the engines lack them: a closing હા, the English સો ("so") opening a sentence, a lone શું.
    - Upanishad / shloka lines: see lesson 13.
 13. MANTRAS AND SHLOKAS (RULES.md section 5, Manav 29 Oct): a recited mantra/shloka is NOT judged word by word and NOT written as pronounced — it is replaced afterwards by its standard text from a reliable online source. For such lines write nothing (keep), unless a non-Sanskrit Gujarati word around it is wrong.
+14. આગળે (Manav, 29 Oct): after અહીંયા/અહીં/ત્યાં/જ્યાં meaning "at that place" write આગળે even if every engine wrote આગળ (fix). Keep આગળ for "forward / next" (આગળ વધે, આગળ કહે છે).
