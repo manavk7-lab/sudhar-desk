@@ -148,6 +148,12 @@ What he still corrected after the pass, most common first:
   સાધનસાધ્ય→સાધન સાધ્ય, ઉપર થઈ→ઉપરથી, આગળ→આગળે (ત્યાં આગળે).
 - He also removes asides that are not part of the talk (a remark to someone in the room).
 
+## 12. Paragraphs never break in the middle of a sentence (Manav, 29 Oct)
+The caption-based Docs sometimes start a new paragraph halfway through a sentence ("… જે પુરુષ…⏎⏎નથી એવું તો કોઈ છે જ
+નહીં", "… એ આપણને.⏎⏎હરગીજ મંજૂર નથી"). Before the correction pass, join such paragraphs: a paragraph that ends with "…",
+with no full stop, or with a stop where the words clearly carry on into the next paragraph, is joined to the next one with a
+space, and that false "…" / "." is removed. Paragraph breaks stay only between complete sentences.
+
 ## Results so far
 - **Video 9, 0–1:34** (after this pass): Manav made 239 more edits — 96 punctuation, 90 changed words, 30 deletions (13 were શું), 23 added words. He undid only 7 of the 259 changes made in that stretch.
 - **Videos 9 (rest), 10, 11, 12, 13**: he undid 19 of 1,159 changes; his own further edits were 330 word changes and 270 punctuation changes over the five videos.
