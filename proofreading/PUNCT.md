@@ -27,6 +27,16 @@ What we know from Manav's own corrections (video 9, 0–1:34):
   later (or earlier). Prefer moves; a lone removal or a lone addition needs very strong reasons.
 - A test run showed these were WRONG (he kept the text as it was): adding "," after તો / કે; moving the stop in
   "બારી બંધ કર દો. ભાઈ કે એના જેવું"; adding "." after તોય, પાછી, રહેવાનું when the thought continued.
+- Test on video 11, which Manav finished himself (29 Oct): of 31 changes, 13 were exactly his choice, 5 were at a spot where
+  he put a different mark, and 13 he did not want. The unwanted ones were mostly MOVES over trailing words that can just as
+  well open the next sentence — he kept the stop where it was:
+    દીધો.[ ] … તો⟨4.0⟩ · નાખો.[ ] … આપણે⟨1.5⟩ · છે.[ ] … પછી⟨0.9⟩ · કરીએ.[ ] … આપણે⟨0.9⟩ · છે.[ ] … બસ,⟨4.0⟩
+  The moves he did want had trailing words that only finish the sentence before: "હામે જોતા તો. પેલી …",
+  "સંસાર ભાવ આખેઆખો ત્યારે! પછી …". So move a stop only when the trailing words CANNOT start the next sentence;
+  if they could open it (તો …, આપણે …, પછી …, બસ …, એટલે …), leave the stop where it is.
+- At long pauses with no mark he left 81% unchanged and added "." 9%, "," 7%, "?" 2%; at stops with no pause he kept 89%.
+  Change only clear cases — expect roughly one change per 10–15 marks, not more.
+- Where a question clearly ends at a pause and has no "?", add "?" (he did: "નારદને થોડી પૈણે?", "સ્વસ્થ છો?").
 - Keep full stops between two complete sentences even without a pause (the speaker often runs sentences together).
 - Do not touch Sanskrit shloka lines, mantras or bhajan lines (બ્રહ્માનંદમ પરમ સુખદમ …, સદગુરુ તમ નમામિ …) except their final stop.
 - Never change words — only the punctuation mark at [n].

@@ -69,3 +69,12 @@ Reply with only the counts of fix / maybe / ask.
    - આગળ vs આગળે: the speaker says both; change only if an engine clearly heard આગળે.
    - Ergative: if the change is between એને and એણે (or આને/આણે, તેને/તેણે, જેને/જેણે): એણે when એ is the DOER of a past
      action (એણે શું કર્યું?), એને when it means "to him / him" (મેં એને કીધું, તમે એને આપી દીધું).
+12. Lessons from Manav's pass over videos 10–13 after this pipeline (RULES.md section 11):
+   - He undid only ~2% of fix/maybe changes. What he undid: repeated words we put back because S, G and Y all heard them
+     (હું હું, છે છે, ખબર છે ખબર) — NEVER insert a stutter repeat; a filler હા at a sentence end; one આ both engines heard.
+   - What he still had to fix himself: a closing કે / કે છે (= "he says") the Doc dropped (ભાઈ કે., હાજર રહેજે કે.) —
+     put it back when an engine heard it; કોક where the Doc has કોઈ and an engine heard કોક; ય (see CANDS); એમણે for a doer.
+   - Delete fillers when the engines lack them: a closing હા, the English સો ("so") opening a sentence, a lone શું.
+   - Upanishad / shloka lines: write the Sanskrit the way the speaker pronounces it. If S and G agree on a Sanskrit word and the
+     Doc has a different (textbook or garbled) form → fix to what they heard, written in Gujarati script without halant where the
+     Doc's style has none. If only one engine differs, keep the Doc unless the Doc's form is clearly garbled.

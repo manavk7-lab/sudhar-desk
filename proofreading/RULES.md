@@ -87,7 +87,9 @@ Measured in his finished video 9 (0–1:34), with the pauses taken from the audi
   "બેસવાનું. આપણે બેસવું" → "બેસવાનું આપણે. બેસવું".
 - He keeps a full stop between two complete sentences even when the speaker runs them together, and he almost never adds commas.
 - The automatic pass (pause from the audio + reading the sentence, see PUNCT.md) matched his own choice about 3 times in 4
-  on a part it had not seen, and found about a third of his punctuation changes. Its changes are on the ✎ list ("dot moved",
+  on a part it had not seen, and found about a third of his punctuation changes. On video 11 (which he finished himself) it did
+  worse: 13 of 31 changes exactly his, 18 of 31 at a spot he also changed — most misses were stops moved over તો / આપણે / પછી,
+  so the pass now leaves those alone (PUNCT.md). Its changes are on the ✎ list ("dot moved",
   "dot added at a pause") so a wrong one can be undone with Alt+Backspace.
 When typing, keep one space after . , ? ! — in video 9, 36 edits ended up as "અંદર.ભલે" or "નથી.તે".
 
@@ -98,5 +100,32 @@ When typing, keep one space after . , ? ! — in video 9, 36 edits ended up as "
 - Both recognisers standardise speech (કે→કહે, તું→હતું, જાવ→જાઓ, digits→words) and drop repeats. Never copy that.
 - Doubtful spots go on the ✎ list as "listen" items, not into the Doc.
 
+## 11. Lessons from Manav's own pass over videos 9 (1:34–end), 10, 11, 12 and 13 (checked 29 Oct)
+He kept the changes from the Sarvam + Gemini pass: of the 1,159 changes that can still be traced, he undid 19 (about 2%).
+What he still corrected after the pass, most common first:
+- **ય written as એ.** When a lone એ inside a sentence means "also / even", it is **ય** (a separate word). The recognisers
+  write એ here too, so decide by meaning — if એ cannot be "he / she / that" in the clause, it is ય:
+  - તમારાથી એ બહુ ભૂલો થઈ છે → તમારાથી **ય** બહુ ભૂલો થઈ છે
+  - તમારા શરીરમાંથી એ કશું વ્યય નહીં થાય → શરીરમાંથી **ય** કશું
+  - સંભળાવનારો એ અંદર → સંભળાવનારો **ય** અંદર · થોડું ઘણું એ અજવાળું → થોડું ઘણું **ય** અજવાળું
+  He also added ય where nothing was written: ત્યાં જઈને **ય** માળા કરે, આ **ય** એની કૃપા છે, રાત્રે તો એ **ય** બધા.
+- **એમણે, not એમને**, when they are the doer (section 3 applies to the plural too): એટલે **એમણે** કીધું, **એમણે** તો કરાવી
+  દીધું, **એમણે** શું કર્યું. Same for તેમણે / જેમણે / આમણે.
+- **Lone શું** — he deletes it with or without "?", and after a comma too: "કાઢ્યું કે, શું? ઘસી ઘસીને",
+  "બેસવાનું. શું આનંદ કરવાનો …", "ગમે તેમ કરીને, શું જોગવાઈ કરવી પડશે". A real question stays (શું કીધું? … answered next).
+- **Fillers**: a closing **હા** (થઈ જશે હા. → થઈ જશે.) and the English **સો** (= "so") opening a sentence
+  (છે. સો વ્યાપકમ્ → છે. વ્યાપકમ્).
+- **Stutters**: never put back a repeated word just because all three recognisers heard it (હું હું, છે છે, ખબર છે ખબર) —
+  he removed those. Repeats the speaker means stay (ધીમે ધીમે, વહે જાય, વહે જાય).
+- **The speaker's closing કે / કે છે** (= "he says") at the end of a sentence gets dropped: ભાઈ **કે.**, હાજર રહેજે **કે.**,
+  ગયો નથી **કે છે.** Put it back when a recogniser heard it.
+- **કોક**, not કોઈ, where the speaker says કોક.
+- **Sanskrit endings only when pronounced**: he took the મ back off સંતરામ (a name) and સર્વજ્ઞ (દાદા ભગવન સર્વજ્ઞ શરણમ
+  ગચ્છામિ). Add મ only in a shloka and only when it is heard.
+- Mishearings he fixed: વહી→વહે, મામૂલી→મહામૂલી, શીદ→શીત, ભાગી→ભાંગી, સ્વપ્ન→સ્વપ્નું, જોઈતી→જોઈએ, સેજ→સહેજ,
+  સાધનસાધ્ય→સાધન સાધ્ય, ઉપર થઈ→ઉપરથી, આગળ→આગળે (ત્યાં આગળે).
+- He also removes asides that are not part of the talk (a remark to someone in the room).
+
 ## Results so far
 - **Video 9, 0–1:34** (after this pass): Manav made 239 more edits — 96 punctuation, 90 changed words, 30 deletions (13 were શું), 23 added words. He undid only 7 of the 259 changes made in that stretch.
+- **Videos 9 (rest), 10, 11, 12, 13**: he undid 19 of 1,159 changes; his own further edits were 330 word changes and 270 punctuation changes over the five videos.
