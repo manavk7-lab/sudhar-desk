@@ -14,18 +14,12 @@ The goal is the speaker's exact words, not "better Gujarati". When in doubt, kee
 - Numbers stay as written (25, 33, 72). Don't convert digits to words.
 - Repeats the speaker means stay: ધીમે ધીમે, આમ આમ, બધી બધી, હવે હવે.
 - **હમ્મ** stays where he says it.
-- **આગળે, not આગળ, for "there / here"** (Manav, 29 Oct: "always check whether આગળે is needed — most of the time this is a mistake"):
-  after અહીંયા / અહીં / ત્યાં / જ્યાં / ક્યાં (meaning "at that place") the speaker says **આગળે**: અહીંયા આગળે કીધું છે, ત્યાં આગળે બેઠો.
-  Recognisers and captions write આગળ there, so change it every time. Keep **આગળ** when it means "forward / further / next":
-  આગળ વધે, આગળ કહે છે, આગળ આવશે, 32 ડગલા આગળ ચાલો, એનાથી આગળ.
-
-## 2. Spellings he always fixes
-નહી→**નહીં**, કઈ/કાઈ→**કંઈ**, કઈક→**કંઈક**, અહી→**અહીં**, અહિયા→**અહીંયા**, છતા→**છતાં**, ક્યાય→**ક્યાંય**,
-નિરાતે→**નિરાંતે**, ઉભો→**ઊભો**, બેહી→**બેસી**, બેહાડી→**બેસાડી**, હારું/હારો/હાચી→**સારું/સારો/સાચી**, ખયાલ→**ખ્યાલ**,
-હરગેજ→**હરગીજ**. A cut-off word gets its full form: પછ→**પછી**, તમ→**તમે**.
-
-## 3. એણે, not એને, when "he/she DID it" (new, from video 9)
-Recognisers and the AI cleaner write **એને** where the speaker says **એણે**. They sound almost the same.
+- **આગળે after અહીંયા / ત્યાં / જ્યાં / ક્યાં** (Manav, 29–30 Oct: "lot of mistakes in case of આગળે"). Measured on his finished
+  ઉપનિષદ - 1: where these words mean "at that place" he wrote **આગળે 22 times and આગળ 6 times**. Sarvam and Gemini ALWAYS write
+  આગળ (they standardise), so they cannot decide it; YouTube captions are only slightly better. So: write **આગળે** in that sense,
+  mark it "likely" on the ✎ list so a wrong one is one Alt+Backspace. Spots he kept as આગળ: "અહીંયા આગળ ચંદ્ર લેવામાં",
+  "અહીંયા આગળ આવી ગયા", "જ્યાં આગળ બસ પછી". Keep **આગળ** for "forward / further / next": આગળ વધે, આગળ કહે છે, આગળ આવશે,
+  32 ડગલા આગળ ચાલો, એનાથી આગળ.
 - If એ / આ / તે / જે is the **doer** of a past action (કર્યું, કીધું, કહ્યું, આપ્યું, જોયું, લીધું, દીધું, માર્યું, ખાધું …), write **એણે / આણે / તેણે / જેણે**. This only applies when there is no other doer in the clause.
   - રતિને શિવજીએ બાળી નથી. **એણે** શું કર્યું? કામદેવનું દહન કરી દીધું.
   - **આણે** મને જે જે ના કર્યા …
@@ -66,8 +60,9 @@ is NOT written the way the speaker pronounces it.
   skipped, and keep his own Gujarati words in between (આગળ કહે છે, …).
 - A short mantra phrase inside a Gujarati sentence gets the standard spelling where it stands (તત્સવિતુર્વરેણ્યં,
   હરિ ૐ તત્ સત્).
-- Only the recited Sanskrit changes. The Gujarati translation or explanation around it stays as spoken, and so do Sanskrit
-  words used inside a Gujarati sentence (ભૂ સ્વરૂપ, ભુવ સ્વરૂપ).
+- The Gujarati translation or explanation around a mantra stays as spoken, BUT Sanskrit terms inside it get their proper
+  spelling with visarga too (Manav in ઉપનિષદ - 1): ભૂઃ સ્વરૂપ, ભુવઃ સ્વરૂપ, સ્વઃ, મહઃ, આપઃ (the element), જ્યોતિઃ,
+  "ૐ ભૂઃ ભુવઃ સ્વઃ". Write the visarga as ઃ (he typed ":" on the phone).
 - If no reliable source can be found, leave the line as it is and put it on the ✎ list to check.
 - This replaces the old rule "Sanskrit as pronounced" (video 9: સદગુરુ→સદગુરુમ, ગુરુ→ગુરુમ, ભવે→ભવેત, …): verses like
   those are now written in their standard form too (… સદ્ગુરું તં નમામિ).
@@ -153,6 +148,18 @@ The caption-based Docs sometimes start a new paragraph halfway through a sentenc
 નહીં", "… એ આપણને.⏎⏎હરગીજ મંજૂર નથી"). Before the correction pass, join such paragraphs: a paragraph that ends with "…",
 with no full stop, or with a stop where the words clearly carry on into the next paragraph, is joined to the next one with a
 space, and that false "…" / "." is removed. Paragraph breaks stay only between complete sentences.
+
+## 13. Lessons from Manav's finished ઉપનિષદ - 1 (30 Oct)
+- He kept 277 of our 288 traceable changes (96%). The 11 he undid were mostly spots where all three recognisers agreed on a
+  different word but the Doc's word was right: શરૂઆત એમ કે (not કેમ કે), ચારે ચાર વેદ છે, આકાશરૂપ છો, રુદ્રની (not રુદ્રજી),
+  બંને જગ્યાએ (not બધી), મામપાહી ઓમ ભગવતી, ખાલી આમ એક સિક્કો. Agreement of the engines is not proof when the Doc's word fits.
+  Conversely he accepted બૃહત્યા, which both engines heard and we had only flagged.
+- Still the most common misses: **છે** dropped (13 more), **એ** dropped (6), then ને, આમ, એમ, આ, અને, જ.
+- Spellings he fixed: ચકચકેત→ચકચકિત, અનગમા→અણગમા, જળહળાટ→ઝળહળાટ, કરતા→કર્તા (doer), સુરની→શૂરની, પૂર્યાસ્તક→પૂર્યાષ્ટક,
+  મનુષ્યોનું→મનીષીઓનું, names: દિવભાઈ→દિવ્યાંગભાઈ.
+- He deleted a side remark that is not part of the talk ("તેમાં કહે છે: આપણે સંસ્કૃત ભાગને છોડી દઈશું કે સાથે લેવો છે?").
+- Punctuation: he added visarga ":" in Sanskrit terms (24×, see section 5), and removed or moved 38 full stops — the caption
+  Docs put a stop where the sentence carries on.
 
 ## Results so far
 - **Video 9, 0–1:34** (after this pass): Manav made 239 more edits — 96 punctuation, 90 changed words, 30 deletions (13 were શું), 23 added words. He undid only 7 of the 259 changes made in that stretch.
