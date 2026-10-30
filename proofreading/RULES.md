@@ -20,6 +20,14 @@ The goal is the speaker's exact words, not "better Gujarati". When in doubt, kee
   mark it "likely" on the ✎ list so a wrong one is one Alt+Backspace. Spots he kept as આગળ: "અહીંયા આગળ ચંદ્ર લેવામાં",
   "અહીંયા આગળ આવી ગયા", "જ્યાં આગળ બસ પછી". Keep **આગળ** for "forward / further / next": આગળ વધે, આગળ કહે છે, આગળ આવશે,
   32 ડગલા આગળ ચાલો, એનાથી આગળ.
+
+## 2. Spellings he always fixes
+નહી→**નહીં**, કઈ/કાઈ→**કંઈ**, કઈક→**કંઈક**, અહી→**અહીં**, અહિયા→**અહીંયા**, છતા→**છતાં**, ક્યાય→**ક્યાંય**,
+નિરાતે→**નિરાંતે**, ઉભો→**ઊભો**, બેહી→**બેસી**, બેહાડી→**બેસાડી**, હારું/હારો/હાચી→**સારું/સારો/સાચી**, ખયાલ→**ખ્યાલ**,
+હરગેજ→**હરગીજ**. A cut-off word gets its full form: પછ→**પછી**, તમ→**તમે**. More from ઉપનિષદ - 1 in section 13.
+
+## 3. એણે, not એને, when "he/she DID it" (new, from video 9)
+Recognisers and the AI cleaner write **એને** where the speaker says **એણે**. They sound almost the same.
 - If એ / આ / તે / જે is the **doer** of a past action (કર્યું, કીધું, કહ્યું, આપ્યું, જોયું, લીધું, દીધું, માર્યું, ખાધું …), write **એણે / આણે / તેણે / જેણે**. This only applies when there is no other doer in the clause.
   - રતિને શિવજીએ બાળી નથી. **એણે** શું કર્યું? કામદેવનું દહન કરી દીધું.
   - **આણે** મને જે જે ના કર્યા …
@@ -64,6 +72,10 @@ is NOT written the way the speaker pronounces it.
   spelling with visarga too (Manav in ઉપનિષદ - 1): ભૂઃ સ્વરૂપ, ભુવઃ સ્વરૂપ, સ્વઃ, મહઃ, આપઃ (the element), જ્યોતિઃ,
   "ૐ ભૂઃ ભુવઃ સ્વઃ". Write the visarga as ઃ (he typed ":" on the phone).
 - If no reliable source can be found, leave the line as it is and put it on the ✎ list to check.
+- The book (બ્રહ્મ વિદ્યા ખંડ PDF, from ઉપનિષદ - 40 on, Manav 30 Oct): the speaker reads the Upanishad and its Gujarati
+  translation from it, though not always exactly. Its Sanskrit helps write the recited mantra (checked against an online
+  source). Its Gujarati helps with names and rare words the recognisers garble, but where he says it differently, his own
+  words stay (JUDGE.md lesson 15).
 - This replaces the old rule "Sanskrit as pronounced" (video 9: સદગુરુ→સદગુરુમ, ગુરુ→ગુરુમ, ભવે→ભવેત, …): verses like
   those are now written in their standard form too (… સદ્ગુરું તં નમામિ).
 
