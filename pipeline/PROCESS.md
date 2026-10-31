@@ -186,7 +186,7 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
 2. `python3 t/finalvid.py m39` (folder name `v` + argument) applies the decisions → `VM/new.txt`, `VM/rev_new.json`.
 3. **Claude's own review** — never skip: `python3 t/showdec2.py m39` lists every decision and flags the kinds Manav
    has undone before (RULES 11 and 13). Correct the judges in `VM/override.json`
-   `{"DROP":[[id,why]], "ASK":[[id,why]], "TEXT":[[id,[text,why]]], "MAYBE":[[id,why]]}` and run
+   `{"DROP":{"c12":"why"}, "ASK":{…}, "MAYBE":{…}, "TEXT":{"c40":["new text","why"]}}` and run
    `python3 t/override_m.py VM`. Typical overrides: a fix that changes a meaningful word all engines merely
    "standardise"; a closing કે/છે put after a full stop; a fix that copies book words he did not say.
 4. Fixes a judge cannot express (a word moved across a full stop, a restatement) go in `VM/manual.json` as
@@ -251,7 +251,10 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 - Background jobs started with `&` are killed after a few minutes → always the Bash tool's run_in_background.
 - yt-dlp from the cloud is blocked by YouTube's bot check; do NOT try other player clients. Use the browser (C2, C3).
 - `finalvid.py` ignores candidate decisions unless they are merged into `VM/cands_out.json`.
-- A judge sometimes puts a sentence-final કે/છે after the full stop, or "fixes" a restatement → move to manual.json.
+- A judge sometimes puts a word on the wrong side of a full stop (a closing કે/છે, or તો કે / અને that open the next
+  sentence: "છે તો કે." instead of "છે. તો કે"), or "fixes" a restatement → DROP it and do it in manual.json.
+- `dropmantra.py` hides every spot inside a mantra item's `alt` from the judges — keep mantra `alt`s tight, and check
+  the dropped spots yourself (video 39: સાક્ષી ગોપાલ તો સુંદર → અંદર was hidden that way).
 - When items are changed by later steps (mantra replaced around a fix, punctuation), re-check that every ✎ item still
   finds its text; fold lost ones into the item that replaced them.
 - `pauses.py` can match the wrong offset when a recording starts in the middle → pass the known offset.
