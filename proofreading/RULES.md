@@ -24,7 +24,7 @@ The goal is the speaker's exact words, not "better Gujarati". When in doubt, kee
 ## 2. Spellings he always fixes
 નહી→**નહીં**, કઈ/કાઈ→**કંઈ**, કઈક→**કંઈક**, અહી→**અહીં**, અહિયા→**અહીંયા**, છતા→**છતાં**, ક્યાય→**ક્યાંય**,
 નિરાતે→**નિરાંતે**, ઉભો→**ઊભો**, બેહી→**બેસી**, બેહાડી→**બેસાડી**, હારું/હારો/હાચી→**સારું/સારો/સાચી**, ખયાલ→**ખ્યાલ**,
-હરગેજ→**હરગીજ**. A cut-off word gets its full form: પછ→**પછી**, તમ→**તમે**. More from ઉપનિષદ - 1 in section 13.
+હરગેજ→**હરગીજ**, નિંદ્રા→**નિદ્રા** (Manav, 31 Oct, as the book prints it). A cut-off word gets its full form: પછ→**પછી**, તમ→**તમે**. More from ઉપનિષદ - 1 in section 13.
 
 ## 3. એણે, not એને, when "he/she DID it" (new, from video 9)
 Recognisers and the AI cleaner write **એને** where the speaker says **એણે**. They sound almost the same.
