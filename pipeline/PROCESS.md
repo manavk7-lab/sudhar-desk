@@ -274,5 +274,6 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 |---|---|---|---|
 | શાશ્વત સંવાદ 6–13 | see index.html | | corrected, Manav checked 9–13 |
 | ઉપનિષદ - 1 | sBXs4P2SE2U | અથર્વશિર ઉપનિષદ્ | corrected 29 Oct, Manav finished 30 Oct |
+| ઉપનિષદ - 39 | 6AO_nSW_Rig | મણ્ડલબ્રાહ્મણોપનિષદ્ ૩ (2nd ખંડ to the end) | posted 31 Oct (Sarvam + book, no Gemini), 179 ✎ |
 | ઉપનિષદ - 40 | 4Qr-R5LMUh0 | મહાવાક્યોપનિષદ્ & મૈત્રેય્યુપનિષદ્ ૧ | posted 30 Oct (Sarvam + book, no Gemini), 109 ✎ |
 | ઉપનિષદ - 41 | wHLe6v2nhNk | મૈત્રેય્યુપનિષદ્ ૨ & યાજ્ઞવલ્ક્યોપનિષદ્ | posted 30 Oct (Sarvam + book, no Gemini), 210 ✎ |
