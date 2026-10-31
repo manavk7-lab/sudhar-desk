@@ -215,6 +215,13 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
 5. Last checks on final.txt: no quotation marks or brackets; every paragraph ends in a stop (except the closing
    "જય સચ્ચિદાનંદ" and the line just before a mantra); mantras laid out as in C5.4; sha256 of the text = **NEW**.
 
+### C9b. Book check (when the speaker reads from the book)
+`python3 t/bookcheck.py book/NAME.txt VM/final.txt VM/sar.txt VM/bookdiff.txt "<heading where this video starts>"`
+puts every book clause next to the Doc (D) and Sarvam (S). Finding from video 39: he reads the book's Gujarati
+loosely and in his own words, and after the Sarvam pass D = S almost everywhere — so keep D. Fix only where S agrees
+with the book against D, or where D misspells a term the book prints (અંતરજ્ઞાન→અંતર્જ્ઞાન, અખંડ આકાર→અખંડાકાર,
+અંતરલક્ષ→અંતર્લક્ષ). Apply with mantra_apply.py like the manual fixes, as "likely" ✎ items.
+
 ### C10. Post into the Doc (with the hash check)
 1. Stage the text: `python3 bin/putdoc.py post39 VM/final.txt` (cache key `post39`, 6 hours).
 2. Fill the template: `python3 t/mkjs.py t/postjob.js KEY=post39 DOC=<doc id> OLD=<old sha16> NEW=<new sha16> > post39.js`
@@ -274,6 +281,6 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 |---|---|---|---|
 | શાશ્વત સંવાદ 6–13 | see index.html | | corrected, Manav checked 9–13 |
 | ઉપનિષદ - 1 | sBXs4P2SE2U | અથર્વશિર ઉપનિષદ્ | corrected 29 Oct, Manav finished 30 Oct |
-| ઉપનિષદ - 39 | 6AO_nSW_Rig | મણ્ડલબ્રાહ્મણોપનિષદ્ ૩ (2nd ખંડ to the end) | posted 31 Oct (Sarvam + book, no Gemini), 179 ✎ |
+| ઉપનિષદ - 39 | 6AO_nSW_Rig | મણ્ડલબ્રાહ્મણોપનિષદ્ ૩ (2nd ખંડ to the end) | posted 31 Oct (Sarvam + book, no Gemini), 182 ✎ |
 | ઉપનિષદ - 40 | 4Qr-R5LMUh0 | મહાવાક્યોપનિષદ્ & મૈત્રેય્યુપનિષદ્ ૧ | posted 30 Oct (Sarvam + book, no Gemini), 109 ✎ |
 | ઉપનિષદ - 41 | wHLe6v2nhNk | મૈત્રેય્યુપનિષદ્ ૨ & યાજ્ઞવલ્ક્યોપનિષદ્ | posted 30 Oct (Sarvam + book, no Gemini), 210 ✎ |
