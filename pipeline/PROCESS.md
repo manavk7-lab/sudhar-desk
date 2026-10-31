@@ -117,22 +117,28 @@ Names used below: `VM` = a working folder for this video inside `$SD_WORK` (e.g.
    Write it to `VM/doc_orig.txt` (stage it through `bin/getdoc.py` if the text has to come through the cache).
 
 ### C2. Add the video to Sudhar Desk, with caption word times (follow-along)
-1. In the YouTube tab, read the auto-caption track (`ytInitialPlayerResponse.captions…captionTracks`, the Gujarati
-   `asr` track) and fetch it with `&fmt=json3`; turn the events into word lines `ms<TAB>word` (word start = event
-   start + segment offset). Hand the text to the cloud session through the cache (`putcap`, key e.g. `cap39`) and pull
-   it with `python3 bin/fetchcap.py cap39 $SD_REPO/sync/YT.tsv` (first line `# Sudhar Desk sync — YouTube
-   auto-caption word times for YT (ms<TAB>word)`). The browser snippet is `pipeline/browser/captions.js`:
-   `python3 t/mkjs.py $SD_REPO/pipeline/browser/captions.js KEY=cap39 > cap.js`, inject cap.js into the YouTube tab.
+0. **The relay (set up once per YouTube tab).** The YouTube tab must not be given the Apps Script URL or keys, so data
+   leaves it through a small relay page on Sudhar Desk's own site, which reads the saved settings itself:
+   inject `pipeline/browser/relay_yt.js` into the YouTube tab, then make a real click (computer tool) on the yellow
+   "open relay" button it adds — a window can only be opened by a click. A new tab on manavk7-lab.github.io opens
+   (sometimes the full Sudhar Desk app instead of version.txt; that works too). Inject `browser/relay_page.js` there
+   with `__CK__` filled. Test from the YouTube tab: `await window.__sdput('test',0,'hi')` → `true`.
+   (Opening YouTube *from* Sudhar Desk does not work: YouTube's opener policy cuts the link in that direction.)
+1. In the YouTube tab run `pipeline/browser/captions.js` (`__KEY__` = e.g. `cap39`). It takes the player's own
+   caption request (or turns CC on for a moment), fetches it as json3, makes word lines `ms<TAB>word` and sends them
+   through the relay. Then in the work folder: `python3 bin/fetchcap.py cap39 $SD_REPO/sync/YT.tsv`.
 2. Add `{yt:'YT',doc:'DOC',title:'ઉપનિષદ - NN · <Upanishad names>'}` at the top of `BUILTIN_PAIRS` in `index.html`,
    bump `APP_VERSION` in index.html and `version.txt` (format `2026-10-31a`), commit, push, check the live site.
 
 ### C3. Record the audio (in Manav's Chrome, real time)
-- `t/recorder2.js` is a template: `python3 t/mkrec.py KEY START_SEC END_SEC > rec.js` fills the key, the time range,
-  the script URL and CAP key. Inject it into a YouTube watch tab with javascript_tool. It waits out ads, seeks with the
+- `pipeline/browser/recorder3.js` is a template (fill `__KEY__`, `__START__`, `__END__`); it needs the relay (C2.0) in
+  that YouTube tab. Inject it into a YouTube watch tab with javascript_tool. It waits out ads, seeks with the
   player's own `seekTo` (setting `video.currentTime` does not work), records the tab's audio with MediaRecorder
-  (opus 24 kb/s, 60 s chunks) and posts each chunk to the cache as base64 parts. Check progress with `window.__R`.
+  (opus 24 kb/s, 60 s chunks; the tab stays silent) and sends each chunk through the relay to the cache as base64
+  parts. Check progress with `window.__R` (`t` = video time, `part`, `failed`). (`t/recorder2.js` is the older version
+  that called the script directly.)
 - Real time: a 2-hour video takes 2 hours. To go faster, split the video into 2–3 ranges and record them at the same
-  time in separate tabs, keys `p1a`, `p1b`, `p1c` (ranges overlapping by ~20 s).
+  time in separate tabs (each with its own relay), keys `p1a`, `p1b`, `p1c` (ranges overlapping by ~20 s).
 - In the cloud session, start a **collector** for the keys with the Bash tool's run_in_background (not `&`, which gets
   killed): `python3 bin/collect.py p1a,p1b,p1c audio/m39 > audio/m39/collect.log`. It saves every part as it arrives.
 
