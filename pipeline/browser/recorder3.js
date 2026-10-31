@@ -16,7 +16,8 @@ try{
 const mp=document.querySelector('#movie_player');
 try{mp.setPlaybackQualityRange('tiny','tiny')}catch(e){}
 const v=document.querySelector('video');if(!v)throw new Error('no video');
-v.muted=false;v.volume=1;
+const unm=()=>{try{if(mp.isMuted&&mp.isMuted()){mp.unMute();R.unmuted=(R.unmuted||0)+1}}catch(e){}if(v.muted){v.muted=false;R.unmuted=(R.unmuted||0)+1}if(v.volume<1)v.volume=1};
+unm();v.addEventListener('volumechange',unm);  // YouTube mutes background playback after ~30 s; that recorded silence (31 Oct)
 const ad=()=>mp&&mp.classList.contains('ad-showing');
 const skip=()=>{const sk=document.querySelector('.ytp-skip-ad-button,.ytp-ad-skip-button-modern,.ytp-ad-skip-button');if(sk)try{sk.click()}catch(e){}};
 for(let i=0;i<90&&ad();i++){skip();await sleep(1000)}
@@ -32,7 +33,7 @@ rec.ondataavailable=e=>{if(e.data&&e.data.size)send(e.data)};
 rec.onstop=()=>{q=q.then(async()=>{await post('n',String(R.part));R.done=true;try{v.pause()}catch(e){}})};
 rec.start(60000);
 const stop=()=>{if(rec.state==='recording')rec.stop()};
-const tick=()=>{if(R.done||rec.state!=='recording')return;skip();if(!ad()){if(v.currentTime>=END)stop();else if(v.ended)stop();else if(v.paused)v.play().catch(()=>{})}R.t=Math.round(v.currentTime);R.ad=ad();R.ctxState=ctx.state};
+const tick=()=>{if(R.done||rec.state!=='recording')return;skip();unm();if(!ad()){if(v.currentTime>=END)stop();else if(v.ended)stop();else if(v.paused)v.play().catch(()=>{})}R.t=Math.round(v.currentTime);R.ad=ad();R.ctxState=ctx.state};
 v.addEventListener('timeupdate',tick);v.addEventListener('ended',()=>{if(!ad())stop()});R.iv=setInterval(tick,4000);
 }catch(e){R.err=String(e)}
 return 'started '+KEY;

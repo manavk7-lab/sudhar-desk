@@ -37,8 +37,16 @@ def gem(p):
         if os.path.exists(o) and os.path.getsize(o)>300: return 'ok'
         print('gem retry',p,(r.stderr or r.stdout)[-200:],flush=True); time.sleep(30*(a+1))
     return 'fail'
+def silentfrac(p):
+    log=subprocess.run(['ffmpeg','-i',p+'.wav','-af','silencedetect=n=-60dB:d=10','-f','null','-'],capture_output=True,text=True).stderr
+    tot=sum(float(x) for x in re.findall(r'silence_duration: ([\d.]+)',log))
+    d=float(subprocess.run(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',p+'.wav'],capture_output=True,text=True).stdout or 1)
+    return tot/max(d,1)
 def sar(p):
     o=p+'.sar.txt'
+    sf=silentfrac(p)
+    if sf>0.2:   # long stretches of digital silence = a broken recording; Sarvam charges by duration, so never send it
+        print('SILENT piece, not sent',p,round(sf,2),flush=True); return 'silent'
     for a in range(3):
         if os.path.exists(o) and os.path.getsize(o)>300: return 'ok'
         r=subprocess.run([sys.executable,'t/run_sarvam.py','sarvam.key','saaras:v4',p+'.wav',o],capture_output=True,text=True)

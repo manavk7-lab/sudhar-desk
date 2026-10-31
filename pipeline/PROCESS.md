@@ -243,6 +243,11 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 - Gemini 402 RESOURCE_EXHAUSTED → no credit: use `NOGEM=1` and `proof/NOGEM.md` (stricter: one engine alone was right
   only 2–4% of the time), tell Manav, offer a Gemini pass later. Its retries also clog the pool — restart stream2 with NOGEM.
 - Recorder did not move to START → it must use `movie_player.seekTo`, then wait until the video plays near START.
+- 31 Oct: YouTube **muted** the recording tabs after ~30 s, so the recordings were digital silence while the video
+  kept playing — and the silent pieces were still sent to Sarvam (charged by duration, ~₹20 lost). Now recorder3.js
+  unmutes on every volume change and every tick, and stream2.py refuses pieces that are more than 20% silence
+  ("SILENT piece, not sent"). Still: one minute after starting, decode the first parts and check they are not silent.
+- An automatic safety check refuses to put the Apps Script URL or keys into a YouTube tab → use the relay (C2.0).
 - Background jobs started with `&` are killed after a few minutes → always the Bash tool's run_in_background.
 - yt-dlp from the cloud is blocked by YouTube's bot check; do NOT try other player clients. Use the browser (C2, C3).
 - `finalvid.py` ignores candidate decisions unless they are merged into `VM/cands_out.json`.
