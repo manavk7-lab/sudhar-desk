@@ -54,7 +54,7 @@ All of Manav's corrections are turned into written rules: **`proofreading/RULES.
   as Editor. Docs 40 and 41 were "Viewer" at first; saving then fails with `TypeError: Failed to fetch` (the script
   throws and the browser hides the reason). Check with the Drive connector's get_file_permissions.
 - **The book** બ્રહ્મ વિદ્યા ખંડ (PDF Manav uploaded, ~270+ pages, scanned: Sanskrit in Devanagari + Gujarati
-  translation/commentary). Mahavakya, Maitreya, Yajnavalkya are on pages 248–271. The speaker reads from it but not
+  translation/commentary). PDF pages: મંડલબ્રાહ્મણ 238–247 (2nd ખંડ from 242), Mahavakya, Maitreya, Yajnavalkya 248–271. The speaker reads from it but not
   always exactly ("speaker might have changed, but it can be a reference" — Manav). If a new session does not have the
   PDF, ask Manav to attach it again.
 
@@ -105,13 +105,13 @@ Names used below: `VM` = a working folder for this video inside `$SD_WORK` (e.g.
 `DOC` = Google Doc id. All commands run in `$SD_WORK`.
 
 ### C1. Find the video and its Doc
-1. Manav gives a **video number** = the position in the YouTube Upanishad playlist. Open the playlist in a YouTube
-   tab and read the title at that position (titles look like `32. મૈત્રેય્યુપનિષદ્ part 2 & 33. યાજ્ઞવલ્ક્યોપનિષદ્`;
-   the leading numbers are Upanishad numbers, not video numbers).
-2. The **Doc number is not the video number** (the Docs have extras like 38-1/38-2): video 37 → Doc 40,
-   video 38 → Doc 41. Find the Doc by content: list the Drive folder, read the opening of the likely Docs, and match it
-   to the first minute of the video's captions. Tell Manav which Doc you matched.
-3. Check the Doc is "Anyone with the link: Editor" (B1).
+1. Manav gives a **video number** NN. It is the number in the Drive index PDF **"108 Upnishad video series"**
+   (find it with the Drive search; it lists `UPNISHAD -video NN https://youtu.be/<id>` for every video, including
+   38-1/38-2 style splits). The Doc has the same number: **`UPNISHAD -video NN.corrected`** (Drive search
+   `title contains 'UPNISHAD -video NN'`; the `.txt` with the same name is an older raw file — ignore it).
+   (The YouTube playlist position is different: video 40 is the 37th in the playlist. Don't use playlist positions.)
+2. Read the Doc's first paragraphs to know which Upanishad and which part (it usually says what was done "ગઈકાલે").
+3. Check that the Apps Script can edit the Doc (B1).
 4. Save the Doc's current text: in the Sudhar Desk tab `await gasGetText(DOC)` → keep its sha256 (first 16 hex
    chars) — this is the **OLD** hash that protects Manav's edits later. (Or Drive's read_file_content to read.)
    Write it to `VM/doc_orig.txt` (stage it through `bin/getdoc.py` if the text has to come through the cache).
@@ -148,8 +148,10 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
    of a sentence (RULES 12), applies the section-2 spellings (નહી→નહીં …). Every change except removing quotes becomes
    an `auto` ✎ item. (Edit the FIX lists in the script for the new video if needed.)
 2. **Book pages** for this Upanishad: render the PDF pages (`pdftoppm -r 150 -f P -l Q book.pdf p`), OCR them
-   (`python3 t/ocrbook.py gemini-3.8-flash book/ocr p-*.png` — needs Gemini; without credit, read the page images
-   yourself), save the Gujarati text as `book/NAME_gu.txt` and the Devanagari verses via
+   (`python3 t/ocrbook.py gemini-3.8-flash book/ocr p-*.png` — needs Gemini; without credit use Tesseract with the
+   Gujarati + Sanskrit models from github.com/tesseract-ocr/tessdata_best (`guj`, `san`; download from
+   raw.githubusercontent.com, set TESSDATA_PREFIX): `pdftoppm -r 300 -gray`, then `tesseract page.pgm out -l guj+san
+   --psm 6` — good enough for the B reference; check verses by eye or online), save the Gujarati text as `book/NAME_gu.txt` and the Devanagari verses via
    `python3 t/bookverses.py book/NAME.txt book/NAME_verses.json` (Gujarati script via `t/deva2gu.py`).
 3. `python3 t/findmantras.py VM/doc.txt book/NAME_verses.json > VM/mantra_report.txt` — where the speaker recites the
    book's Sanskrit. Also look for shanti paths, Gita verses, stotras, Gayatri etc. by reading the Doc.
@@ -258,5 +260,5 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 |---|---|---|---|
 | શાશ્વત સંવાદ 6–13 | see index.html | | corrected, Manav checked 9–13 |
 | ઉપનિષદ - 1 | sBXs4P2SE2U | અથર્વશિર ઉપનિષદ્ | corrected 29 Oct, Manav finished 30 Oct |
-| ઉપનિષદ - 40 (video 37) | 4Qr-R5LMUh0 | મહાવાક્યોપનિષદ્ & મૈત્રેય્યુપનિષદ્ ૧ | posted 30 Oct (Sarvam + book, no Gemini), 109 ✎ |
-| ઉપનિષદ - 41 (video 38) | wHLe6v2nhNk | મૈત્રેય્યુપનિષદ્ ૨ & યાજ્ઞવલ્ક્યોપનિષદ્ | posted 30 Oct (Sarvam + book, no Gemini), 210 ✎ |
+| ઉપનિષદ - 40 | 4Qr-R5LMUh0 | મહાવાક્યોપનિષદ્ & મૈત્રેય્યુપનિષદ્ ૧ | posted 30 Oct (Sarvam + book, no Gemini), 109 ✎ |
+| ઉપનિષદ - 41 | wHLe6v2nhNk | મૈત્રેય્યુપનિષદ્ ૨ & યાજ્ઞવલ્ક્યોપનિષદ્ | posted 30 Oct (Sarvam + book, no Gemini), 210 ✎ |
