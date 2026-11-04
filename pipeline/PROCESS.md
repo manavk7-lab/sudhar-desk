@@ -215,12 +215,14 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
 5. Last checks on final.txt: no quotation marks or brackets; every paragraph ends in a stop (except the closing
    "જય સચ્ચિદાનંદ" and the line just before a mantra); mantras laid out as in C5.4; sha256 of the text = **NEW**.
 
-### C9b. Book check (when the speaker reads from the book)
-`python3 t/bookcheck.py book/NAME.txt VM/final.txt VM/sar.txt VM/bookdiff.txt "<heading where this video starts>"`
-puts every book clause next to the Doc (D) and Sarvam (S). Finding from video 39: he reads the book's Gujarati
-loosely and in his own words, and after the Sarvam pass D = S almost everywhere — so keep D. Fix only where S agrees
-with the book against D, or where D misspells a term the book prints (અંતરજ્ઞાન→અંતર્જ્ઞાન, અખંડ આકાર→અખંડાકાર,
-અંતરલક્ષ→અંતર્લક્ષ). Apply with mantra_apply.py like the manual fixes, as "likely" ✎ items.
+### C9b. Book wording (when the speaker reads from the book) — Manav, 1 Nov: "always see what is written in book"
+`python3 t/bookalign.py VM/final.txt VM/bookalign.json book/NAME.txt[,book/OTHER.txt] 80` lists every place inside a
+read sentence where the Doc has different words than the book (`sub`), extra words (`extra`, his own additions — keep)
+and book words not in the Doc (`skip`). For each `sub`: if he is reading that sentence, write the book's words and
+spelling, brackets included (his own example: "મંત્રો અને ચિંતન સાધનાના અધમ" → "મંત્રોનું ચિંતન (સાધના) અધમ"), even
+when Sarvam agrees with the Doc. Skip alignment mistakes (a clause matched in the wrong place) and OCR noise — with
+Tesseract OCR, check each word on the page image. Apply with mantra_apply.py as "book" ✎ items (conf likely).
+(`t/bookcheck.py` is the older side-by-side listing with Sarvam.)
 
 ### C10. Post into the Doc (with the hash check)
 1. Stage the text: `python3 bin/putdoc.py post39 VM/final.txt` (cache key `post39`, 6 hours).

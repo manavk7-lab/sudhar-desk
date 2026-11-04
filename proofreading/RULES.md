@@ -72,10 +72,15 @@ is NOT written the way the speaker pronounces it.
   spelling with visarga too (Manav in ઉપનિષદ - 1): ભૂઃ સ્વરૂપ, ભુવઃ સ્વરૂપ, સ્વઃ, મહઃ, આપઃ (the element), જ્યોતિઃ,
   "ૐ ભૂઃ ભુવઃ સ્વઃ". Write the visarga as ઃ (he typed ":" on the phone).
 - If no reliable source can be found, leave the line as it is and put it on the ✎ list to check.
-- The book (બ્રહ્મ વિદ્યા ખંડ PDF, from ઉપનિષદ - 40 on, Manav 30 Oct): the speaker reads the Upanishad and its Gujarati
-  translation from it, though not always exactly. Its Sanskrit helps write the recited mantra (checked against an online
-  source). Its Gujarati helps with names and rare words the recognisers garble, but where he says it differently, his own
-  words stay (JUDGE.md lesson 15).
+- The book (બ્રહ્મ વિદ્યા ખંડ PDF, from ઉપનિષદ - 40 on): the speaker reads the Upanishad and its Gujarati translation
+  from it. Its Sanskrit helps write the recited mantra (checked against an online source).
+- **Where he reads the book's Gujarati, write what the book says** (Manav, 1 Nov, ઉપનિષદ - 41: "always see what is
+  written in book"). His example: the recognisers and the Doc had "મંત્રો અને ચિંતન સાધનાના અધમ છે", the book has
+  "મંત્રોનું ચિંતન (સાધના) અધમ છે" — he wrote the book's words, **including the book's brackets**. So inside a read
+  sentence, a Doc word that differs from the book's word becomes the book's word, even when the recognisers agree with
+  the Doc. Keep his own additions (explanations, repeats, "એટલે કે …") — only words that stand in place of the book's
+  words change. The "no brackets" rule is for his spoken asides; brackets printed in the book stay. Every such change
+  is a "book" ✎ item (likely). Tool: pipeline/t/bookalign.py (JUDGE.md lesson 15).
 - This replaces the old rule "Sanskrit as pronounced" (video 9: સદગુરુ→સદગુરુમ, ગુરુ→ગુરુમ, ભવે→ભવેત, …): verses like
   those are now written in their standard form too (… સદ્ગુરું તં નમામિ).
 
