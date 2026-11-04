@@ -213,6 +213,10 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
    Rule: a full stop needs BOTH a pause and a finished meaning; never a paragraph break inside a sentence.
 4. `python3 t/applypunct.py VM/new_a.txt VM/pc.json VM/final.txt VM/rev_punct.json VM/pc_1_out.json …`
    and carry the items over: `python3 t/fixitems.py VM/new_a.txt VM/final.txt VM/items_pre.json VM/items_all_final.json`
+   **Overlaps:** `python3 t/overlapcheck.py VM/final.txt VM/items_all_final.json` lists ✎ items whose CHANGED text overlaps
+   another item (a manual or punctuation fix made on top of a judge fix). Fold each such pair into one item (alt = the
+   oldest text, cur = the text now), otherwise undoing one in the app breaks the other. Items that only share
+   unchanged context words are harmless. collect_items.py reports items it cannot find ("LOST") — fold those the same way.
    (add the punctuation items from rev_punct.json). Check: every item's `cur` occurs exactly once in final.txt.
 5. Last checks on final.txt: no quotation marks or brackets; every paragraph ends in a stop (except the closing
    "જય સચ્ચિદાનંદ" and the line just before a mantra); mantras laid out as in C5.4; sha256 of the text = **NEW**.
@@ -294,7 +298,7 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 | શાશ્વત સંવાદ 6–13 | see index.html | | corrected, Manav checked 9–13 |
 | ઉપનિષદ - 1 | sBXs4P2SE2U | અથર્વશિર ઉપનિષદ્ | corrected 29 Oct, Manav finished 30 Oct |
 | ઉપનિષદ - 38-1 | fWU6DWzNHN0 | મણ્ડલબ્રાહ્મણોપનિષદ્ ૧ (89 s, the start of the introduction) | posted 4 Nov (Sarvam + book), 4 ✎ |
-| ઉપનિષદ - 38-2 | dhb0yGKvDkI | મણ્ડલબ્રાહ્મણોપનિષદ્ ૨ (intro to બ્રાહ્મણ 2 ખંડ 1) | 4 Nov, see below |
+| ઉપનિષદ - 38-2 | dhb0yGKvDkI | મણ્ડલબ્રાહ્મણોપનિષદ્ ૨ (intro to બ્રાહ્મણ 2 ખંડ 1) | posted 4 Nov (Sarvam + book typed from the page images, no Gemini), 215 ✎ |
 | ઉપનિષદ - 39 | 6AO_nSW_Rig | મણ્ડલબ્રાહ્મણોપનિષદ્ ૩ (2nd ખંડ to the end) | posted 31 Oct (Sarvam + book, no Gemini), 182 ✎; Manav listening (4 Nov) |
 | ઉપનિષદ - 40 | 4Qr-R5LMUh0 | મહાવાક્યોપનિષદ્ & મૈત્રેય્યુપનિષદ્ ૧ | posted 30 Oct (Sarvam + book, no Gemini), 109 ✎; Manav edited (1 Nov): of 99 applied changes he undid 1, changed 7 further |
 | ઉપનિષદ - 41 | wHLe6v2nhNk | મૈત્રેય્યુપનિષદ્ ૨ & યાજ્ઞવલ્ક્યોપનિષદ્ | posted 30 Oct (Sarvam + book, no Gemini), 210 ✎; Manav finished (3 Nov): of 186 applied changes he undid 4, changed 6 further; took out the empty lines around mantras (RULES 5) |
