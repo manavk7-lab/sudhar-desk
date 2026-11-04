@@ -110,6 +110,8 @@ Names used below: `VM` = a working folder for this video inside `$SD_WORK` (e.g.
    38-1/38-2 style splits). The Doc has the same number: **`UPNISHAD -video NN.corrected`** (Drive search
    `title contains 'UPNISHAD -video NN'`; the `.txt` with the same name is an older raw file — ignore it).
    (The YouTube playlist position is different: video 40 is the 37th in the playlist. Don't use playlist positions.)
+1b. **Check the Doc's Drive folder** (get_file_metadata → parentId): Docs to correct are in "Upanishad_Series_corrected";
+   a Doc in **"total final"** is finished by Manav — never change it (Manav, 4 Nov: 40 and 41 "finished so not to touch").
 2. Read the Doc's first paragraphs to know which Upanishad and which part (it usually says what was done "ગઈકાલે").
 3. Check that the Apps Script can edit the Doc (B1).
 4. Save the Doc's current text: in the Sudhar Desk tab `await gasGetText(DOC)` → keep its sha256 (first 16 hex
@@ -300,5 +302,5 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 | ઉપનિષદ - 38-1 | fWU6DWzNHN0 | મણ્ડલબ્રાહ્મણોપનિષદ્ ૧ (89 s, the start of the introduction) | posted 4 Nov (Sarvam + book), 4 ✎ |
 | ઉપનિષદ - 38-2 | dhb0yGKvDkI | મણ્ડલબ્રાહ્મણોપનિષદ્ ૨ (intro to બ્રાહ્મણ 2 ખંડ 1) | posted 4 Nov (Sarvam + book typed from the page images, no Gemini), 215 ✎ |
 | ઉપનિષદ - 39 | 6AO_nSW_Rig | મણ્ડલબ્રાહ્મણોપનિષદ્ ૩ (2nd ખંડ to the end) | posted 31 Oct (Sarvam + book, no Gemini), 182 ✎; Manav listening (4 Nov) |
-| ઉપનિષદ - 40 | 4Qr-R5LMUh0 | મહાવાક્યોપનિષદ્ & મૈત્રેય્યુપનિષદ્ ૧ | posted 30 Oct (Sarvam + book, no Gemini), 109 ✎; Manav edited (1 Nov): of 99 applied changes he undid 1, changed 7 further |
-| ઉપનિષદ - 41 | wHLe6v2nhNk | મૈત્રેય્યુપનિષદ્ ૨ & યાજ્ઞવલ્ક્યોપનિષદ્ | posted 30 Oct (Sarvam + book, no Gemini), 210 ✎; Manav finished (3 Nov): of 186 applied changes he undid 4, changed 6 further; took out the empty lines around mantras (RULES 5) |
+| ઉપનિષદ - 40 | 4Qr-R5LMUh0 | મહાવાક્યોપનિષદ્ & મૈત્રેય્યુપનિષદ્ ૧ | posted 30 Oct (Sarvam + book, no Gemini), 109 ✎; Manav FINISHED (in "total final", do not touch): of 99 applied changes he undid 1, changed 7 further |
+| ઉપનિષદ - 41 | wHLe6v2nhNk | મૈત્રેય્યુપનિષદ્ ૨ & યાજ્ઞવલ્ક્યોપનિષદ્ | posted 30 Oct (Sarvam + book, no Gemini), 210 ✎; Manav FINISHED (in "total final", do not touch): of 186 applied changes he undid 4, changed 6 further; took out the empty lines around mantras (RULES 5) |

@@ -22,3 +22,5 @@ commands), then `proofreading/RULES.md` (what to write) and `proofreading/JUDGE.
 - Never change the speaker's words to "better Gujarati"; no quotation marks or brackets in transcripts.
 - Never try to get around YouTube's bot checks (other yt-dlp clients etc.); use Manav's own browser.
 - Ask Manav before anything that cannot be undone.
+- Never change a Doc Manav has finished: those are in his Drive folder **"total final"** (ઉપનિષદ - 40 and 41 as of
+  4 Nov). Docs still to correct are in "Upanishad_Series_corrected". Check the Doc's folder before any post.
