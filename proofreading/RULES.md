@@ -64,6 +64,10 @@ is NOT written the way the speaker pronounces it.
       ૐ શાન્તિઃ શાન્તિઃ શાન્તિઃ ॥
 
   (It had been "ૐ ભદ્રમ કર્ણેભિહ શૃણુયામ દેવાહ, ભદ્રમ પશ્યેમાક્ષભી યત્રાહ. … ૐ શાંતિ શાંતિહ શાંતિહી.")
+- **Single line breaks** (Manav, ઉપનિષદ - 41 and 39, 3–4 Nov): he took out every empty line we had put between mantra
+  lines and between a mantra and the text right before or after it ("જે વાત છે:⏎ધનવૃદ્ધા … ચ ।⏎તે સર્વે … ॥⏎જે જ્ઞાનમાં …").
+  An empty line stays only where a new part of the talk starts after the mantra. If the speaker adds ૐ at the end of the
+  shanti, keep it: ૐ શાન્તિઃ શાન્તિઃ શાન્તિઃ ૐ ॥ (he wrote that in ઉપનિષદ - 39).
 - Write only what the speaker recites. If he says half a verse, write that half in the standard text; don't add lines he
   skipped, and keep his own Gujarati words in between (આગળ કહે છે, …).
 - A short mantra phrase inside a Gujarati sentence gets the standard spelling where it stands (તત્સવિતુર્વરેણ્યં,
@@ -81,6 +85,14 @@ is NOT written the way the speaker pronounces it.
   the Doc. Keep his own additions (explanations, repeats, "એટલે કે …") — only words that stand in place of the book's
   words change. The "no brackets" rule is for his spoken asides; brackets printed in the book stay. Every such change
   is a "book" ✎ item (likely). Tool: pipeline/t/bookalign.py (JUDGE.md lesson 15).
+- **What the book is for, measured** (Manav's own passes, 4 Nov): the book fixes what was MISHEARD in a read sentence — a
+  wrong or garbled word where the book's word sounds alike (પ્રણવવિધ→પ્રણવવિદ, ઉપયુક્ત→ઉપર્યુક્ત, પિત્ત વર્ણ→પીત વર્ણ,
+  અંતરલક્ષ→અંતર્લક્ષ્ય, his own example above). It is NOT a reason to restyle words the speaker really said: in ઉપનિષદ - 39
+  he passed 40 spots where the Doc and the book differ only in wording or spelling (હંમેશા/હંમેશાં, રહેલા/રહેલ,
+  બંને/બંનેય, પર/ઉપર, થયા પછીથી/ત્યારબાદ, નર્ક/નરક, મહાન/મહાન્, a bracket around words already right) and changed none;
+  in ઉપનિષદ - 41 he undid one book word he did not hear (ફળરૂપ → ફળ રૂપે) and deleted book words the speaker skipped.
+  So: digits stay digits, no halant or anusvara added for the book's sake, દ્રષ્ટિ stays — but Sanskrit terms still get
+  their spelling and visarga (શાંભવી, ચતુઃપીઠ, પ્રાતઃકાળ, નિઃશ્વાસ).
 - This replaces the old rule "Sanskrit as pronounced" (video 9: સદગુરુ→સદગુરુમ, ગુરુ→ગુરુમ, ભવે→ભવેત, …): verses like
   those are now written in their standard form too (… સદ્ગુરું તં નમામિ).
 

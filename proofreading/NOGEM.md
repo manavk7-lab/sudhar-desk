@@ -5,7 +5,8 @@ Gemini was not available for these two videos (the account's credit ran out), so
 - **Y** = YouTube's own captions (info only). For ઉપનિષદ - 41 the Doc itself was made from these captions, so Y agreeing with
   the Doc proves nothing there. For ઉપનિષદ - 40 the Doc was edited more, so Y is a weak second opinion;
 - **B** = the book (બ્રહ્મ વિદ્યા ખંડ) when the speaker is reading its Gujarati translation — in a read sentence the
-  book's wording wins (JUDGE.md lesson 15, Manav 1 Nov).
+  book's wording wins where the Doc misheard it (JUDGE.md lesson 15, Manav 1 Nov; refined 4 Nov: a normal word he
+  really said, which S also heard, stays).
 
 With only one recogniser, be stricter than usual (JUDGE.md lesson 11: one engine alone was right only 2–4% of the time):
 - **fix** only when the Doc's word is clearly wrong (no sense, wrong grammar, a garbled name or term) AND S's word fits, or

@@ -193,8 +193,10 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
    `{"alt","cur","why","conf"}` and are applied with `python3 t/mantra_apply.py VM/new.txt VM/manual.json VM/new_o.txt VM/rev_manual.json`.
 
 ### C8. Mantras and આગળે
-1. `python3 t/mantra_apply.py VM/new_o.txt VM/mantra_draft.json VM/new_m.txt VM/rev_mantra.json nn`
-   (`nn` = blank line between mantra lines, the Docs' layout).
+1. `python3 t/mantra_apply.py VM/new_o.txt VM/mantra_draft.json VM/new_m.txt VM/rev_mantra.json`
+   — single line breaks between the mantra lines and around the mantra (RULES 5: Manav removed the empty lines in
+   ઉપનિષદ - 39 and 41, 3–4 Nov). Do not pass `nn` (the old layout with an empty line between the lines). Put the text just
+   before the mantra into `alt`/`cur` too, so `cur` can start "…થાય છે:\nૐ …".
 2. **આગળે** (RULES 1, JUDGE 14): after અહીંયા / અહીં / ત્યાં / જ્યાં / ક્યાં meaning "at that place", the speaker almost
    always says આગળે though every engine writes આગળ. Find every such spot by reading, write `VM/agale_draft.json`
    items (conf `likely`) and apply: `python3 t/mantra_apply.py VM/new_m.txt VM/agale_draft.json VM/new_a.txt VM/rev_agale.json`.
@@ -210,7 +212,7 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
    and long pauses without a stop. Judge it with sub-agents using `proof/PUNCT.md` (→ `VM/pc_N_out.json`).
    Rule: a full stop needs BOTH a pause and a finished meaning; never a paragraph break inside a sentence.
 4. `python3 t/applypunct.py VM/new_a.txt VM/pc.json VM/final.txt VM/rev_punct.json VM/pc_1_out.json …`
-   and carry the items over: `python3 t/fixitems.py VM/new_a.txt VM/final.txt VM/items_final.json VM/items_all_final.json`
+   and carry the items over: `python3 t/fixitems.py VM/new_a.txt VM/final.txt VM/items_pre.json VM/items_all_final.json`
    (add the punctuation items from rev_punct.json). Check: every item's `cur` occurs exactly once in final.txt.
 5. Last checks on final.txt: no quotation marks or brackets; every paragraph ends in a stop (except the closing
    "જય સચ્ચિદાનંદ" and the line just before a mantra); mantras laid out as in C5.4; sha256 of the text = **NEW**.
@@ -223,6 +225,14 @@ spelling, brackets included (his own example: "મંત્રો અને ચ�
 when Sarvam agrees with the Doc. Skip alignment mistakes (a clause matched in the wrong place) and OCR noise — with
 Tesseract OCR, check each word on the page image. Apply with mantra_apply.py as "book" ✎ items (conf likely).
 (`t/bookcheck.py` is the older side-by-side listing with Sarvam.)
+**Refined 4 Nov from Manav's own passes (RULES 5, JUDGE 15):** take the book's word only where the Doc MISHEARD it (a
+wrong or garbled word that sounds like the book's: પ્રણવવિધ→પ્રણવવિદ, ઉપયુક્ત→ઉપર્યુક્ત, અંતરલક્ષ→અંતર્લક્ષ્ય). Leave
+words he really said (રહેલા/રહેલ, બંને/બંનેય, પર/ઉપર, કહેવામાં આવે છે/કહે છે) and pure spelling (anusvara, halant,
+દ્રષ્ટિ/દૃષ્ટિ, મંડળ/મંડલ, digits/words) — in ઉપનિષદ - 39 he changed none of 40 such spots. A clear difference in a
+content word that Sarvam confirms becomes a `check` item (cur = his words, alt = the book's) so one key switches it.
+Better: write a clean book text by reading the page images (`book/NAME_gu_clean.txt`, one verse per line) — the
+Tesseract text is too noisy for word-level alignment — and run bookalign.py on the Doc before the judges (it shows
+which sentences are read), then again on new.txt after them.
 
 ### C10. Post into the Doc (with the hash check)
 1. Stage the text: `python3 bin/putdoc.py post39 VM/final.txt` (cache key `post39`, 6 hours).
@@ -283,6 +293,8 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 |---|---|---|---|
 | શાશ્વત સંવાદ 6–13 | see index.html | | corrected, Manav checked 9–13 |
 | ઉપનિષદ - 1 | sBXs4P2SE2U | અથર્વશિર ઉપનિષદ્ | corrected 29 Oct, Manav finished 30 Oct |
-| ઉપનિષદ - 39 | 6AO_nSW_Rig | મણ્ડલબ્રાહ્મણોપનિષદ્ ૩ (2nd ખંડ to the end) | posted 31 Oct (Sarvam + book, no Gemini), 182 ✎ |
-| ઉપનિષદ - 40 | 4Qr-R5LMUh0 | મહાવાક્યોપનિષદ્ & મૈત્રેય્યુપનિષદ્ ૧ | posted 30 Oct (Sarvam + book, no Gemini), 109 ✎ |
-| ઉપનિષદ - 41 | wHLe6v2nhNk | મૈત્રેય્યુપનિષદ્ ૨ & યાજ્ઞવલ્ક્યોપનિષદ્ | posted 30 Oct (Sarvam + book, no Gemini), 210 ✎ |
+| ઉપનિષદ - 38-1 | fWU6DWzNHN0 | મણ્ડલબ્રાહ્મણોપનિષદ્ ૧ (89 s, the start of the introduction) | posted 4 Nov (Sarvam + book), 4 ✎ |
+| ઉપનિષદ - 38-2 | dhb0yGKvDkI | મણ્ડલબ્રાહ્મણોપનિષદ્ ૨ (intro to બ્રાહ્મણ 2 ખંડ 1) | 4 Nov, see below |
+| ઉપનિષદ - 39 | 6AO_nSW_Rig | મણ્ડલબ્રાહ્મણોપનિષદ્ ૩ (2nd ખંડ to the end) | posted 31 Oct (Sarvam + book, no Gemini), 182 ✎; Manav listening (4 Nov) |
+| ઉપનિષદ - 40 | 4Qr-R5LMUh0 | મહાવાક્યોપનિષદ્ & મૈત્રેય્યુપનિષદ્ ૧ | posted 30 Oct (Sarvam + book, no Gemini), 109 ✎; Manav edited (1 Nov): of 99 applied changes he undid 1, changed 7 further |
+| ઉપનિષદ - 41 | wHLe6v2nhNk | મૈત્રેય્યુપનિષદ્ ૨ & યાજ્ઞવલ્ક્યોપનિષદ્ | posted 30 Oct (Sarvam + book, no Gemini), 210 ✎; Manav finished (3 Nov): of 186 applied changes he undid 4, changed 6 further; took out the empty lines around mantras (RULES 5) |
