@@ -15,6 +15,7 @@ pieces=[];prev=0;newpos={}
 for pos,end,p,b,d in ch:
     sep=txt[pos:end]
     if '\n' in sep: continue
+    if re.search(r'[:;]',sep): print('kept the : or ; at',repr(txt[max(0,pos-25):end+15])); continue   # never write .: or .;
     core=re.sub(r'[.,?!]','',sep)
     if not re.search(r'\s',core): core=' '+core.strip()
     pieces.append(txt[prev:pos]); start=sum(len(x) for x in pieces); newsep=p+core
