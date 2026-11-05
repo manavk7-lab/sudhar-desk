@@ -15,7 +15,7 @@ for f,tag in src:
         it.setdefault('kind','applied'); it.setdefault('conf','sure'); it.setdefault('heard',None)
         if it['cur'].strip()==it.get('alt','').strip(): same+=1; continue   # a paragraph join changes only whitespace: keep it
         it.setdefault('id',hid(norm(it['cur']),norm(it.get('alt',''))))
-        m=list(re.finditer(flex(it['cur']),text)) if it['cur'].strip() else []
+        m=list(re.finditer('(?='+flex(it['cur'])+')',text)) if it['cur'].strip() else []
         if len(m)!=1: lost.append((f,it['cur'][:70],len(m))); continue
         out.append(it)
 json.dump(out,open(f'{d}/items_pre.json','w',encoding='utf-8'),ensure_ascii=False,indent=0)

@@ -53,7 +53,7 @@ def uniq(text,s,e):
     a,b=s,e
     for _ in range(12):
         snip=text[a:b]
-        if snip.strip() and len(re.findall(flex(snip),text))==1 and len(snip.split())>=3: return a,b
+        if snip.strip() and len(re.findall('(?='+flex(snip)+')',text))==1 and len(snip.split())>=3: return a,b
         # grow both sides by one word
         na=text.rfind(' ',0,max(0,a-1)); a=0 if na<0 else na+1
         nb=text.find(' ',b+1); b=len(text) if nb<0 else nb

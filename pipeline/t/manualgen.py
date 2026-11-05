@@ -7,9 +7,9 @@ t=open(sys.argv[1]).read(); spec=json.load(open(sys.argv[2])); out=[]; bad=[]
 def flex(s): return r'\s+'.join(re.escape(x) for x in s.split())
 for pat,rep,why,conf,mode in spec:
     if mode=='once':
-        ms=list(re.finditer(flex(pat),t))
+        ms=list(re.finditer('(?=('+flex(pat)+'))',t))
         if len(ms)!=1: bad.append((pat,len(ms))); continue
-        s,e=ms[0].span(); a=t[s:e]
+        s,e=ms[0].span(1); a=t[s:e]
         out.append({'alt':a,'cur':rep,'why':why,'conf':conf}); t=t[:s]+rep+t[e:]; continue
     i=0; n=0
     while True:
@@ -27,7 +27,7 @@ for pat,rep,why,conf,mode in spec:
             else:
                 j=t.find(' ',y,le); a1=j if j>=0 else le
             a=t[a0:a1]
-            if t.count(a)==1: break
+            if len(re.findall('(?='+re.escape(a)+')',t))==1: break
         cur=re.sub(pat,rep,a)  # every match inside this context goes into the same item
         out.append({'alt':a,'cur':cur,'why':why,'conf':conf}); t=t[:a0]+cur+t[a1:]; i=a0+len(cur); n+=1
     if n==0: bad.append((pat,0))

@@ -10,8 +10,8 @@ def flex(s): return r'\s+'.join(re.escape(x) for x in s.split())
 start={s:i for i,(s,e,w) in enumerate(TB)}
 out=[];moved=0;lost=0
 for it in items:
-    if len(re.findall(flex(it['cur']),A))==1: out.append(it); continue
-    m=list(re.finditer(flex(it['cur']),B))
+    if len(re.findall('(?='+flex(it['cur'])+')',A))==1: out.append(it); continue
+    m=list(re.finditer('(?='+flex(it['cur'])+')',B))
     if len(m)!=1 or m[0].start() not in start: lost+=1; print('lost',it['cur'][:60]); continue
     i=start[m[0].start()]; n=len(it['cur'].split())
     cur_old=it['cur'].split(); cur_new=TA[i:i+n]
@@ -23,7 +23,7 @@ for it in items:
     while s<min(len(cur_old),len(alt))-p and cur_old[-1-s]==alt[-1-s]: s+=1
     alt_new=cur_new[:p]+alt[p:len(alt)-s]+(cur_new[len(cur_new)-s:] if s else [])
     it=dict(it); it['cur']=' '.join(cur_new); it['alt']=' '.join(alt_new)
-    if len(re.findall(flex(it['cur']),A))!=1: lost+=1; print('not unique now',it['cur'][:60]); continue
+    if len(re.findall('(?='+flex(it['cur'])+')',A))!=1: lost+=1; print('not unique now',it['cur'][:60]); continue
     out.append(it); moved+=1
 json.dump(out,open(sys.argv[4],'w',encoding='utf-8'),ensure_ascii=False,indent=0)
 print('items',len(items),'carried over',moved,'lost',lost)

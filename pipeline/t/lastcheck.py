@@ -20,6 +20,6 @@ for m in re.finditer(r'[।॥] *\n\n',t):
     ctx=t[m.end():m.end()+40]
     print('note: empty line after a mantra line ->',repr(t[m.start()-20:m.end()+20]))
 for m in re.finditer(r'\n\n *ૐ',t): print('note: empty line before ૐ ->',repr(t[m.start()-30:m.end()+10]))
-lost=[it['cur'][:60] for it in P if it.get('cur','').strip() and len(re.findall(flex(it['cur']),t))!=1]
+lost=[it['cur'][:60] for it in P if it.get('cur','').strip() and len(re.findall('(?='+flex(it['cur'])+')',t))!=1]
 if lost: bad+=1; print('ITEMS not found once:',len(lost),lost[:10])
 print('paragraphs',sum(1 for l in lines if l.strip()),'items',len(P),'problems',bad,'sha',hashlib.sha256(t.encode()).hexdigest()[:16])

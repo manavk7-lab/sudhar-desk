@@ -5,7 +5,7 @@ d=json.load(open(p,encoding='utf-8')) if os.path.exists(p) else {'v':1,'yt':os.p
 new=open(NT,encoding='utf-8').read(); N=json.load(open(NR,encoding='utf-8'))
 def flex(s): return r'\s+'.join(re.escape(x) for x in s.split())
 def find(s):
-    m=list(re.finditer(flex(s),new)) if s.strip() else []
+    m=list(re.finditer('(?='+flex(s)+')',new)) if s.strip() else []
     return m[0].start() if len(m)==1 else None
 keep=[];lost=0
 for it in d['items']:
