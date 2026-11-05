@@ -7,7 +7,17 @@ vm,src,out,outr,tsv=sys.argv[1:6]
 t=open(src,encoding='utf-8').read()
 G='઀-૿'
 # per-Doc fixes: (exact old, new, why)
-FIX={'vm1':[
+FIX={'v129':[
+  ('હૃદયને બાળનારી (કારણ કે પૂરી કોઈ કરે નહીં એટલે અજંપો થાય).','હૃદયને બાળનારી, કારણ કે પૂરી કોઈ કરે નહીં એટલે અજંપો થાય.','no brackets (aside spoken as is)'),
+  ('વિભૂષિત થઈને (મૈત્રી એમનું આભૂષણ છે) બધાના સાથે','વિભૂષિત થઈને, મૈત્રી એમનું આભૂષણ છે, બધાના સાથે','no brackets (aside spoken as is)'),
+  ('ચિંતન કરવું જોઈએ. (You must make an effort to think about it very seriously.) અકર્મમાં','ચિંતન કરવું જોઈએ. યુ મસ્ટ મેક એન એફર્ટ ટુ થિંક અબાઉટ ઇટ વેરી સિરિયસલી. અકર્મમાં','no brackets; his English sentence in Gujarati script (check by ear)'),
+  ('સિંચન જેવું (પાઘડી બાંધી હતી ને આપણા ગજસુગોમાર).','સિંચન જેવું, પાઘડી બાંધી હતી ને આપણા ગજસુગોમાર.','no brackets (aside spoken as is)'),
+  ('અંગારાઓ પર આળોટવું (એટલે આળોટવું) જેને','અંગારાઓ પર આળોટવું, એટલે આળોટવું, જેને','no brackets (aside spoken as is)'),
+ ],'v130':[
+  ('મેરુ પર્વતનું (કમળની પાંખડી કેટલી? મેરુ પર્વત કેવો?) એક ભ્રમરના','મેરુ પર્વતનું, કમળની પાંખડી કેટલી? મેરુ પર્વત કેવો? એક ભ્રમરના','no brackets (aside spoken as is)'),
+  ('મુક્ત થઈ જાય (દોષ કયા છે? રાગ અને દ્વેષ, અને આ જે સંકલ્પ ઊભો થાય છે તે), એ દોષોથી','મુક્ત થઈ જાય, દોષ કયા છે? રાગ અને દ્વેષ, અને આ જે સંકલ્પ ઊભો થાય છે તે, એ દોષોથી','no brackets (aside spoken as is)'),
+  ('ઇલેક્ટ્રોએન્સેફાલોગ્રાફ (EEG).','ઇલેક્ટ્રોએન્સેફાલોગ્રાફ, ઈઈજી.','no brackets; English letters in Gujarati script'),
+ ],'vm1':[
   ('જ્ઞાન યજ્ઞ દ્વારા (આજે થાય છે તેને જ્ઞાન યજ્ઞ કીધો) યજ્ઞ રૂપ','જ્ઞાન યજ્ઞ દ્વારા, આજે થાય છે તેને જ્ઞાન યજ્ઞ કીધો, યજ્ઞ રૂપ','no brackets (aside spoken as is)'),
   ('દ્રુત ક્રીડા (ક્રીડા એટલે કે જુગાર) અને','દ્રુત ક્રીડા, ક્રીડા એટલે કે જુગાર, અને','no brackets (aside spoken as is)'),
   ('રત રહેવાથી.\n\nજ્યારે સત્,','રત રહેવાથી જ્યારે સત્,','paragraph joined: the sentence carries on'),
@@ -58,7 +68,7 @@ t=re.sub(r"(?<![{0}])'|'(?![{0}])".format(G),'',t)   # 'પરમાત્મા
 t=re.sub(r'[ \t]+',' ',t); t=re.sub(r' +\n','\n',t); t=re.sub(r'\n +','\n',t)
 t=re.sub(r' ([,.?!:;])',r'\1',t)
 spans=[]
-for old,new,why in FIX[vm]:
+for old,new,why in FIX.get(vm,[]):
     old2=re.sub(r'["“”]','',old)
     n=t.count(old2); assert n==1,(old2,n)
     i=t.find(old2); t=t[:i]+new+t[i+len(old2):]

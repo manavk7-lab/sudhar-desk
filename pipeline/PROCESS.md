@@ -274,6 +274,9 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
   ("SILENT piece, not sent"). Still: one minute after starting, decode the first parts and check they are not silent.
 - An automatic safety check refuses to put the Apps Script URL or keys into a YouTube tab → use the relay (C2.0).
 - Background jobs started with `&` are killed after a few minutes → always the Bash tool's run_in_background.
+  Its default time limit is 30 minutes: give the collector and stream2.py `timeout` 7200000 (2 h), or they are stopped
+  in the middle of a long recording (5 Nov, Maha part 3). Both resume when restarted (saved parts and finished
+  `.sar.txt` pieces are skipped), so restart them between Sarvam pieces.
 - yt-dlp from the cloud is blocked by YouTube's bot check; do NOT try other player clients. Use the browser (C2, C3).
 - `finalvid.py` ignores candidate decisions unless they are merged into `VM/cands_out.json`.
 - A judge sometimes puts a word on the wrong side of a full stop (a closing કે/છે, or તો કે / અને that open the next
