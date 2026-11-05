@@ -193,6 +193,14 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
    "standardise"; a closing કે/છે put after a full stop; a fix that copies book words he did not say.
 4. Fixes a judge cannot express (a word moved across a full stop, a restatement) go in `VM/manual.json` as
    `{"alt","cur","why","conf"}` and are applied with `python3 t/mantra_apply.py VM/new.txt VM/manual.json VM/new_o.txt VM/rev_manual.json`.
+   Easier: write the fixes as rows `[pattern, replacement, why, conf, mode]` in `VM/manual_spec.json` (mode `once` = the
+   exact text, which must occur once; `all` = a regex, every match its own item) and build the items on the current text:
+   `python3 t/manualgen.py VM/new.txt VM/manual_spec.json VM/manual.json`. DROP a judge decision that the manual row
+   replaces (two items changing the same words break each other in the app).
+   **Paragraph breaks inside a sentence** (RULES 12): `python3 t/parabreaks.py VM/doc.txt VM/sar.txt` lists every
+   paragraph break where Sarvam reads the words across it as one sentence. Read each: join the real ones (the next
+   paragraph starts with a fragment: "…તેને તારે પ્રગટ.⏎⏎કરવી પડશે …") with a manual row; a new sentence of the book
+   stays. Maha part 3 had 17 such breaks.
 
 ### C8. Mantras and આગળે
 1. `python3 t/mantra_apply.py VM/new_o.txt VM/mantra_draft.json VM/new_m.txt VM/rev_mantra.json`
@@ -222,6 +230,11 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
    (add the punctuation items from rev_punct.json). Check: every item's `cur` occurs exactly once in final.txt.
 5. Last checks on final.txt: no quotation marks or brackets; every paragraph ends in a stop (except the closing
    "જય સચ્ચિદાનંદ" and the line just before a mantra); mantras laid out as in C5.4; sha256 of the text = **NEW**.
+   `python3 t/lastcheck.py VM/final.txt VM/items_all_final.json` does these checks, and
+   `python3 t/revertcheck.py VM/final.txt VM/items_all_final.json VM/doc_orig.txt` undoes every ✎ item and compares with
+   the Doc as read: it must print 0 unexplained diffs (then every change is on the ✎ list and can be undone).
+   Watch applypunct next to a ":" — it once wrote "છે.:"; and fold a punctuation item into a check item or a join it
+   touches (or drop the punctuation change).
 
 ### C9b. Book wording (when the speaker reads from the book) — Manav, 1 Nov: "always see what is written in book"
 `python3 t/bookalign.py VM/final.txt VM/bookalign.json book/NAME.txt[,book/OTHER.txt] 80` lists every place inside a
