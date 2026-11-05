@@ -13,7 +13,7 @@ for f,tag in src:
     for it in json.load(open(p,encoding='utf-8')):
         it=dict(it)
         it.setdefault('kind','applied'); it.setdefault('conf','sure'); it.setdefault('heard',None)
-        if norm(it['cur'])==norm(it.get('alt','')): same+=1; continue
+        if it['cur'].strip()==it.get('alt','').strip(): same+=1; continue   # a paragraph join changes only whitespace: keep it
         it.setdefault('id',hid(norm(it['cur']),norm(it.get('alt',''))))
         m=list(re.finditer(flex(it['cur']),text)) if it['cur'].strip() else []
         if len(m)!=1: lost.append((f,it['cur'][:70],len(m))); continue

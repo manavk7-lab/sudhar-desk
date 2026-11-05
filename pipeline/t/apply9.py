@@ -65,7 +65,7 @@ for st,ln,oldseg,txt,j,it in spans:
     a,b=uniq(new,st,st+ln)
     cur=new[a:b]; alt=new[a:st]+oldseg+new[st+ln:b]
     if txt=='' : alt=new[a:st]+oldseg+new[st:b]
-    items.append({'id':hid(cur,alt),'cur':cur.strip(),'alt':re.sub(r'\s+',' ',alt).strip(),'kind':'applied','conf':'sure' if j['d']=='fix' else 'likely',
+    items.append({'id':hid(cur,alt),'cur':cur.strip(),'alt':re.sub(r'[ \t]+',' ',alt).strip(),'kind':'applied','conf':'sure' if j['d']=='fix' else 'likely',
                   'why':j.get('why',''),'heard':heard(it),'t':it.get('t')})
 # ask items: locate original span in new text (shifted)
 def newpos(p):
@@ -76,7 +76,7 @@ def newpos(p):
 for pos,end,txt,j,it in ask:
     s=newpos(pos); e=s+(end-pos)
     a,b=uniq(new,s,e); cur=new[a:b]; alt=new[a:s]+txt+new[e:b]
-    items.append({'id':hid(cur,alt),'cur':cur.strip(),'alt':re.sub(r'\s+',' ',alt).strip(),'kind':'check','conf':'unsure','why':j.get('why',''),'heard':heard(it),'t':it.get('t')})
+    items.append({'id':hid(cur,alt),'cur':cur.strip(),'alt':re.sub(r'[ \t]+',' ',alt).strip(),'kind':'check','conf':'unsure','why':j.get('why',''),'heard':heard(it),'t':it.get('t')})
 json.dump(items,open(out_rev,'w',encoding='utf-8'),ensure_ascii=False,indent=0)
 import collections
 print('applied',len(apply),collections.Counter(e[3]['d'] for e in apply),'ask',len(ask),'chars',len(doc),'->',len(new))
