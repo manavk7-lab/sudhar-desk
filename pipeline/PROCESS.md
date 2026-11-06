@@ -320,3 +320,24 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 | ઉપનિષદ - 39 | 6AO_nSW_Rig | મણ્ડલબ્રાહ્મણોપનિષદ્ ૩ (2nd ખંડ to the end) | posted 31 Oct (Sarvam + book, no Gemini), 182 ✎; Manav listening (4 Nov) |
 | ઉપનિષદ - 40 | 4Qr-R5LMUh0 | મહાવાક્યોપનિષદ્ & મૈત્રેય્યુપનિષદ્ ૧ | posted 30 Oct (Sarvam + book, no Gemini), 109 ✎; Manav FINISHED (in "total final", do not touch): of 99 applied changes he undid 1, changed 7 further |
 | ઉપનિષદ - 41 | wHLe6v2nhNk | મૈત્રેય્યુપનિષદ્ ૨ & યાજ્ઞવલ્ક્યોપનિષદ્ | posted 30 Oct (Sarvam + book, no Gemini), 210 ✎; Manav FINISHED (in "total final", do not touch): of 186 applied changes he undid 4, changed 6 further; took out the empty lines around mantras (RULES 5) |
+
+## Part G. A video with no Doc and no YouTube captions (ઉપનિષદ - 131, 5–6 Nov)
+YouTube said "captions unavailable", so there was no Doc. What worked:
+1. Record as usual, but run the stream with `SARTS=1` (Sarvam with timestamps; same price). Add the R.map sampler in each
+   tab (recording time vs video time) — for 131 the drift stayed under 0.1 s, so video time = START + recording time.
+2. `t/sarts.py audio/mNNN VM key:START,…` → `VM/sarw.json` (tokens with times placed on the speech, pauses at word
+   boundaries), `VM/sar.txt`, `VM/seams.txt` (check the joins between recordings). `t/sarparas.py` → `VM/doc_orig.txt`
+   (paragraphs at long pauses after a sentence end, ~90 words) and the word-time file `sync/YT.tsv`.
+3. `t/stageA.py` rows (fillers, words split by a stop, RULES 2 spellings, **જોવે → જોઈએ**, જાઓ → જાવ) → manualgen →
+   `VM/doc.txt`; save the items as `VM/backbone_items.json` (kind auto). Run cands2 AFTER any hand edit of doc.txt
+   (its positions; a one-character edit once shifted 312 candidates and corrupted the applied ones).
+4. Proofreading agents (`proofreading/PROOF1.md`; `t/mkproof.py` splits, `t/proof2spec.py` turns answers into rows;
+   my review goes in `VM/proof_override.json`: drop / d / alt). Then finalvid (j_kept.json = []), manualgen, mantras,
+   આગળે, punctuation as in C9.
+5. Book: type the pages from the images with agents (`gk/clean/BRIEF.md`, [S]/[G] lines), `t/bookalign.py` on the final
+   text, `t/bookfilter.py` keeps real word differences, agents decide (`proofreading/BOOKJUDGE.md`), `t/bookapply.py`.
+6. Check items from the agents' "ask" answers: `t/mkchecks.py` on the final text. revertcheck must give 0 diffs.
+7. Make the Doc in the series folder with the Drive connector (account upnishad321) AND share it with
+   **manavk7@gmail.com as editor** — the Apps Script runs as manavk7: without edit access reads work, an empty save
+   "works", and every real save fails with "Failed to fetch". Then post with the hash check (OLD = e3b0c44298fc1c14,
+   the sha of an empty Doc).
