@@ -261,6 +261,17 @@ which sentences are read), then again on new.txt after them.
    it back and checks it is NEW. Poll `window.__jobPost` until `st:'done'` (`changed` / `verify-mismatch` / `err` =
    stop and look). A javascript_tool call times out after 45 s, so never wait longer than ~30 s in one call.
 3. Any posted version can be undone from the Doc's version history (File › Version history).
+4. **Without the cache key in the browser (6 Nov, from ઉપનિષદ - 12 on).** Claude must never read the cache key into its
+   own context, so a post no longer goes through getcap. Instead inject `browser/posttext.js` into the Sudhar Desk tab (it
+   needs no key: it uses the app's own `gasGetText`/`gasPost`), split the text with `python3 t/chunks.py VM/final.txt 3000`
+   (line ranges + sha16 per piece), pass each piece with `await __putChunk(KEY, i, \`…\`, sha16)` (refused unless the hash
+   matches — so a copying slip can never reach the Doc), then `await __postText(KEY, n, DOC, OLD, NEW)`: the same hash
+   check as above (stops with st 'changed' if the Doc is no longer OLD), write, read back, check = NEW.
+5. **Reading a Doc without the key** (`__fwdDoc` in the Sudhar Desk tab): the text goes app tab → BroadcastChannel
+   'sd-fwd' → a relay tab (bridge: forwards to its opener) → that YouTube tab (`__sdput`, the recorders' own upload path)
+   → cache → `bin/getdoc.py KEY VM/doc_orig.txt`. The bridge and the YouTube-tab listener are small injections, no key.
+6. The app reloads itself after every push that changes APP_VERSION — everything injected into the Sudhar Desk tab is
+   gone then: inject posttext.js / __fwdDoc again (wait until `typeof gasGetText==='function'`).
 
 ### C11. The ✎ list and the report
 1. `python3 t/merge_review.py $SD_REPO/review/YT.json VM/final.txt VM/items_all_final.json <tag>` — items have
@@ -316,6 +327,13 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
   recorder reuses the tab's audio graph (`createMediaElementSource` works only once per video element).
 - If Manav's computer sleeps, Chrome stops answering and the recordings stall: tell him, carry on with work that needs no
   browser (book pages, judging), and check the recorders (`window.__R`) when Chrome is back.
+
+- **Old helper scripts write the repo** (6 Nov): `t/mkreview2.py` (October, શાશ્વત સંવાદ) rewrites `review/*.json` of the
+  old videos 7–13 when run — it was run by mistake to print a list; the changes were set aside with `git stash`, nothing
+  committed. Use `t/revlist.py VID` to list judge decisions with context (id, f/m/a, →[new], ⟪old⟫, S/Y/B, why).
+  Always `git status` before `git add`, and add only the files of the video being posted.
+- `pauses.py` found no offset for whole recordings (video 12 a/b): pass `part.wav:START:0.1` — the recorder seeks to START,
+  so the offset is about 0.1 s (it was 0.1–0.14 everywhere it could be measured).
 
 ## Part E — Standing rules from Manav (summary; full text in RULES.md)
 - Don't change the words the speaker said. Learn from his edits.
