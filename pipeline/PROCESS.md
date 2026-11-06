@@ -362,6 +362,12 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 | ઉપનિષદ - 3 | 26BCmgXarnQ | અધ્યાત્મોપનિષદ્ ૨ | posted 6 Nov, 27 ✎ |
 | ઉપનિષદ - 6 | dAcFljzoovI | અવધૂતોપનિષદ્ | posted 6 Nov, 100 ✎ |
 | ઉપનિષદ - 7 | 8ezSSa_Fekc | આત્મપૂજોપનિષદ્ (Ganapati Atharvashirsha recited) | posted 6 Nov, 32 ✎ |
+| ઉપનિષદ - 9 | n1jM69CmFzo | આત્મબોધોપનિષદ્ | posted 6 Nov, 75 ✎ |
+| ઉપનિષદ - 10 | AFwySZGsBQo | આત્મોપનિષદ્ | posted 6 Nov, 131 ✎ |
+| ઉપનિષદ - 12 | aN-h116qCHU | આરુણિકોપનિષદ્ | posted 6 Nov, 38 ✎ (first post without the cache key, posttext.js) |
+| ઉપનિષદ - 13 | 4i2gQGDZIDQ | આશ્રમોપનિષદ્ + કઠરુદ્રોપનિષદ્ | posted 6 Nov, 49 ✎ |
+| ઉપનિષદ - 14 | KDzXX0WYXhM | કુંડિકોપનિષદ્ ૧ | posted 6 Nov, 27 ✎ |
+| ઉપનિષદ - 15 | qL7csyr5HEc | કુંડિકોપનિષદ્ ૨ | posted 6 Nov, 61 ✎ |
 
 ## Part G. A video with no Doc and no YouTube captions (ઉપનિષદ - 131, 5–6 Nov)
 YouTube said "captions unavailable", so there was no Doc. What worked:
