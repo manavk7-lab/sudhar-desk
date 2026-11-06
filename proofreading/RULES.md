@@ -14,6 +14,8 @@ The goal is the speaker's exact words, not "better Gujarati". When in doubt, kee
   જોવે" → "જોઈએ". Sarvam (and sometimes YouTube) write જોવે where he hears જોઈએ (= need / want / should). So: never write જોવે,
   never prefer an engine's જોવે over the Doc's જોઈએ; turn every જોવે into **જોઈએ** (જોવે છે → જોઈએ છે, ના જોવે → ના જોઈએ, જોવે તો → જોઈએ
   તો). Only where it plainly means "sees" write **જુએ** (બધું જ જુએ માણસ). Earlier lists that said "keep જોવે" are wrong.
+- **મય → મહીં** (Manav, 6 Nov, "always remember"): where a transcript has **મય**, the speaker most of the time says **મહીં**
+  (= in, inside). Check every મય by its meaning and write મહીં unless it is plainly the suffix -મય (તેજોમય, બ્રહ્મમય, આનંદમય).
 - The Surti હ for સ stays: હવાર, હમજો, હમજાયું, હંભળાય.
 - English words stay as he says them: ક્લોરોફોમ (not ક્લોરોફોર્મ), ટ્રેસપાસિંગ.
 - Numbers stay as written (25, 33, 72). Don't convert digits to words.
