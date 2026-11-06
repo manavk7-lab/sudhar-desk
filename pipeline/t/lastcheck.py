@@ -8,6 +8,11 @@ for ch in '"“”‘’()[]{}':
     n=t.count(ch)
     if n: bad+=1; print('CHAR',repr(ch),n, [t[max(0,m.start()-30):m.start()+30] for m in re.finditer(re.escape(ch),t)][:3])
 if '  ' in t: bad+=1; print('double spaces',t.count('  '))
+# words Manav always corrects (RULES 1): never post them
+FORBIDDEN={'જોવે':'write જોઈએ (or જુએ = sees) — Manav 6 Nov'}
+for w,why in FORBIDDEN.items():
+    ms=[m for m in re.finditer(r'(?<![\u0A80-\u0AFF])'+w+r'(?![\u0A80-\u0AFF])',t)]
+    if ms: bad+=1; print('FORBIDDEN',w,len(ms),why,[t[max(0,m.start()-30):m.start()+20] for m in ms][:5])
 lines=t.split('\n')
 for i,l in enumerate(lines):
     s=l.strip()

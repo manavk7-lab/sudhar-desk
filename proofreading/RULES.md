@@ -8,7 +8,12 @@ The goal is the speaker's exact words, not "better Gujarati". When in doubt, kee
 
 ## 1. Keep the spoken forms (never "standardise")
 - કે છે (= "says") stays **કે**. Do not write કહે છે when he said કે છે.
-- તું / તી / તા (= was) stay. Don't change them to હતું / હતી / હતા. Also keep રે (= stay), આયા / આયો, જાવ / થાવ, બી, કોક, ભઈ, તઈ, દાડો, જરાક, જોવે, લેવાઈ, આઈતી.
+- તું / તી / તા (= was) stay. Don't change them to હતું / હતી / હતા. Also keep રે (= stay), આયા / આયો, જાવ / થાવ, બી, કોક, ભઈ, તઈ, દાડો, જરાક, લેવાઈ, આઈતી.
+- **જોવે → always write જોઈએ** (Manav, 5–6 Nov, "same words so many times mistake — always remember this"). In ઉપનિષદ - 129 he
+  changed every જોવે back: "હાથી તને દેખાવો ના જોવે" → "ના **જોઈએ**", "કારણ કે બધાને એ જોવે છે" → "એ **જોઈએ** છે", "કોકનો સાથ
+  જોવે" → "જોઈએ". Sarvam (and sometimes YouTube) write જોવે where he hears જોઈએ (= need / want / should). So: never write જોવે,
+  never prefer an engine's જોવે over the Doc's જોઈએ; turn every જોવે into **જોઈએ** (જોવે છે → જોઈએ છે, ના જોવે → ના જોઈએ, જોવે તો → જોઈએ
+  તો). Only where it plainly means "sees" write **જુએ** (બધું જ જુએ માણસ). Earlier lists that said "keep જોવે" are wrong.
 - The Surti હ for સ stays: હવાર, હમજો, હમજાયું, હંભળાય.
 - English words stay as he says them: ક્લોરોફોમ (not ક્લોરોફોર્મ), ટ્રેસપાસિંગ.
 - Numbers stay as written (25, 33, 72). Don't convert digits to words.

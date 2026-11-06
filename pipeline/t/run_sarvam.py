@@ -4,6 +4,7 @@ key=open(os.path.expanduser(sys.argv[1])).read().strip(); model=sys.argv[2]; aud
 c=SarvamAI(api_subscription_key=key)
 kw=dict(model=model,language_code='gu-IN')
 if model.startswith('saaras'): kw['mode']='transcribe'
+if os.environ.get('SARTS'): kw['with_timestamps']=True   # word/chunk times, for a video without YouTube captions (sync TSV)
 job=c.speech_to_text_job.create_job(**kw)
 job.upload_files(file_paths=[audio]); job.start(); job.wait_until_complete()
 d=out+'_dir'; os.makedirs(d,exist_ok=True); job.download_outputs(output_dir=d)

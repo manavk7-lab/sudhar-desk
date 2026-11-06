@@ -63,7 +63,7 @@ Reply with only the counts of fix / maybe / ask.
    - Never ADD a rhetorical "શું" (he removed every lone "શું?" between sentences — it is the speaker's habit). If the
      ⟪ ⟫ span is a lone "શું?" standing between two sentences and an engine lacks it → fix (delete).
    - (Superseded 29 Oct — see lesson 13: shlokas are replaced with their standard text, not written as pronounced.)
-   - Keep "હમ્મ" when the Doc has it. Keep "કે છે" (never કહે છે), "ક્લોરોફોમ", "જોવે", "લેવાઈ", "તી".
+   - Keep "હમ્મ" when the Doc has it. Keep "કે છે" (never કહે છે), "ક્લોરોફોમ", "લેવાઈ", "તી". But જોવે is ALWAYS written જોઈએ (Manav 6 Nov, RULES 1) — never pick an engine's જોવે.
    - આગળ vs આગળે: the speaker says both; change only if an engine clearly heard આગળે.
    - Ergative: if the change is between એને and એણે (or આને/આણે, તેને/તેણે, જેને/જેણે): એણે when એ is the DOER of a past
      action (એણે શું કર્યું?), એને when it means "to him / him" (મેં એને કીધું, તમે એને આપી દીધું).

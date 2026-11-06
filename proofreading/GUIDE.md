@@ -54,6 +54,7 @@ Return ONLY a JSON array. One object per edit:
 
 ## Learned from Manav's own pass over video 7 (after the AI pass) — 215 more fixes
 - Most common: he PUTS BACK small spoken words the ASR dropped: છે (often), એ, કે, ય (as in "એનથી ય", "સહેજેય", "ત્યારેય", "આખાય"), છો, છું, જ, નથી, તો, આમ, પણ.
-- He writes what is spoken, including particles: "ય" endings, તહીં (not ત્યાં when spoken તહીં), આગળે, કોક, જોવે, એણે (ergative), કહેશે (future) vs કહે છે — follow the audio.
+- Exception (6 Nov): જોવે is always written **જોઈએ** (see RULES 1).
+- He writes what is spoken, including particles: "ય" endings, તહીં (not ત્યાં when spoken તહીં), આગળે, કોક, એણે (ergative), કહેશે (future) vs કહે છે — follow the audio.
 - He fixes real mis-hearings: લાલ→લાવે, જ્ઞાન→ગ્લાનિ, જીવવાશે→જીરવાશે, ન્યુટર→નાન્યેતર, વયા→વહ્યા, આશરુ→અશ્રુ, સંસાર→સમાજ.
 - He deletes stutters/repeats the speaker did not mean (સૂર્યોદય થયો સૂર્ય સૂર્યોદય → one).
