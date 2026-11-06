@@ -337,7 +337,7 @@ YouTube said "captions unavailable", so there was no Doc. What worked:
 5. Book: type the pages from the images with agents (`gk/clean/BRIEF.md`, [S]/[G] lines), `t/bookalign.py` on the final
    text, `t/bookfilter.py` keeps real word differences, agents decide (`proofreading/BOOKJUDGE.md`), `t/bookapply.py`.
 6. Check items from the agents' "ask" answers: `t/mkchecks.py` on the final text. revertcheck must give 0 diffs.
-7. Make the Doc in the series folder with the Drive connector (account upnishad321) AND share it with
-   **manavk7@gmail.com as editor** — the Apps Script runs as manavk7: without edit access reads work, an empty save
+7. Make the Doc in the series folder with the Drive connector (account upnishad321) AND give it the same sharing as
+   the other series Docs: **anyone with the link → Editor** (Manav set this for 131 on 6 Nov; manavk7 as editor also works) — the Apps Script runs as manavk7: without edit access reads work, an empty save
    "works", and every real save fails with "Failed to fetch". Then post with the hash check (OLD = e3b0c44298fc1c14,
    the sha of an empty Doc).
