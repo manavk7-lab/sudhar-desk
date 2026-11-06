@@ -61,7 +61,15 @@ while True:
         dur=decode(k)
         if dur<=0: continue
         S=sils(k)
+        # keep the cuts already made (pieces already sent must not grow): a fresh [0.0] once merged the tail of
+        # v6d (597-778 s) into its finished first piece, so that tail was never transcribed (6 Nov)
+        cfile=f'{B}/{k}_cuts.json'
         cuts=[0.0]
+        if os.path.exists(cfile):
+            try:
+                pc=json.load(open(cfile))
+                if not pc.get('final'): cuts=[c for c in pc['cuts'] if c<dur-1] or [0.0]
+            except Exception: pass
         while True:
             want=cuts[-1]+TG
             if want+60>dur and not fin: break

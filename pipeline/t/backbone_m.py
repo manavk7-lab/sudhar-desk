@@ -60,6 +60,13 @@ FIX={'v129':[
   ('અજ્ઞાન નિંદ્રા જે','અજ્ઞાન નિદ્રા જે','spelling: નિદ્રા (Manav, 31 Oct)'),
   ('અજ્ઞાન નિંદ્રા અને','અજ્ઞાન નિદ્રા અને','spelling: નિદ્રા (Manav, 31 Oct)'),
  ],'v381':[
+ ],'v10':[
+  ('અચિંત્ય (ચિંતા પણ ન કરાય, ચિંતન પણ ન કરી શકાય એવી રીતના) પરમાત્મા','અચિંત્ય, ચિંતા પણ ન કરાય, ચિંતન પણ ન કરી શકાય એવી રીતના, પરમાત્મા','no brackets (aside spoken as is)'),
+  ('રૂપ, રસ.\n\nગંધહીન,','રૂપ, રસ, ગંધહીન,','paragraph joined: the list carries on'),
+ ],'v9':[
+  ('જ્યારે પરબ્રહ્મ...\n\nસાથે એકરૂપ','જ્યારે પરબ્રહ્મ સાથે એકરૂપ','paragraph joined: the sentence carries on'),
+  ('અત્યારે તમને ક્યાંય\n\nપણ માયા','અત્યારે તમને ક્યાંય પણ માયા','paragraph joined: the sentence carries on'),
+  ('એનું ખરેખર\n\nકોઈ મહત્વ','એનું ખરેખર કોઈ મહત્વ','paragraph joined: the sentence carries on'),
  ],'v6':[
   ('આજકાલ તો\n\nત્યાં જવાની','આજકાલ તો ત્યાં જવાની','paragraph joined: the sentence carries on'),
  ],'v3':[
