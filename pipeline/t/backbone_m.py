@@ -60,6 +60,8 @@ FIX={'v129':[
   ('અજ્ઞાન નિંદ્રા જે','અજ્ઞાન નિદ્રા જે','spelling: નિદ્રા (Manav, 31 Oct)'),
   ('અજ્ઞાન નિંદ્રા અને','અજ્ઞાન નિદ્રા અને','spelling: નિદ્રા (Manav, 31 Oct)'),
  ],'v381':[
+ ],'v13':[
+  ('બ્રહ્મને જાણે છે. (વ્યોમ એટલે આકાશ).','બ્રહ્મને જાણે છે. વ્યોમ એટલે આકાશ.','no brackets (aside spoken as is)'),
  ],'v10':[
   ('અચિંત્ય (ચિંતા પણ ન કરાય, ચિંતન પણ ન કરી શકાય એવી રીતના) પરમાત્મા','અચિંત્ય, ચિંતા પણ ન કરાય, ચિંતન પણ ન કરી શકાય એવી રીતના, પરમાત્મા','no brackets (aside spoken as is)'),
   ('રૂપ, રસ.\n\nગંધહીન,','રૂપ, રસ, ગંધહીન,','paragraph joined: the list carries on'),
@@ -91,7 +93,11 @@ for old,new,why in FIX.get(vm,[]):
     spans.append((i,len(new),old2,new,why))
 # shift: later replacements may move earlier spans; recompute positions by search
 T=t
-assert '(' not in T and ')' not in T and '"' not in T, 'leftover brackets/quotes'
+# brackets printed in the book stay where he reads them (RULES 5): list them per video
+KEEP={'v12':['ઉદર (પેટ)નો']}
+_T=T
+for k in KEEP.get(vm,[]): _T=_T.replace(k,'')
+assert '(' not in _T and ')' not in _T and '"' not in _T, 'leftover brackets/quotes'
 open(out,'w',encoding='utf-8').write(T)
 subprocess.run(['node',S+'/wordtimes.js',out,tsv,out+'.words'],check=True,capture_output=True)
 Wd=json.load(open(out+'.words'))

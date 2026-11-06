@@ -300,6 +300,22 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
   finds its text; fold lost ones into the item that replaced them.
 - `pauses.py` can match the wrong offset when a recording starts in the middle → pass the known offset.
 - RULES.md sections were once lost in an edit — after editing the rule files, `git diff` before committing.
+- **Work folders from an earlier series** (6 Nov): `v9`, `v10`, `v12`, `v13` already held October files of the શાશ્વત
+  સંવાદ videos 9–13 (old `j_*_out.json`, `decisions.json`). `finalvid.py` globs `VM/j_*_out.json`, so an old judge file would
+  have been applied to the new video. Before starting video NN, check that `vNN/` is new or empty; move old files to
+  `vNN_oct/` (`find vNN -newermt <today>` keeps today's).
+- **stream2.py lost the last piece of a recording** (6 Nov, video 6): when a recording finished, the cuts were recomputed
+  from zero, and the tail (597–778 s) was merged into the first piece that was already transcribed, so it was never sent.
+  Fixed: the cuts already made are kept (`KEY_cuts.json`). Check `KEY_cuts.json` → `"final": true` and the last cut = the
+  recording length; if a piece is missing, run stream2 again for that key and re-fuse (carry the judges' decisions over by
+  matching items on pos/end/old text — new items only need judging).
+- **The Doc's hash for the post** must come from the Apps Script's own text: read it with `browser/docget.js`
+  (`window.__docGet(KEY, DOC)` in the Sudhar Desk tab) and `bin/getdoc.py KEY VM/doc_orig.txt`.
+- **One set of YouTube tabs for many videos** (6 Nov): `browser/recorder_fn.js` defines `__loadVid(id)` (the player's
+  `loadVideoById`, which keeps the relay), `__startRec(KEY,START,END)` and `__getCaps(KEY)`. Inject it once per tab. The
+  recorder reuses the tab's audio graph (`createMediaElementSource` works only once per video element).
+- If Manav's computer sleeps, Chrome stops answering and the recordings stall: tell him, carry on with work that needs no
+  browser (book pages, judging), and check the recorders (`window.__R`) when Chrome is back.
 
 ## Part E — Standing rules from Manav (summary; full text in RULES.md)
 - Don't change the words the speaker said. Learn from his edits.
@@ -320,6 +336,14 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 | ઉપનિષદ - 39 | 6AO_nSW_Rig | મણ્ડલબ્રાહ્મણોપનિષદ્ ૩ (2nd ખંડ to the end) | posted 31 Oct (Sarvam + book, no Gemini), 182 ✎; Manav listening (4 Nov) |
 | ઉપનિષદ - 40 | 4Qr-R5LMUh0 | મહાવાક્યોપનિષદ્ & મૈત્રેય્યુપનિષદ્ ૧ | posted 30 Oct (Sarvam + book, no Gemini), 109 ✎; Manav FINISHED (in "total final", do not touch): of 99 applied changes he undid 1, changed 7 further |
 | ઉપનિષદ - 41 | wHLe6v2nhNk | મૈત્રેય્યુપનિષદ્ ૨ & યાજ્ઞવલ્ક્યોપનિષદ્ | posted 30 Oct (Sarvam + book, no Gemini), 210 ✎; Manav FINISHED (in "total final", do not touch): of 186 applied changes he undid 4, changed 6 further; took out the empty lines around mantras (RULES 5) |
+| ઉપનિષદ - 128 | Cnlxw_9qLnE | મહોપનિષદ્ ૧ | posted 5 Nov (Doc + Sarvam + book), 169 ✎ |
+| ઉપનિષદ - 129 | 9pPrQQvohU0 | મહોપનિષદ્ ૨ | posted 5 Nov, 216 ✎ |
+| ઉપનિષદ - 130 | c-ugolBSmdo | મહોપનિષદ્ ૩ | posted 5 Nov, 389 ✎; જોવે → જોઈએ fixed 6 Nov |
+| ઉપનિષદ - 131 | 5mVrWO5YWXs | મહોપનિષદ્ ૪ | no Doc and no captions: new Doc from Sarvam alone (Part G), posted 6 Nov, 350 ✎ |
+| ઉપનિષદ - 2 | Gdf-v5vCaxE | અધ્યાત્મોપનિષદ્ ૧ | posted 6 Nov (Doc + Sarvam + captions + book), 137 ✎ |
+| ઉપનિષદ - 3 | 26BCmgXarnQ | અધ્યાત્મોપનિષદ્ ૨ | posted 6 Nov, 27 ✎ |
+| ઉપનિષદ - 6 | dAcFljzoovI | અવધૂતોપનિષદ્ | posted 6 Nov, 100 ✎ |
+| ઉપનિષદ - 7 | 8ezSSa_Fekc | આત્મપૂજોપનિષદ્ (Ganapati Atharvashirsha recited) | posted 6 Nov, 32 ✎ |
 
 ## Part G. A video with no Doc and no YouTube captions (ઉપનિષદ - 131, 5–6 Nov)
 YouTube said "captions unavailable", so there was no Doc. What worked:
