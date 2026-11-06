@@ -23,5 +23,7 @@ rows = [
   [r'(?<![' + G + r'])જોવે(?![' + G + r'])', 'જોઈએ', 'Manav always writes જોઈએ, never જોવે (6 Nov, RULES 1)', 'sure', 'all'],
   [r'(?<![' + G + r'])જાઓ(?![' + G + r'])', 'જાવ', 'his spoken form જાવ (Sarvam writes જાઓ)', 'likely', 'all'],
 ]
+if '--doc' in sys.argv:   # a Doc made from captions: only the generic rules (no Sarvam chunk splits, no જાઓ)
+    rows = [r for r in rows if 'Sarvam' not in r[2]]
 json.dump(rows, open(sys.argv[1], 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
 print('rows', len(rows))

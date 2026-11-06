@@ -6,6 +6,7 @@
 const KEY='__KEY__',START=__START__,END=__END__;
 if(!window.__sdput)return 'no relay: run browser/relay_yt.js first';
 if(window.__R&&!window.__R.done&&!window.__R.err)return 'already running';
+const R0=window.__R;  // an earlier recording in this tab: its audio graph is reused (createMediaElementSource works once per video element)
 const R=window.__R={key:KEY,part:0,bytes:0,chunks:0,done:false,err:null,store:{},failed:[],started:Date.now()};
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const post=async(part,data)=>{for(let a=0;a<4;a++){try{if(await window.__sdput(KEY,part,data)){R.failed=R.failed.filter(x=>x!==part);return true}}catch(e){R.lastErr=String(e)}await sleep(4000*(a+1))}if(!R.failed.includes(part))R.failed.push(part);return false};
@@ -25,10 +26,11 @@ try{mp.seekTo(START,true)}catch(e){v.currentTime=START}
 try{await v.play()}catch(e){R.playErr=String(e)}
 for(let i=0;i<60;i++){if(Math.abs(v.currentTime-START)<4&&!v.paused&&v.readyState>=3)break;await sleep(250)}
 R.t0=Math.round(v.currentTime*10)/10;
-const ctx=new AudioContext();const src=ctx.createMediaElementSource(v);const dst=ctx.createMediaStreamDestination();src.connect(dst);
+let ctx,dst;if(window.__AUD){ctx=window.__AUD.ctx;dst=window.__AUD.dst}else if(R0&&R0.ctx&&R0.rec&&R0.rec.stream){ctx=R0.ctx;dst={stream:R0.rec.stream}}else{ctx=new AudioContext();const src=ctx.createMediaElementSource(v);dst=ctx.createMediaStreamDestination();src.connect(dst)}window.__AUD={ctx,dst};
 try{await ctx.resume()}catch(e){}
 const rec=new MediaRecorder(dst.stream,{mimeType:'audio/webm;codecs=opus',audioBitsPerSecond:24000});
 R.rec=rec;R.ctx=ctx;
+R.map=[];R.mapIv=setInterval(()=>{try{if(!R.done)R.map.push([Math.round(ctx.currentTime*10)/10,Math.round(v.currentTime*10)/10,ad()?1:0])}catch(e){}},5000);   // recording time vs video time (a video without captions needs it)
 rec.ondataavailable=e=>{if(e.data&&e.data.size)send(e.data)};
 rec.onstop=()=>{q=q.then(async()=>{await post('n',String(R.part));R.done=true;try{v.pause()}catch(e){}})};
 rec.start(60000);

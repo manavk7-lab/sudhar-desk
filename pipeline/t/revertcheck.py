@@ -12,6 +12,7 @@ pos.sort(key=lambda x:-x[0]); r=t
 for s,e,it in pos:
     if it.get('kind')!='check': r=r[:s]+it['alt']+r[e:]
 o=re.sub(r'["“”]','',open(sys.argv[3],encoding='utf-8').read())
+o=re.sub(r"(?<![઀-૿])'|'(?![઀-૿])",'',o)   # single quotes, removed by backbone_m.py like the double ones
 A=re.sub(r'\s+',' ',o).split(); B=re.sub(r'\s+',' ',r).split()
 d=[(op,' '.join(A[i1:i2]),' '.join(B[j1:j2])) for op,i1,i2,j1,j2 in difflib.SequenceMatcher(None,A,B,autojunk=False).get_opcodes() if op!='equal']
 print('words',len(A),len(B),'unexplained diffs',len(d))

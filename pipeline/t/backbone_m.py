@@ -60,6 +60,15 @@ FIX={'v129':[
   ('અજ્ઞાન નિંદ્રા જે','અજ્ઞાન નિદ્રા જે','spelling: નિદ્રા (Manav, 31 Oct)'),
   ('અજ્ઞાન નિંદ્રા અને','અજ્ઞાન નિદ્રા અને','spelling: નિદ્રા (Manav, 31 Oct)'),
  ],'v381':[
+ ],'v6':[
+  ('આજકાલ તો\n\nત્યાં જવાની','આજકાલ તો ત્યાં જવાની','paragraph joined: the sentence carries on'),
+ ],'v3':[
+  ('ધ્યાતા અને ધ્યાન (ધ્યાન કરનારો અને જે ઊભું થઈ રહ્યું છે) એ બેયને','ધ્યાતા અને ધ્યાન, ધ્યાન કરનારો અને જે ઊભું થઈ રહ્યું છે, એ બેયને','no brackets (aside spoken as is)'),
+  ('આ સહિત છે અને\n\nઆ રહિત છે એમ','આ સહિત છે અને આ રહિત છે એમ','paragraph joined: the sentence carries on'),
+ ],'v2':[
+  ('એ પપૈયું આમ જોવે.','એ પપૈયું આમ જુએ.','જોવે written જુએ here (= sees; Manav 6 Nov: never જોવે)'),
+  ('એના માટે એટલી...\n\nગ્રહણશીલતા એને','એના માટે એટલી ગ્રહણશીલતા એને','paragraph joined: the sentence carries on'),
+  ('ના કરે છે કે હું...\n\nઆવો, નથી સમજાયું?','ના કરે છે કે હું આવો, નથી સમજાયું?','paragraph joined: the sentence carries on'),
  ]}
 # 1. quotation marks (not listed: trivial)
 q0=t.count('"')+t.count('“')+t.count('”')
