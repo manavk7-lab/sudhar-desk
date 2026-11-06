@@ -1,11 +1,11 @@
-"""pauses.py text.txt yt.tsv out.json part.wav:START_SEC [part2.wav:START ...]
+"""pauses.py text.txt yt.tsv out.json part.wav:START_SEC[:OFFSET[:fix]] [part2.wav:START ...]
+:fix keeps OFFSET for the whole part (no search) -- use it when the offsets printed jump (a false lock, seen in v19b).
 For every word boundary in the text, measure the silence (pause) in the recorded audio.
 Recording time is mapped to video time by matching caption word starts to speech onsets (handles ads at the start
 and in the middle). Output: list of {i, pos (char after word i), pause (s), conf}"""
-import os
 import sys,json,wave,subprocess,numpy as np
-tf,cf,of=sys.argv[1],sys.argv[2],sys.argv[3]; parts=[(a.split(':')[0],float(a.split(':')[1]),(float(a.split(':')[2]) if len(a.split(':'))>2 else None)) for a in sys.argv[4:]]
-S=os.environ.get('SD_WORK','.')+''
+tf,cf,of=sys.argv[1],sys.argv[2],sys.argv[3]; parts=[(a.split(':')[0],float(a.split(':')[1]),(float(a.split(':')[2]) if len(a.split(':'))>2 else None),a.endswith(':fix')) for a in sys.argv[4:]]
+S='/tmp/claude-0/-home-claude-sudhar-desk/bff094fd-345e-5cb3-95d4-5a521bc4ad84/scratchpad'
 subprocess.run(['node',S+'/t/wordtimes.js',tf,cf,of+'.words'],check=True,capture_output=True)
 W=json.load(open(of+'.words'))
 caps=[]
@@ -22,7 +22,7 @@ def envelope(path):
     e=np.sqrt((x[idx]**2).mean(1)+1e-6); db=20*np.log10(e+1e-6)
     return db
 res=[]
-for path,START,O0 in parts:
+for path,START,O0,FIX in parts:
     db=envelope(path); T=len(db)*HOP
     floor=np.percentile(db,10); speech_lvl=np.percentile(db,80)
     thr=floor+0.35*(speech_lvl-floor)
@@ -43,7 +43,7 @@ for path,START,O0 in parts:
     # offset per window of video time
     vstart=START; vend=START+T
     offs=[]; prev=O0   # known starting offset (recorder seeked to START before recording) or None
-    for w0 in np.arange(vstart,vend,30.0):
+    for w0 in (np.arange(vstart,vend,30.0) if not FIX else []):
         a=anchors[(anchors>=w0)&(anchors<w0+150)]
         if len(a)<5: offs.append((w0,prev)); continue
         lo,hi=(-5,180) if prev is None else ((prev-2,prev+2) if O0 is not None else (prev-3,prev+150))   # known start: no ads, small drift only
@@ -57,6 +57,7 @@ for path,START,O0 in parts:
         # only accept if clearly matched
         if best[0]>=0.35*len(a): prev=float(best[1])
         offs.append((float(w0),prev))
+    if FIX: offs=[(float(vstart),O0)]
     print(path,'offsets',[(int(w),None if o is None else round(o,2)) for w,o in offs][:40],file=sys.stderr)
     def off_at(tv):
         o=None

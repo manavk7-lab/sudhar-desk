@@ -217,7 +217,10 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
    આગળે), then `python3 t/addtimes.py VM/new_a.txt $SD_REPO/sync/YT.tsv VM/items_pre.json` (video time of each item).
 2. **Pauses**: `python3 t/pauses.py VM/new_a.txt $SD_REPO/sync/YT.tsv VM/pauses.json audio/m39/p1a.wav:START[:OFFSET] …`
    measures the silence at every word boundary in the recorded audio (START = where that recording began in the
-   video; give OFFSET when the automatic match goes wrong — it once picked a 65 s offset for p1b).
+   video; give OFFSET when the automatic match goes wrong — it once picked a 65 s offset for p1b). Read the printed
+   offsets: a jump that comes back later (v19b: 0.16 → 1.16 → 0.12) is a false lock — rerun that part with
+   `part.wav:START:OFFSET:fix` (one offset for the whole part). Meditation videos with music give no reliable offsets.
+   A recording made in another audio folder: COPY its `_pNN.sar.txt` files (assemble3.sh checks sizes; a symlink looks empty).
 3. `python3 t/punctcands.py VM/new_a.txt VM/pauses.json VM/pc` → `VM/pc.txt`: full stops where he does not pause,
    and long pauses without a stop. Judge it with sub-agents using `proof/PUNCT.md` (→ `VM/pc_N_out.json`).
    Rule: a full stop needs BOTH a pause and a finished meaning; never a paragraph break inside a sentence.
@@ -368,6 +371,11 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 | ઉપનિષદ - 13 | 4i2gQGDZIDQ | આશ્રમોપનિષદ્ + કઠરુદ્રોપનિષદ્ | posted 6 Nov, 49 ✎ |
 | ઉપનિષદ - 14 | KDzXX0WYXhM | કુંડિકોપનિષદ્ ૧ | posted 6 Nov, 27 ✎ |
 | ઉપનિષદ - 15 | qL7csyr5HEc | કુંડિકોપનિષદ્ ૨ | posted 6 Nov, 61 ✎ |
+| ઉપનિષદ - 16 | QXl32jx-G2s | કૈવલ્યોપનિષદ્ ૧ | posted 6 Nov, 36 ✎ |
+| ઉપનિષદ - 17 | F7TunKZ2_V8 | કૈવલ્યોપનિષદ્ ૨ | posted 6 Nov, 17 ✎ |
+| ઉપનિષદ - 18 | lqmE7p2GCjw | કૌષીતકિબ્રાહ્મણોપનિષદ્ | posted 6 Nov, 143 ✎ |
+| ઉપનિષદ - 19 | z3RMzwt2Cas | ક્ષુરિકોપનિષદ્ ૧ | posted 6 Nov, 78 ✎ (pauses: v19b needed a fixed offset, `:0.14:fix`) |
+| ઉપનિષદ - 20 | JRrJR3wVyVA | ક્ષુરિકોપનિષદ્ ૨, guided meditation | posted 6 Nov, 37 ✎; Doc was the captions: اللہ on the silent part removed, 4th જય સચ્ચિદાનંદ added; no PUNCT pass (music: pause offsets unreliable) |
 
 ## Part G. A video with no Doc and no YouTube captions (ઉપનિષદ - 131, 5–6 Nov)
 YouTube said "captions unavailable", so there was no Doc. What worked:
