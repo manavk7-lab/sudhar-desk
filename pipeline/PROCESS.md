@@ -381,6 +381,8 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 | ઉપનિષદ - 23 | CmC12T0YSeo | જાબાલદર્શનોપનિષદ્ ૨ (4 min) | posted 7 Nov, 8 ✎ (judged by hand) |
 | ઉપનિષદ - 24 | SNFkEooCbPM | જાબાલદર્શનોપનિષદ્ ૩ (ખંડ 5–8) | posted 7 Nov, 136 ✎ (v24b pauses needed `:0.1:fix`) |
 | ઉપનિષદ - 25 | nVxpSqF7rsA | જાબાલદર્શનોપનિષદ્ ૪ (ધારણા to the end) | posted 7 Nov, 16 ✎ |
+| ઉપનિષદ - 48 | Cv61CQOqbIw | શાણ્ડિલ્યોપનિષદ્ ૫ (guided meditation) | no Doc: new Doc from Sarvam (Part G), posted 7 Nov, 13 ✎; shared with manavk7 as editor |
+| ઉપનિષદ - 142 | 5A0I2r8P50k | લાઙ્ગૂલોપનિષદ્ (Hanuman mantras) | no Doc: new Doc (Part G), posted 7 Nov, 90 ✎ (17 check items on mantra words); no book (not in બ્રહ્મ વિદ્યા ખંડ) |
 
 **Playlist vs Docs (7 Nov).** The ઉપનિષદ playlist (Manav's channel, 150 videos) against the 147 "UPNISHAD -video N" Docs:
 three videos have no Doc — video 5 = 8YbF5PwMMnU (અધ્યાત્મોપનિષદ્ ૩, 47 min), video 48 = Cv61CQOqbIw
