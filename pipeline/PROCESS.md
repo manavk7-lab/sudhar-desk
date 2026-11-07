@@ -381,6 +381,7 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 | ઉપનિષદ - 23 | CmC12T0YSeo | જાબાલદર્શનોપનિષદ્ ૨ (4 min) | posted 7 Nov, 8 ✎ (judged by hand) |
 | ઉપનિષદ - 24 | SNFkEooCbPM | જાબાલદર્શનોપનિષદ્ ૩ (ખંડ 5–8) | posted 7 Nov, 136 ✎ (v24b pauses needed `:0.1:fix`) |
 | ઉપનિષદ - 25 | nVxpSqF7rsA | જાબાલદર્શનોપનિષદ્ ૪ (ધારણા to the end) | posted 7 Nov, 16 ✎ |
+| ઉપનિષદ - 5 | 8YbF5PwMMnU | અધ્યાત્મોપનિષદ્ ૩ | no Doc: new Doc from Sarvam + captions hint + book (PDF 24–29 typed), posted 7 Nov, 92 ✎ |
 | ઉપનિષદ - 48 | Cv61CQOqbIw | શાણ્ડિલ્યોપનિષદ્ ૫ (guided meditation) | no Doc: new Doc from Sarvam (Part G), posted 7 Nov, 13 ✎; shared with manavk7 as editor |
 | ઉપનિષદ - 142 | 5A0I2r8P50k | લાઙ્ગૂલોપનિષદ્ (Hanuman mantras) | no Doc: new Doc (Part G), posted 7 Nov, 90 ✎ (17 check items on mantra words); no book (not in બ્રહ્મ વિદ્યા ખંડ) |
 
@@ -408,5 +409,5 @@ YouTube said "captions unavailable", so there was no Doc. What worked:
 6. Check items from the agents' "ask" answers: `t/mkchecks.py` on the final text. revertcheck must give 0 diffs.
 7. Make the Doc in the series folder with the Drive connector (account upnishad321) AND give it the same sharing as
    the other series Docs: **anyone with the link → Editor** (Manav set this for 131 on 6 Nov; manavk7 as editor also works) — the Apps Script runs as manavk7: without edit access reads work, an empty save
-   "works", and every real save fails with "Failed to fetch". Then post with the hash check (OLD = e3b0c44298fc1c14,
+   "works", and every real save fails with "Failed to fetch". Brackets in a Doc now become commas automatically in backbone_m.py (7 Nov). Then post with the hash check (OLD = e3b0c44298fc1c14,
    the sha of an empty Doc).

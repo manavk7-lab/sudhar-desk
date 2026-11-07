@@ -102,6 +102,15 @@ t=re.sub(r"(?<![{0}])'|'(?![{0}])".format(G),'',t)   # 'પરમાત્મા
 t=re.sub(r'[ \t]+',' ',t); t=re.sub(r' +\n','\n',t); t=re.sub(r'\n +','\n',t)
 t=re.sub(r' ([,.?!:;])',r'\1',t)
 spans=[]
+# brackets -> commas (RULES: no brackets), for every "(…)" not listed in FIX/KEEP: "શબ્દ (aside) આગળ" -> "શબ્દ, aside, આગળ"
+_auto=[]
+for m in re.finditer(r'(\S+) \(([^()\n]+)\)([,.?!:;]?)( \S+)?',t):
+    w,inner,pun,nxt=m.group(1),m.group(2).strip(),m.group(3),m.group(4) or ''
+    if any(m.group(0) in o or o in m.group(0) for o,_,_ in FIX.get(vm,[])): continue
+    w2=w.rstrip(',')
+    newt=w2+', '+inner+(pun if pun else (',' if nxt else '.'))+nxt
+    _auto.append((m.group(0),newt,'no brackets (aside spoken as is)'))
+FIX.setdefault(vm,[]); FIX[vm]=FIX[vm]+[x for x in _auto if x[0] not in [o for o,_,_ in FIX[vm]]]
 for old,new,why in FIX.get(vm,[]):
     old2=re.sub(r'["“”]','',old)
     n=t.count(old2); assert n==1,(old2,n)
