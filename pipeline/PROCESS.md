@@ -377,6 +377,15 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 | ઉપનિષદ - 19 | z3RMzwt2Cas | ક્ષુરિકોપનિષદ્ ૧ | posted 6 Nov, 78 ✎ (pauses: v19b needed a fixed offset, `:0.14:fix`) |
 | ઉપનિષદ - 20 | JRrJR3wVyVA | ક્ષુરિકોપનિષદ્ ૨, guided meditation | posted 6 Nov, 37 ✎; Doc was the captions: اللہ on the silent part removed, 4th જય સચ્ચિદાનંદ added; no PUNCT pass (music: pause offsets unreliable) |
 
+| ઉપనિષદ - 22 | p9l_rU1GgDk | જાબાલદર્શનોપનિષદ્ ૧ | posted 7 Nov (Doc + Sarvam + captions + book), 216 ✎; first direct post from the work folder (`bin/postdoc.py`) |
+| ઉપનિષદ - 23 | CmC12T0YSeo | જાબાલદર્શનોપનિષદ્ ૨ (4 min) | posted 7 Nov, 8 ✎ (judged by hand) |
+
+**Playlist vs Docs (7 Nov).** The ઉપનિષદ playlist (Manav's channel, 150 videos) against the 147 "UPNISHAD -video N" Docs:
+three videos have no Doc — video 5 = 8YbF5PwMMnU (અધ્યાત્મોપનિષદ્ ૩, 47 min), video 48 = Cv61CQOqbIw
+(શાણ્ડિલ્યોપનિષદ્ ૫, 19 min), video 142 = 5A0I2r8P50k (લાઙ્ગૂલોપનિષદ્, 21 min). All three have Gujarati auto-captions.
+The numbers 4, 8, 11, 21 are just skipped (no video). Docs moved to "total final" by 7 Nov: Atharvashir, 38-1, 38-2,
+39, 40, 41, 128, 129, 130 — never write those.
+
 ## Part G. A video with no Doc and no YouTube captions (ઉપનિષદ - 131, 5–6 Nov)
 YouTube said "captions unavailable", so there was no Doc. What worked:
 1. Record as usual, but run the stream with `SARTS=1` (Sarvam with timestamps; same price). Add the R.map sampler in each
