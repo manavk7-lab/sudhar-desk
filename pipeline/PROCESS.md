@@ -379,6 +379,8 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 
 | ઉપనિષદ - 22 | p9l_rU1GgDk | જાબાલદર્શનોપનિષદ્ ૧ | posted 7 Nov (Doc + Sarvam + captions + book), 216 ✎; first direct post from the work folder (`bin/postdoc.py`) |
 | ઉપનિષદ - 23 | CmC12T0YSeo | જાબાલદર્શનોપનિષદ્ ૨ (4 min) | posted 7 Nov, 8 ✎ (judged by hand) |
+| ઉપનિષદ - 24 | SNFkEooCbPM | જાબાલદર્શનોપનિષદ્ ૩ (ખંડ 5–8) | posted 7 Nov, 136 ✎ (v24b pauses needed `:0.1:fix`) |
+| ઉપનિષદ - 25 | nVxpSqF7rsA | જાબાલદર્શનોપનિષદ્ ૪ (ધારણા to the end) | posted 7 Nov, 16 ✎ |
 
 **Playlist vs Docs (7 Nov).** The ઉપનિષદ playlist (Manav's channel, 150 videos) against the 147 "UPNISHAD -video N" Docs:
 three videos have no Doc — video 5 = 8YbF5PwMMnU (અધ્યાત્મોપનિષદ્ ૩, 47 min), video 48 = Cv61CQOqbIw

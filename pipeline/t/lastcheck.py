@@ -4,7 +4,7 @@ import json,re,sys,hashlib
 t=open(sys.argv[1],encoding='utf-8').read(); P=json.load(open(sys.argv[2],encoding='utf-8')) if len(sys.argv)>2 else []
 def flex(s): return r'\s+'.join(re.escape(x) for x in s.split())
 bad=0
-for ch in '"“”‘’()[]{}':
+for ch in '"“”‘’()[]{}\'':
     n=t.count(ch)
     if n: bad+=1; print('CHAR',repr(ch),n, [t[max(0,m.start()-30):m.start()+30] for m in re.finditer(re.escape(ch),t)][:3])
 if '  ' in t: bad+=1; print('double spaces',t.count('  '))
