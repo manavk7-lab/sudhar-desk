@@ -232,6 +232,7 @@ h1{font-size:26px;margin:2px 0 4px}
     <div class="hint" id="setLinkHint" style="display:none;margin:-4px 0 10px">Send this link to yourself (e.g. WhatsApp “Message yourself”) and open it on the other device — it fills in these settings there. Keep it private: it contains your secret.</div>
     <button class="primary" id="setSave">Save settings</button>
     <button class="ghost" id="setClose">Close</button>
+    <div class="hint" id="setInfo" style="margin-top:10px;font-size:11.5px;text-align:center"></div>
   </div>
 </div>
 
@@ -375,7 +376,7 @@ let devName=sget('desk-devname')||guessName;
 let autoRew=+(sget('desk-autorew')||0);
 
 /* ================= library ================= */
-const APP_VERSION='2026-11-08a';
+const APP_VERSION='2026-11-08b';
 /* ===== BUILT-IN LIBRARY =====
    Pre-loaded video+doc pairs baked into the app itself.
    Format: {yt:'11charVideoId', doc:'GoogleDocId', title:'…'}
@@ -487,6 +488,8 @@ $('setBtn').onclick=()=>{
   $('setUrl').value=gas.url;$('setToken').value=gas.token;
   $('setDevName').value=devName;$('setAutoRew').value=String(autoRew);
   $('setSheet').classList.add('open');
+  $('setInfo').textContent='Version '+APP_VERSION+' · screen '+screen.width+'×'+screen.height+' · window '+innerWidth+'×'+innerHeight
+    +' · Fold layout: '+(isFold?(foldInner()?'on':'Fold closed')+(foldModel?' ('+foldModel+')':''):'off');
 };
 $('setClose').onclick=()=>$('setSheet').classList.remove('open');
 $('setSave').onclick=()=>{
@@ -787,14 +790,30 @@ let layoutMode=sget('desk-layout')||'auto';    /* auto | side | stack */
    typing). Folded (cover screen) and every other device: unchanged. Chrome hides the model in the UA string, so
    it is asked for through userAgentData. */
 const FOLD_RE=/SM-F9\d\d/i;
-let isFold=FOLD_RE.test(navigator.userAgent);
-const markFold=()=>{if(isFold)document.documentElement.classList.add('fold')};
-markFold();
+let foldModel=(navigator.userAgent.match(FOLD_RE)||[''])[0];
+/* fallback when the browser hides the model: an Android touch screen that is almost square (inner screen of a
+   Fold: Fold2 1768×2208 ≈ 0.80) — normal phones are ≈0.45 and Android tablets ≈0.62 (16:10). The whole screen
+   is measured, not the window, so the keyboard does not change the answer. */
+const squareAndroid=()=>{
+  if(!/Android/i.test(navigator.userAgent)||!matchMedia('(pointer:coarse)').matches)return false;
+  const a=Math.min(screen.width,screen.height),b=Math.max(screen.width,screen.height);
+  return b>0&&a/b>=0.72&&a>=500;
+};
+let isFold=!!foldModel;
+const foldInner=()=>isFold&&(squareAndroid()||innerWidth>=520);   /* opened, not the folded cover screen */
+const markFold=()=>{document.documentElement.classList.toggle('fold',foldInner())};
 if(!isFold&&navigator.userAgentData&&navigator.userAgentData.getHighEntropyValues)
   navigator.userAgentData.getHighEntropyValues(['model']).then(v=>{
-    if(FOLD_RE.test(v.model||'')){isFold=true;markFold();if(cur)applyLayout()}
+    if(FOLD_RE.test(v.model||'')){foldModel=v.model;isFold=true;if(cur)applyLayout();else markFold()}
   }).catch(()=>{});
-const wantSide=()=>layoutMode==='side'||(layoutMode==='auto'&&(isFold?innerWidth>=600:innerWidth>=980&&innerWidth>innerHeight*1.05));
+if(!isFold&&squareAndroid()&&/SAMSUNG|SamsungBrowser|SM-/i.test(navigator.userAgent))isFold=true;
+/* the Fold remembers its own ⇆ choice, so a choice made before this layout existed cannot block it */
+const LAYOUT_KEY=()=>isFold?'desk-layout-fold':'desk-layout';
+const wantSide=()=>{
+  markFold();
+  const mode=isFold?(sget('desk-layout-fold')||'auto'):layoutMode;
+  return mode==='side'||(mode==='auto'&&(isFold?foldInner():innerWidth>=980&&innerWidth>innerHeight*1.05));
+};
 function applyLayout(){
   const side=wantSide();
   $('btnLayout').textContent=side?'☰':'⇆';
@@ -805,7 +824,9 @@ function applyLayout(){
   placeFloater();
 }
 $('btnLayout').onclick=()=>{
-  layoutMode=wantSide()?'stack':'side';sset('desk-layout',layoutMode);applyLayout();
+  const next=wantSide()?'stack':'side';
+  if(isFold)sset('desk-layout-fold',next);else{layoutMode=next;sset('desk-layout',next)}
+  applyLayout();
 };
 $('btnFull').onclick=()=>{
   const d=document;
