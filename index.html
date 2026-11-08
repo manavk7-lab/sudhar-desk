@@ -106,6 +106,13 @@ h1{font-size:26px;margin:2px 0 4px}
 #desk.side #sidePanel{display:block}
 #desk.side #btnMini{display:none}
 #desk.side #docEdit{padding:22px 28px 140px}
+/* Galaxy Fold opened: narrow video column on the left, the transcript gets most of the screen */
+.fold #desk.side #mediaCol{width:clamp(210px,32vw,360px)}
+.fold #desk.side .keys{display:none}
+.fold #desk.side #sidePanel{padding:10px 8px 14px}
+.fold #desk.side #sideTransport{gap:6px;margin-bottom:8px}
+.fold #desk.side #sideTransport button{padding:14px 0}
+.fold #desk.side #docEdit{padding:16px 18px 140px}
 @media (max-width:560px){ #btnHlMode{display:none!important} .docbar .lbl{display:none} .docbar{gap:2px;padding:6px 8px} .docbar .dbtn{padding:4px 6px} }
 
 .docbar{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--paper);border-bottom:1px solid var(--line);flex-shrink:0;min-width:0;overflow-x:auto;scrollbar-width:none}
@@ -368,7 +375,7 @@ let devName=sget('desk-devname')||guessName;
 let autoRew=+(sget('desk-autorew')||0);
 
 /* ================= library ================= */
-const APP_VERSION='2026-11-07e';
+const APP_VERSION='2026-11-08a';
 /* ===== BUILT-IN LIBRARY =====
    Pre-loaded video+doc pairs baked into the app itself.
    Format: {yt:'11charVideoId', doc:'GoogleDocId', title:'…'}
@@ -775,7 +782,19 @@ $('btnReload').onclick=()=>{
 
 /* ================= layout: side-by-side or stacked ================= */
 let layoutMode=sget('desk-layout')||'auto';    /* auto | side | stack */
-const wantSide=()=>layoutMode==='side'||(layoutMode==='auto'&&innerWidth>=980&&innerWidth>innerHeight*1.05);
+/* Samsung Galaxy Fold only (models SM-F9xx; Flip is SM-F7xx): opened (600px+ wide) → small video left, text right,
+   in any orientation. The height is not used because the keyboard shrinks it (that would flip the layout while
+   typing). Folded (cover screen) and every other device: unchanged. Chrome hides the model in the UA string, so
+   it is asked for through userAgentData. */
+const FOLD_RE=/SM-F9\d\d/i;
+let isFold=FOLD_RE.test(navigator.userAgent);
+const markFold=()=>{if(isFold)document.documentElement.classList.add('fold')};
+markFold();
+if(!isFold&&navigator.userAgentData&&navigator.userAgentData.getHighEntropyValues)
+  navigator.userAgentData.getHighEntropyValues(['model']).then(v=>{
+    if(FOLD_RE.test(v.model||'')){isFold=true;markFold();if(cur)applyLayout()}
+  }).catch(()=>{});
+const wantSide=()=>layoutMode==='side'||(layoutMode==='auto'&&(isFold?innerWidth>=600:innerWidth>=980&&innerWidth>innerHeight*1.05));
 function applyLayout(){
   const side=wantSide();
   $('btnLayout').textContent=side?'☰':'⇆';
