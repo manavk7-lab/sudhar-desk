@@ -233,6 +233,8 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
    another item (a manual or punctuation fix made on top of a judge fix). Fold each such pair into one item (alt = the
    oldest text, cur = the text now), otherwise undoing one in the app breaks the other. Items that only share
    unchanged context words are harmless. collect_items.py reports items it cannot find ("LOST") — fold those the same way.
+   Late word fixes on final.txt (book spellings, a typo): `python3 t/wordfix.py VM/final.txt VM/items_all_final.json VM/wordfix.json $SD_REPO/sync/YT.tsv`
+   with rows `[old, new, why, conf]`; it makes one ✎ item per change or updates the item the change falls in.
    (add the punctuation items from rev_punct.json). Check: every item's `cur` occurs exactly once in final.txt.
 5. Last checks on final.txt: no quotation marks or brackets; every paragraph ends in a stop (except the closing
    "જય સચ્ચિદાનંદ" and the line just before a mantra); mantras laid out as in C5.4; sha256 of the text = **NEW**.
@@ -392,6 +394,8 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 | ઉપનિષદ - 36 | 71oMOFW1UoQ | બ્રહ્મોપનિષદ્ | posted 14 Nov, 96 ✎; recorded in 2 tabs (0–1120, 1100–2218); pauses with fixed offsets (`:0:0.12:fix`, `:1100:0.16:fix`; the last minute locked at 6.3 s, wrongly); mantra 1 recited in Sanskrit, written from the book (Gita Press reading) checked against sanskritdocuments.org; book OCR (brahma36) |
 | ઉપનિષદ - 37 | QBhk5VXzun0 | ભિક્ષુકોપનિષદ્ | posted 14 Nov, 51 ✎; one recording; pauses needed `:0:0.11:fix` (no lock in the first 5 minutes); book OCR (bhikshu37); પૂર્ણમદઃ in standard text at both ends |
 | ઉપનિષદ - 42 | RQkypq_YOpM | યોગતત્ત્વોપનિષદ્ | posted 14 Nov, 206 ✎; recorded in 3 parts; book OCR p. 283–296 (yogatattva42); opening and closing સહ નાવવતુ in standard text; the Doc's brackets glued to a suffix ()ને, )થી) came out as a stop — joined by hand (વસ્તુને, આઘાતથી); કૈવલ્ય, સ્ફુરણ, સુષુમ્ણા spelled as in the book |
+| ઉપનિષદ - 43 | 0_ybCUI1FSM | વજ્રસૂચિકોપનિષદ્ & શાટ્યાયનીયોપનિષદ્ | posted 14 Nov, 259 ✎; recorded in 4 tabs (0, 1710, 3420, 5130); pauses `:0:0.08:fix` and `:3420:0.07:fix` (windows locked at 106 s and 66 s, wrongly); a line left by an earlier AI cleaner (અહીં સુધારેલું લખાણ આપેલું છે:) removed and the orphan છીએ. joined back; ૐ આપ્યાયન્તુ, પૂર્ણમદઃ and મન એવ મનુષ્યાણાં … in standard text; book OCR (vajra43) |
+| ઉપનિષદ - 44 | dm1CacOZiPE | શાણ્ડિલ્યોપનિષદ્ part 1 | posted 14 Nov, 154 ✎; recorded in 2 tabs; first 7 minutes of pauses unmatched (chant); judges' deletions left ",," ",." "!!" and "અને." — fixed by manual rows; book spellings (શાંડિલ્ય, ધૃતિ, હ્રી, પૂષા, કુહૂ, ઘુમાવ) with the new `t/wordfix.py`; ભદ્રં કર્ણેભિઃ and Gita 4.24 in standard text |
 | ઉપનિષદ - 29 | SVuerlTFeHI | નિર્વાણોપનિષદ્ · પંચબ્રહ્મોપનિષદ્ | posted 14 Nov, 76 ✎; opening prayer = સત્યનારાયણ કથા 1.8–9 (standard text found online), સહ નાવવતુ as in 48 |
 | ઉપનિષદ - 30 | txdQ3939tmk | પરબ્રહ્મોપનિષદ્ | posted 14 Nov, 92 ✎ (3 check); book = Tesseract OCR of p. 197–203 (not typed); judges' moved-word pairs and the ? after a fix folded by hand |
 | ઉપનિષદ - 5 | 8YbF5PwMMnU | અધ્યાત્મોપનિષદ્ ૩ | no Doc: new Doc from Sarvam + captions hint + book (PDF 24–29 typed), posted 7 Nov, 92 ✎ |
