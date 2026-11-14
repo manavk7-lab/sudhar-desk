@@ -173,6 +173,8 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
 `bash t/fusem.sh VM audio/m39 YT book/NAME_gu.txt p1a p1b p1c`
 - assembles `VM/sar.txt` (and `VM/gem.txt` if every piece has Gemini), merging the overlaps;
 - `t/fuse2.py` aligns S, G (and Y) to the Doc word by word and makes one item per disagreement (`VM/items_all.json`);
+  (14 Nov: Y now also shows the words YouTube inserts right at an item's start, e.g. `જે હતા તે` before `આઠ`; before
+  this fix they were hidden, so judges could not see that Y agreed with S);
 - `t/dropmantra.py` drops items inside recited mantras (they are replaced whole in C8);
 - `t/bookref.py` adds the book's matching sentence (B) to each item;
 - `t/prepjudge.py` writes judge files `VM/j_1.txt, j_2.txt …` (150 items each) and `VM/j_kept.json`;
@@ -180,7 +182,8 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
   lone શું?, Sanskrit endings, એ→ય …) for a second kind of judge.
 
 ### C7. Judges, then Claude's own review
-1. Run one sub-agent per `j_N.txt`, in parallel, with this brief:
+1. Run one sub-agent per `j_N.txt`, in parallel, at **xhigh effort** (14 Nov test: max agreed with xhigh about as often
+   as two xhigh runs agree with each other, for about twice the usage; Manav chose xhigh), with this brief:
    "Read `proof/JUDGE.md` and `proof/RULES.md` (and `proof/NOGEM.md` if there is no G). Judge every line of
    `VM/j_N.txt` as JUDGE.md says. Write `VM/j_N_out.json` exactly in JUDGE.md's format. Reply with only the counts of
    fix / maybe / ask." One more sub-agent for `VM/cands.txt` with `proof/CANDS.md` → `VM/cands_out.json`

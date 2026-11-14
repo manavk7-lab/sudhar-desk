@@ -8,14 +8,16 @@ INFO={'Y'}
 def bmap(D,E):
     """boundary map doc index->engine index, plus list of nonequal blocks"""
     sm=difflib.SequenceMatcher(None,[key(x) for x in D],[key(x) for x in E],autojunk=False)
-    m={};blocks=[]
+    m={};blocks=[];mf={}
     for op,i1,i2,j1,j2 in sm.get_opcodes():
         if op=='equal':
-            for k in range(i2-i1+1): m[i1+k]=j1+k
+            for k in range(i2-i1+1): m[i1+k]=j1+k; mf.setdefault(i1+k,j1+k)
         else:
-            m.setdefault(i1,j1); m[i2]=j2
+            m.setdefault(i1,j1); m[i2]=j2; mf.setdefault(i1,j1); mf.setdefault(i2,j2)
             # a pure insertion is shown on the doc word before it (so engines' extra words are visible)
             blocks.append((i1-1,i2) if (op=='insert' and i1>0) else (i1,i2))
+    # mf[i] = the engine index BEFORE any words the engine inserts at doc boundary i (m[i] is after them)
+    bmap.first=mf
     return m,blocks
 def main():
     doc=open(sys.argv[1],encoding='utf-8-sig').read().replace('\r\n','\n'); out=sys.argv[2]
@@ -26,8 +28,9 @@ def main():
     D=[t[2] for t in toks]; N=len(D)
     maps={};blocks={}
     gaps={}
+    first={}
     for n,(E,T) in eng.items():
-        maps[n],blocks[n]=bmap(D,E)
+        maps[n],blocks[n]=bmap(D,E); first[n]=bmap.first
         gi=[j for j,w in enumerate(E) if w=='ZZGAPZZ']
         gaps[n]=[]
         if gi:
@@ -66,7 +69,10 @@ def main():
         if not any(a<=t1 and t2<=b and (t1,t2)!=(None,None) for t1,t2 in trig if (t1<b or (t1==t2 and t1<=b)) and t2>=a): continue
         read={}
         for n,(E,T) in eng.items():
-            read[n]=None if ingap(n,a,b) or a not in maps[n] or b not in maps[n] else ' '.join(E[maps[n][a]:maps[n][b]])
+            # info engines (Y) also show words they insert right at the span's start (14 Nov: YouTube's 'જે હતા તે'
+            # before 'આઠ' was hidden, so judges never saw that Y agreed with S)
+            st=first[n].get(a,maps[n].get(a)) if n in INFO else maps[n].get(a)
+            read[n]=None if ingap(n,a,b) or a not in maps[n] or b not in maps[n] else ' '.join(E[st:maps[n][b]])
         old=' '.join(D[a:b])
         trig_eng=[n for n in eng if n not in INFO and read[n] is not None and ' '.join(key(x) for x in read[n].split())!=' '.join(key(x) for x in old.split())]
         if not trig_eng: continue
