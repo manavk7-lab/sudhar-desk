@@ -376,11 +376,11 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 | ઉપનિષદ - 18 | lqmE7p2GCjw | કૌષીતકિબ્રાહ્મણોપનિષદ્ | posted 6 Nov, 143 ✎ |
 | ઉપનિષદ - 19 | z3RMzwt2Cas | ક્ષુરિકોપનિષદ્ ૧ | posted 6 Nov, 78 ✎ (pauses: v19b needed a fixed offset, `:0.14:fix`) |
 | ઉપનિષદ - 20 | JRrJR3wVyVA | ક્ષુરિકોપનિષદ્ ૨, guided meditation | posted 6 Nov, 37 ✎; Doc was the captions: اللہ on the silent part removed, 4th જય સચ્ચિદાનંદ added; no PUNCT pass (music: pause offsets unreliable) |
-
-| ઉપనિષદ - 22 | p9l_rU1GgDk | જાબાલદર્શનોપનિષદ્ ૧ | posted 7 Nov (Doc + Sarvam + captions + book), 216 ✎; first direct post from the work folder (`bin/postdoc.py`) |
+| ઉપનિષદ - 22 | p9l_rU1GgDk | જાબાલદર્શનોપનિષદ્ ૧ | posted 7 Nov (Doc + Sarvam + captions + book), 216 ✎; first direct post from the work folder (`bin/postdoc.py`) |
 | ઉપનિષદ - 23 | CmC12T0YSeo | જાબાલદર્શનોપનિષદ્ ૨ (4 min) | posted 7 Nov, 8 ✎ (judged by hand) |
 | ઉપનિષદ - 24 | SNFkEooCbPM | જાબાલદર્શનોપનિષદ્ ૩ (ખંડ 5–8) | posted 7 Nov, 136 ✎ (v24b pauses needed `:0.1:fix`) |
 | ઉપનિષદ - 25 | nVxpSqF7rsA | જાબાલદર્શનોપનિષદ્ ૪ (ધારણા to the end) | posted 7 Nov, 16 ✎ |
+| ઉપનિષદ - 26 | 0SNy2V7byT8 | જાબાલોપનિષદ્ | posted 14 Nov (Doc + Sarvam + captions + book), 122 ✎ (v26b pauses needed `:0.1:fix`; overlapping last-step rows folded into one item) |
 | ઉપનિષદ - 5 | 8YbF5PwMMnU | અધ્યાત્મોપનિષદ્ ૩ | no Doc: new Doc from Sarvam + captions hint + book (PDF 24–29 typed), posted 7 Nov, 92 ✎ |
 | ઉપનિષદ - 48 | Cv61CQOqbIw | શાણ્ડિલ્યોપનિષદ્ ૫ (guided meditation) | no Doc: new Doc from Sarvam (Part G), posted 7 Nov, 13 ✎; shared with manavk7 as editor |
 | ઉપનિષદ - 142 | 5A0I2r8P50k | લાઙ્ગૂલોપનિષદ્ (Hanuman mantras) | no Doc: new Doc (Part G), posted 7 Nov, 90 ✎ (17 check items on mantra words); no book (not in બ્રહ્મ વિદ્યા ખંડ) |
