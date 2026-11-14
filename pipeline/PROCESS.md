@@ -381,6 +381,7 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 | ઉપનિષદ - 24 | SNFkEooCbPM | જાબાલદર્શનોપનિષદ્ ૩ (ખંડ 5–8) | posted 7 Nov, 136 ✎ (v24b pauses needed `:0.1:fix`) |
 | ઉપનિષદ - 25 | nVxpSqF7rsA | જાબાલદર્શનોપનિષદ્ ૪ (ધારણા to the end) | posted 7 Nov, 16 ✎ |
 | ઉપનિષદ - 26 | 0SNy2V7byT8 | જાબાલોપનિષદ્ | posted 14 Nov (Doc + Sarvam + captions + book), 122 ✎ (v26b pauses needed `:0.1:fix`; overlapping last-step rows folded into one item) |
+| ઉપનિષદ - 27 | V9-CBLBEGPk | જાબાલ્યુપનિષદ્ + તુરીયાતીતોપનિષદ્ | posted 14 Nov, 85 ✎ (5 check); book names જાબાલિ, પિપ્પલાદિ, ષડાનન; mkchecks put a dropped છે/કે after the stop in 3 alts (fixed by hand) |
 | ઉપનિષદ - 5 | 8YbF5PwMMnU | અધ્યાત્મોપનિષદ્ ૩ | no Doc: new Doc from Sarvam + captions hint + book (PDF 24–29 typed), posted 7 Nov, 92 ✎ |
 | ઉપનિષદ - 48 | Cv61CQOqbIw | શાણ્ડિલ્યોપનિષદ્ ૫ (guided meditation) | no Doc: new Doc from Sarvam (Part G), posted 7 Nov, 13 ✎; shared with manavk7 as editor |
 | ઉપનિષદ - 142 | 5A0I2r8P50k | લાઙ્ગૂલોપનિષદ્ (Hanuman mantras) | no Doc: new Doc (Part G), posted 7 Nov, 90 ✎ (17 check items on mantra words); no book (not in બ્રહ્મ વિદ્યા ખંડ) |
