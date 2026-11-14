@@ -382,6 +382,7 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 | ઉપનિષદ - 25 | nVxpSqF7rsA | જાબાલદર્શનોપનિષદ્ ૪ (ધારણા to the end) | posted 7 Nov, 16 ✎ |
 | ઉપનિષદ - 26 | 0SNy2V7byT8 | જાબાલોપનિષદ્ | posted 14 Nov (Doc + Sarvam + captions + book), 122 ✎ (v26b pauses needed `:0.1:fix`; overlapping last-step rows folded into one item) |
 | ઉપનિષદ - 27 | V9-CBLBEGPk | જાબાલ્યુપનિષદ્ + તુરીયાતીતોપનિષદ્ | posted 14 Nov, 85 ✎ (5 check); book names જાબાલિ, પિપ્પલાદિ, ષડાનન; mkchecks put a dropped છે/કે after the stop in 3 alts (fixed by hand) |
+| ઉપનિષદ - 28 | MmU6HmzXdWI | દ્વયોપનિષદ્ · નારદપરિવ્રાજકોપનિષદ્ | posted 14 Nov, 167 ✎; 102 min, 3 recordings (0, 2030, 4060); v28c pauses needed `:4060:0.12:fix` (the automatic search found no lock); book p. 136–188 typed |
 | ઉપનિષદ - 31 | xFf0WRNJA_s | પરમહંસ પરિવ્રાજકોપનિષદ્ | posted 14 Nov, 103 ✎; recorded in 3 tabs (0–1200, 1180–2380, 2360–3545); v31a pauses needed `:0:0.15:fix` (no lock in the shanti); the read Sanskrit passage (p. 205–206) laid out one line per sentence |
 | ઉપનિષદ - 29 | SVuerlTFeHI | નિર્વાણોપનિષદ્ · પંચબ્રહ્મોપનિષદ્ | posted 14 Nov, 76 ✎; opening prayer = સત્યનારાયણ કથા 1.8–9 (standard text found online), સહ નાવવતુ as in 48 |
 | ઉપનિષદ - 30 | txdQ3939tmk | પરબ્રહ્મોપનિષદ્ | posted 14 Nov, 92 ✎ (3 check); book = Tesseract OCR of p. 197–203 (not typed); judges' moved-word pairs and the ? after a fix folded by hand |
