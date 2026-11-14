@@ -384,6 +384,8 @@ numbers in "Results so far". This is where all the rules came from (videos 9–1
 | ઉપનિષદ - 27 | V9-CBLBEGPk | જાબાલ્યુપનિષદ્ + તુરીયાતીતોપનિષદ્ | posted 14 Nov, 85 ✎ (5 check); book names જાબાલિ, પિપ્પલાદિ, ષડાનન; mkchecks put a dropped છે/કે after the stop in 3 alts (fixed by hand) |
 | ઉપનિષદ - 28 | MmU6HmzXdWI | દ્વયોપનિષદ્ · નારદપરિવ્રાજકોપનિષદ્ | posted 14 Nov, 167 ✎; 102 min, 3 recordings (0, 2030, 4060); v28c pauses needed `:4060:0.12:fix` (the automatic search found no lock); book p. 136–188 typed |
 | ઉપનિષદ - 31 | xFf0WRNJA_s | પરમહંસ પરિવ્રાજકોપનિષદ્ | posted 14 Nov, 103 ✎; recorded in 3 tabs (0–1200, 1180–2380, 2360–3545); v31a pauses needed `:0:0.15:fix` (no lock in the shanti); the read Sanskrit passage (p. 205–206) laid out one line per sentence |
+| ઉપનિષદ - 35 | GqLUEvRXWy4 | બ્રહ્મવિદ્યોપનિષદ્ part 2 | posted 14 Nov, 107 ✎; one recording; book OCR p. 239–242 (bv35); opening સરસ્વતી prayer and closing સહ નાવવતુ in standard text; 5 paragraph joins; judges and punctuation at xhigh effort |
+| ઉપનિષદ - 37 | QBhk5VXzun0 | ભિક્ષુકોપનિષદ્ | posted 14 Nov, 51 ✎; one recording; pauses needed `:0:0.11:fix` (no lock in the first 5 minutes); book OCR (bhikshu37); પૂર્ણમદઃ in standard text at both ends |
 | ઉપનિષદ - 29 | SVuerlTFeHI | નિર્વાણોપનિષદ્ · પંચબ્રહ્મોપનિષદ્ | posted 14 Nov, 76 ✎; opening prayer = સત્યનારાયણ કથા 1.8–9 (standard text found online), સહ નાવવતુ as in 48 |
 | ઉપનિષદ - 30 | txdQ3939tmk | પરબ્રહ્મોપનિષદ્ | posted 14 Nov, 92 ✎ (3 check); book = Tesseract OCR of p. 197–203 (not typed); judges' moved-word pairs and the ? after a fix folded by hand |
 | ઉપનિષદ - 5 | 8YbF5PwMMnU | અધ્યાત્મોપનિષદ્ ૩ | no Doc: new Doc from Sarvam + captions hint + book (PDF 24–29 typed), posted 7 Nov, 92 ✎ |
