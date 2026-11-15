@@ -107,12 +107,16 @@ t=re.sub(r' ([,.?!:;])',r'\1',t)
 spans=[]
 # brackets -> commas (RULES: no brackets), for every "(…)" not listed in FIX/KEEP: "શબ્દ (aside) આગળ" -> "શબ્દ, aside, આગળ"
 _auto=[]
-for m in re.finditer(r'(\S+) \(([^()\n]+)\)([^\s,.?!:;()]*)([,.?!:;]?)( \S+)?',t):
+# the next word is only looked at, not consumed, so two asides in a row both match (v51: "અસ્તેય (…), બ્રહ્મચર્ય (…)")
+for m in re.finditer(r'(\S+) \(([^()\n]+)\)([^\s,.?!:;()]*)([,.?!:;]?)(?=( \S+)?)',t):
     w,inner,suf,pun,nxt=m.group(1),m.group(2).strip(),m.group(3),m.group(4),m.group(5) or ''
     if any(m.group(0) in o or o in m.group(0) for o,_,_ in FIX.get(vm,[])): continue
     w2=w.rstrip(',')
     # "(જાણવા યોગ્ય વસ્તુ)ને" (v42): the suffix joins the last word, no stop: "વસ્તુને"
-    newt=w2+', '+inner+suf+pun+nxt if suf else w2+', '+inner+(pun if pun else (',' if nxt else '.'))+nxt
+    if suf: newt=w2+', '+inner+suf+pun
+    elif pun: newt=w2+', '+inner+pun
+    elif nxt.strip() in ('–','-','—'): newt=w2+', '+inner          # "(…) – આ પાંચ"
+    else: newt=w2+', '+inner+(',' if nxt else '.')
     _auto.append((m.group(0),newt,'no brackets (aside spoken as is)'))
 FIX.setdefault(vm,[]); FIX[vm]=FIX[vm]+[x for x in _auto if x[0] not in [o for o,_,_ in FIX[vm]]]
 for old,new,why in FIX.get(vm,[]):

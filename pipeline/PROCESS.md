@@ -235,6 +235,10 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
    unchanged context words are harmless. collect_items.py reports items it cannot find ("LOST") — fold those the same way.
    Late word fixes on final.txt (book spellings, a typo): `python3 t/wordfix.py VM/final.txt VM/items_all_final.json VM/wordfix.json $SD_REPO/sync/YT.tsv`
    with rows `[old, new, why, conf]`; it makes one ✎ item per change or updates the item the change falls in.
+   **Folding made easy (15 Nov):** `python3 t/autofold.py VM VM/new_a.txt VM/items_pre.json VM/fold_groups.json` finds the
+   overlapping items and the LOST ones (with the later item that changed text inside them) and writes the groups for
+   `t/foldfix.py VM VM/new_a.txt VM/items_pre.json VM/fold_groups.json VM/items_f.json`. Check items are left out of the
+   groups (their alt is a suggestion, not the old text) — merge two overlapping check items by hand into one check item.
    (add the punctuation items from rev_punct.json). Check: every item's `cur` occurs exactly once in final.txt.
 5. Last checks on final.txt: no quotation marks or brackets; every paragraph ends in a stop (except the closing
    "જય સચ્ચિદાનંદ" and the line just before a mantra); mantras laid out as in C5.4; sha256 of the text = **NEW**.
