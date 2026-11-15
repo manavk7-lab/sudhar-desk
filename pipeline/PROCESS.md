@@ -272,6 +272,9 @@ sentence that asks (શું, કેમ, કોણ …), and the book's visarga
 (the OCR often loses marks), never adds a "." (stops come from where he really stops), never changes his own "?" / "!",
 never puts a mark before an auxiliary (છે, હતું …) and leaves paragraph ends alone. Each change is a ✎ item ("punctuation
 as in the book"), folded into an existing item when it falls inside one. Typical: 50–80 changes in an hour of reading.
+15 Nov: applied to the posted Docs Manav had not opened (34, 35, 36, 37, 42, 43, 44 — 8 to 64 changes each) and, with his
+OK, to his current versions of 29, 30, 31 (read his Doc, run bookpunct with the review JSON's items, check that only marks
+and visarga changed, post with OLD = his text's hash, merge_review into the existing ✎ list). 28 waits until he closes it.
 
 ### C10. Post into the Doc (with the hash check)
 1. Stage the text: `python3 bin/putdoc.py post39 VM/final.txt` (cache key `post39`, 6 hours).
