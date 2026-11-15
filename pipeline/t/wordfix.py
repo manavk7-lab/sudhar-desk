@@ -20,9 +20,12 @@ for old,new,why,conf in spec:
             if sp and sp[0]<e and sp[1]>s: host=x; break
         if host:
             sp=span(host,t)
-            host['cur']=t[sp[0]:s]+new+t[e:sp[1]]
-            host['why']=(host.get('why','')+'; '+why).strip('; ')
+            # the change may stick out of the item on either side: the item grows to cover both
+            U0,U1=min(s,sp[0]),max(e,sp[1])
+            host['alt']=t[U0:sp[0]]+host['alt']+t[sp[1]:U1]
             t=t[:s]+new+t[e:]
+            host['cur']=t[U0:U1+len(new)-(e-s)]
+            host['why']=(host.get('why','')+'; '+why).strip('; ')
             print('in item',host['id'],'|',host['cur'][:90])
             continue
         # two words of context, stopping at a line break
@@ -39,6 +42,11 @@ for old,new,why,conf in spec:
             if j<0: j=len(t)
             if 0<=nl<j: R=nl; break
             R=j
+        for x in it+new_items:                      # the context must not run into another item
+            sp=span(x,t)
+            if not sp: continue
+            if sp[1]<=s and sp[1]>L: L=sp[1]+(1 if t[sp[1]:sp[1]+1]==' ' else 0)
+            if sp[0]>=e and sp[0]<R: R=sp[0]-(1 if t[sp[0]-1:sp[0]]==' ' else 0)
         alt=t[L:R]; cur=t[L:s]+new+t[e:R]
         t=t[:s]+new+t[e:]
         x={'id':hashlib.md5(('wf'+cur+str(s)).encode()).hexdigest()[:8],'cur':cur,'alt':alt,'kind':'applied','conf':conf,'why':why,'heard':''}

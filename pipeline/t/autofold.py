@@ -1,10 +1,10 @@
-"""autofold.py VM text.txt items.json groups_out.json — suggest fold groups for t/foldfix.py.
+"""autofold.py VM text.txt items.json groups_out.json [--overlaps-only] — suggest fold groups for t/foldfix.py.
 1. Items whose spans in text.txt overlap (what overlapcheck.py calls BAD) are grouped.
 2. Items collect_items.py could not find (LOST: an id in a stage file but not in items.json) are grouped with the
    later-stage item that changed text inside them (its alt shares >= 6 characters with the LOST item's cur at an edge).
 Members are ordered by stage (backbone, rev_new, rev_manual, rev_mantra, rev_agale, rev_punct). Prints the groups."""
 import json,sys,os,difflib
-VM,T,I,OUT=sys.argv[1:5]
+VM,T,I,OUT=sys.argv[1:5]; ONLYOVL='--overlaps-only' in sys.argv   # after the punctuation pass: LOST items were folded already
 t=open(T,encoding='utf-8').read(); it=json.load(open(I,encoding='utf-8'))
 STAGES=['backbone_items','rev_new','rev_manual','rev_mantra','rev_agale','rev_punct']
 stage={}; src={}
@@ -33,7 +33,7 @@ for i in range(len(sp)):
         if sp[j][0]>=sp[i][1]: break
         union(sp[i][2],sp[j][2])
 # 2. LOST
-for lid,x in src.items():
+for lid,x in ([] if ONLYOVL else src.items()):
     if lid in have: continue
     k=stage[lid]; best=None
     for yid,y in src.items():
