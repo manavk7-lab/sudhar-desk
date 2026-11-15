@@ -10,7 +10,7 @@ transcripts). Boundaries at a paragraph break are changed only to a stop (. ? !)
 --dry: print what would change, write nothing."""
 import re,sys,json,difflib,hashlib,os,subprocess
 from rapidfuzz import fuzz
-T,BKS,I,SY=sys.argv[1:5]; DRY='--dry' in sys.argv; MINRUN=6
+T,BKS,I,SY=sys.argv[1:5]; DRY='--dry' in sys.argv; MINRUN=6; UNDOBR='--undo-brackets' in sys.argv
 PUN='.,?!;:–—-।॥'
 QB='‘’“”"\''
 def gu_lines(t):
@@ -24,9 +24,11 @@ def toks(t):
         if ce<=cs: continue
         out.append((s,m.end(),w[cs:ce],s+cs,s+ce))
     return out
-def bmark(seg):
-    """the book's mark between two words, from the raw text between them."""
-    seg=seg.replace('(',',').replace(')',',')
+def bmark(seg,br=False):
+    """the book's mark between two words, from the raw text between them.
+    Brackets are NOT marks (Manav, 15 Nov, ઉપનિષદ - 29: "એ જ (બ્રહ્મ પ્રાપ્તિનો) માર્ગ" is read as one sentence — he
+    removed the commas the old rule put there). br=True is the old rule, used only by --undo-brackets."""
+    seg=seg.replace('(',',' if br else ' ').replace(')',',' if br else ' ')
     for c in '?!':
         if c in seg: return c
     if any(c in seg for c in '.।॥'): return '.'
@@ -62,6 +64,29 @@ if len(cur)>=MINRUN: runs.append(cur)
 AUX={'છે','છું','છો','છીએ','હતો','હતી','હતું','હતા','હશે','હોય','જ'}
 QW=re.compile(r'(^|\s)(શું|શા|કેમ|કેવી|કેવો|કેવું|કેવા|ક્યાં|ક્યારે|કોણ|કોને|કોનો|કોની|કોનું|કયો|કયું|કયા|કઈ|કઇ|કેટલા|કેટલું|કેટલી|ખરો|ખરું|ખરી|ને)(\s|$)')
 changes=[]   # (start,end,newtext,why)
+if UNDOBR:
+    # remove the commas the old rule copied from book brackets — only where a "punctuation as in the book" item made them
+    it=json.load(open(I,encoding='utf-8'))
+    def span(x,txt):
+        p=txt.find(x['cur']); return (p,p+len(x['cur'])) if p>=0 and txt.count(x['cur'])==1 else None
+    undo=[]
+    for r in runs:
+        for a_,b_ in zip(r,r[1:]):
+            gap=t[D[a_][4]:D[b_][3]]; bgap=book[Bk[pair[a_]][4]:Bk[pair[b_]][3]].replace('\n',' ')
+            if '\n' in gap or bmark(gap)!=',' or bmark(bgap,True)!=',' or bmark(bgap)!='': continue
+            undo.append((D[a_][4],D[b_][3]))
+    n=0
+    for s0,e0 in sorted(undo,reverse=True):
+        host=next((x for x in it if span(x,t) and span(x,t)[0]<=s0 and span(x,t)[1]>=e0 and 'punctuation as in the book' in x.get('why','')),None)
+        if not host: continue
+        hs,he=span(host,t)
+        t=t[:s0]+' '+t[e0:]
+        host['cur']=t[hs:he-(e0-s0-1)]
+        n+=1; print('undo comma:',repr(host['cur'][:70]))
+    it=[x for x in it if x['cur']!=x['alt']]
+    if not DRY:
+        open(T,'w',encoding='utf-8').write(t); json.dump(it,open(I,'w',encoding='utf-8'),ensure_ascii=False,indent=1)
+    print('commas from brackets removed',n,'items',len(it)); sys.exit()
 for r in runs:
     for a,b in zip(r,r[1:]):
         gap=t[D[a][4]:D[b][3]]          # Doc text between the two cores

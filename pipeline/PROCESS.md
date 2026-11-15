@@ -277,7 +277,10 @@ words fuzzily) and, inside every run of ≥ 6 aligned words (a passage he reads)
 mostly the book's commas, also "!" after a vocative, "–", ";", ":" where the Doc already has some mark, "?" only in a
 sentence that asks (શું, કેમ, કોણ …), and the book's visarga inside a word (અંતઃમાં, નિઃસંગ). It never removes a mark
 (the OCR often loses marks), never adds a "." (stops come from where he really stops), never changes his own "?" / "!",
-never puts a mark before an auxiliary (છે, હતું …) and leaves paragraph ends alone. Each change is a ✎ item ("punctuation
+never puts a mark before an auxiliary (છે, હતું …) and leaves paragraph ends alone. **Book brackets are NOT marks** (Manav, 15 Nov, ઉપનિષદ - 29:
+"ઇન્દ્રિયો પર અંકુશ રાખવો એ જ (બ્રહ્મ પ્રાપ્તિનો) માર્ગ છે" — he removed the two commas the first version put there; "alap
+viram is not needed"). `--undo-brackets` removes such commas from a posted Doc (only where a "punctuation as in the book" item
+made them): done the same day for 30, 31, 34–37, 42–47, 50, 51 (1 to 44 commas each). Each change is a ✎ item ("punctuation
 as in the book"), folded into an existing item when it falls inside one. Typical: 50–80 changes in an hour of reading.
 15 Nov: applied to the posted Docs Manav had not opened (34, 35, 36, 37, 42, 43, 44 — 8 to 64 changes each) and, with his
 OK, to his current versions of 29, 30, 31 (read his Doc, run bookpunct with the review JSON's items, check that only marks
