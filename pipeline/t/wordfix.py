@@ -11,9 +11,11 @@ def span(x,txt):
     p=txt.find(x['cur']); return (p,p+len(x['cur'])) if p>=0 else None
 new_items=[]
 for old,new,why,conf in spec:
-    while True:
-        m=re.search(re.escape(old),t)
+    pos=0
+    while True:                                     # search after the last change: new may contain old
+        m=re.compile(re.escape(old)).search(t,pos)
         if not m: break
+        pos=m.start()+len(new)
         s,e=m.start(),m.end()
         host=None
         for x in it+new_items:
@@ -79,7 +81,7 @@ for x in new_items:                                 # widen any new item whose c
 open(T,'w',encoding='utf-8').write(t)
 tmp=I+'.wf.json'; json.dump(new_items,open(tmp,'w',encoding='utf-8'),ensure_ascii=False,indent=1)
 here=os.path.dirname(os.path.abspath(__file__))
-subprocess.run(['python3',os.path.join(here,'addtimes.py'),T,SY,tmp],check=True)
+if not os.environ.get('NOTIMES'): subprocess.run(['python3',os.path.join(here,'addtimes.py'),T,SY,tmp],check=True)
 it+=json.load(open(tmp,encoding='utf-8')); os.remove(tmp)
 json.dump(it,open(I,'w',encoding='utf-8'),ensure_ascii=False,indent=1)
 print('items',len(it))

@@ -40,9 +40,17 @@ if r.returncode:                                    # one row at a time; a row t
     for row in keep:
         shutil.copy(f'{D}/new.txt',f'{D}/new.bak'); shutil.copy(f'{D}/items.json',f'{D}/items.bak')
         json.dump([row],open(f'{D}/row1.json','w',encoding='utf-8'),ensure_ascii=False)
-        r=subprocess.run(['python3',os.path.join(here,'wordfix.py'),f'{D}/new.txt',f'{D}/items.json',f'{D}/row1.json',f'{R}/sync/{YT}.tsv'],capture_output=True,text=True)
+        r=subprocess.run(['python3',os.path.join(here,'wordfix.py'),f'{D}/new.txt',f'{D}/items.json',f'{D}/row1.json',f'{R}/sync/{YT}.tsv'],capture_output=True,text=True,env=dict(os.environ,NOTIMES='1'))
         if r.returncode:
             shutil.copy(f'{D}/new.bak',f'{D}/new.txt'); shutil.copy(f'{D}/items.bak',f'{D}/items.json'); print('  LEFT OUT',repr(row[0][:70]))
+if os.path.exists(f'{D}/row1.json'):                 # times for the items made one by one
+    it=json.load(open(f'{D}/items.json',encoding='utf-8')); nt=[x for x in it if not x.get('t')]
+    if nt:
+        json.dump(nt,open(f'{D}/nt.json','w',encoding='utf-8'),ensure_ascii=False)
+        subprocess.run(['python3',os.path.join(here,'addtimes.py'),f'{D}/new.txt',f'{R}/sync/{YT}.tsv',f'{D}/nt.json'],capture_output=True)
+        tt={x['id']:x for x in json.load(open(f'{D}/nt.json',encoding='utf-8'))}
+        it=[tt.get(x['id'],x) for x in it]; json.dump(it,open(f'{D}/items.json','w',encoding='utf-8'),ensure_ascii=False,indent=1)
+    os.remove(f'{D}/row1.json')
 for c in [['overlapcheck.py',f'{D}/new.txt',f'{D}/items.json'],['revertcheck.py',f'{D}/final.txt',f'{D}/items_rev_before.json',f'v{N}/doc_orig.txt'],['revertcheck.py',f'{D}/new.txt',f'{D}/items.json',f'v{N}/doc_orig.txt'],['lastcheck.py',f'{D}/new.txt',f'{D}/items.json']]:
     if c[0]=='revertcheck.py' and 'items_rev_before' in c[2]: json.dump(rev,open(c[2],'w',encoding='utf-8'),ensure_ascii=False)
     o=subprocess.run(['python3',os.path.join(here,c[0])]+c[1:],capture_output=True,text=True)
