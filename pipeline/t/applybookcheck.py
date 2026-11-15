@@ -33,7 +33,16 @@ shutil.copy(f'{D}/final.txt',f'{D}/new.txt')
 json.dump(rev,open(f'{D}/items.json','w',encoding='utf-8'),ensure_ascii=False,indent=1)
 json.dump(keep,open(f'{D}/rows_apply.json','w',encoding='utf-8'),ensure_ascii=False,indent=1)
 here=os.path.dirname(os.path.abspath(__file__))
-subprocess.run(['python3',os.path.join(here,'wordfix.py'),f'{D}/new.txt',f'{D}/items.json',f'{D}/rows_apply.json',f'{R}/sync/{YT}.tsv'],check=True,stdout=subprocess.DEVNULL)
+r=subprocess.run(['python3',os.path.join(here,'wordfix.py'),f'{D}/new.txt',f'{D}/items.json',f'{D}/rows_apply.json',f'{R}/sync/{YT}.tsv'],capture_output=True,text=True)
+if r.returncode:                                    # one row at a time; a row that breaks the ✎ list is left out
+    print('wordfix failed as a batch; applying rows one by one')
+    shutil.copy(f'{D}/final.txt',f'{D}/new.txt'); json.dump(rev,open(f'{D}/items.json','w',encoding='utf-8'),ensure_ascii=False,indent=1)
+    for row in keep:
+        shutil.copy(f'{D}/new.txt',f'{D}/new.bak'); shutil.copy(f'{D}/items.json',f'{D}/items.bak')
+        json.dump([row],open(f'{D}/row1.json','w',encoding='utf-8'),ensure_ascii=False)
+        r=subprocess.run(['python3',os.path.join(here,'wordfix.py'),f'{D}/new.txt',f'{D}/items.json',f'{D}/row1.json',f'{R}/sync/{YT}.tsv'],capture_output=True,text=True)
+        if r.returncode:
+            shutil.copy(f'{D}/new.bak',f'{D}/new.txt'); shutil.copy(f'{D}/items.bak',f'{D}/items.json'); print('  LEFT OUT',repr(row[0][:70]))
 for c in [['overlapcheck.py',f'{D}/new.txt',f'{D}/items.json'],['revertcheck.py',f'{D}/final.txt',f'{D}/items_rev_before.json',f'v{N}/doc_orig.txt'],['revertcheck.py',f'{D}/new.txt',f'{D}/items.json',f'v{N}/doc_orig.txt'],['lastcheck.py',f'{D}/new.txt',f'{D}/items.json']]:
     if c[0]=='revertcheck.py' and 'items_rev_before' in c[2]: json.dump(rev,open(c[2],'w',encoding='utf-8'),ensure_ascii=False)
     o=subprocess.run(['python3',os.path.join(here,c[0])]+c[1:],capture_output=True,text=True)
