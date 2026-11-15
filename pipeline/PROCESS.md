@@ -261,6 +261,18 @@ Better: write a clean book text by reading the page images (`book/NAME_gu_clean.
 Tesseract text is too noisy for word-level alignment — and run bookalign.py on the Doc before the judges (it shows
 which sentences are read), then again on new.txt after them.
 
+**Book punctuation (Manav, 15 Nov — "where the reader reads the book, the punctuation should be the same: the alpaviram,
+the question mark … copy the book's punctuation so that I do not have to correct it").** After the punctuation pass and
+before the last checks:
+`python3 t/bookpunct.py VM/final.txt book/NAME_gu.txt[,book/OTHER_gu.txt] VM/items_all_final.json $SD_REPO/sync/YT.tsv`
+(`--dry` first to read the list). It aligns the Doc with the book's Gujarati words (spelling-normalised, OCR-damaged
+words fuzzily) and, inside every run of ≥ 6 aligned words (a passage he reads), puts the book's mark at each word boundary:
+mostly the book's commas, also "!" after a vocative, "–", ";", ":" where the Doc already has some mark, "?" only in a
+sentence that asks (શું, કેમ, કોણ …), and the book's visarga inside a word (અંતઃમાં, નિઃસંગ). It never removes a mark
+(the OCR often loses marks), never adds a "." (stops come from where he really stops), never changes his own "?" / "!",
+never puts a mark before an auxiliary (છે, હતું …) and leaves paragraph ends alone. Each change is a ✎ item ("punctuation
+as in the book"), folded into an existing item when it falls inside one. Typical: 50–80 changes in an hour of reading.
+
 ### C10. Post into the Doc (with the hash check)
 1. Stage the text: `python3 bin/putdoc.py post39 VM/final.txt` (cache key `post39`, 6 hours).
 2. Fill the template: `python3 t/mkjs.py t/postjob.js KEY=post39 DOC=<doc id> OLD=<old sha16> NEW=<new sha16> > post39.js`
@@ -292,6 +304,11 @@ which sentences are read), then again on new.txt after them.
 Compare his finished Doc with what Claude posted (word diff): which changes he undid, what he still had to fix. Turn
 every repeated pattern into a rule in RULES.md (what) and JUDGE.md (how to decide), with his own examples, and note the
 numbers in "Results so far". This is where all the rules came from (videos 9–13, ઉપનિષદ - 1).
+`python3 t/learnedits.py VM/final.txt VM/manav_final.txt book/NAME_gu.txt VM/learn.json` does the comparison (read his
+Doc with `bin/readdoc.py DOC VM/manav_final.txt`): punctuation he changed (with the book's mark where he reads), words he
+changed (and whether his word is the book's). 15 Nov, Docs 5, 22, 24, 25, 27: 417 punctuation changes — 150 commas added,
+about 40 "?" added, stops moved over trailing words, dashes and semicolons → `proofreading/MANAV_MARKS.md` (all examples)
+and PUNCT.md (the old "never add a comma" rule was wrong).
 
 ---------------------------------------------------------------------------------------------------------------
 

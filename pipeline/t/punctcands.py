@@ -2,6 +2,7 @@
 Builds regions around candidate word boundaries for the punctuation judge:
   A: a full stop / question mark where the speaker does not pause (<0.15 s)
   B: no punctuation (or a comma) where the speaker pauses >= 0.7 s
+  C: no punctuation at a 0.4-0.7 s pause after a verb, before a clause opener (જે, એટલે, પણ …) or in a repetition
 Writes out_prefix.json (boundaries) and out_prefix.txt (regions for the judge)."""
 import os
 import re,json,sys
@@ -14,6 +15,9 @@ N=len(W)
 def sep(i): return txt[W[i][1]:W[i+1][0]]
 def lab(i):
     s=sep(i); return '.' if re.search(r'[.!]',s) else ('?' if '?' in s else (',' if ',' in s else ''))
+def word(i): return re.sub(r'[^઀-૿A-Za-z0-9]','',txt[W[i][0]:W[i][1]])
+VERBEND={'છે','નથી','હોય','જોઈએ','હતું','હતો','હતી','હતા','છીએ','છો','થાય','થઈ','ગયું','ગઈ','ગયો','કરે','કરો'}
+OPENERS={'જે','જેમ','જ્યારે','જ્યાં','જેને','જેનો','જેની','જેનું','એટલે','કારણ','પરંતુ','પણ','તેથી','ત્યારે','અર્થાત','એ','આ','તે'}
 cand=[]
 for i in range(N-1):
     if W[i][1]<lo or W[i][1]>hi: continue
@@ -21,6 +25,8 @@ for i in range(N-1):
     p=pause[i]; l=lab(i)
     if l in ('.','?') and p<0.15: cand.append(i)
     elif l in ('',',') and p>=0.7: cand.append(i)
+    # C (15 Nov, Manav adds many commas): no mark at a shorter pause between two clauses or in a repetition
+    elif l=='' and p>=0.4 and (word(i) in VERBEND or word(i+1) in OPENERS or word(i)==word(i+1)): cand.append(i)
 # regions
 regions=[];cur=[]
 for i in cand:

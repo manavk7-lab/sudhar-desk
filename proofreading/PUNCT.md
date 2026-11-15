@@ -22,7 +22,13 @@ What we know from Manav's own corrections (video 9, 0–1:34):
   word. Move the stop only when the trailing words clearly finish the sentence before and the next part starts fresh.
 - He adds a full stop where a sentence clearly ends at a long pause (≥ 1 s) but the text runs on, and a "?" where the
   speaker clearly asks a question (શું, કેમ, ક્યાં, કોણ, કેવું, ખરું ને …) and pauses.
-- He almost never adds commas: NEVER add a ",". Never turn a "," into "." unless a complete sentence clearly ends there.
+- COMMAS (corrected 15 Nov — read `MANAV_MARKS.md` in this folder, his own edits in five finished Docs): the comma is his most
+  common change (about 140 added). Add "," where he does: between two clauses of one sentence at a short pause ("… છે, જે …",
+  "… નથી, એ …", "… હોય, તો …"); in lists and repetitions ("ઓમ, ઓમ, ઓમ"); after a vocative ("હે મહામુનિ, …"); around a word
+  the speaker adds to explain ("સંપૂર્ણ, પૂર્ણતા"); before a short tag ("…, ભાઈ?", "…, કેમ?"). Never turn a "," into "."
+  unless a complete sentence clearly ends there. (Where he reads from the book, a later step copies the book's own marks.)
+- QUESTIONS: add "?" wherever the speaker asks — also the short ones ("બરાબર?", "કેવી રીતે?", "ક્લિયર?", "સમજાયું?") — and
+  turn "." or "," into "?" at the end of a question.
 - Most real changes come as a MOVE: a full stop with no pause is removed AND a full stop is added at the pause 1–4 words
   later (or earlier). Prefer moves; a lone removal or a lone addition needs very strong reasons.
 - A test run showed these were WRONG (he kept the text as it was): adding "," after તો / કે; moving the stop in
@@ -35,7 +41,8 @@ What we know from Manav's own corrections (video 9, 0–1:34):
   "સંસાર ભાવ આખેઆખો ત્યારે! પછી …". So move a stop only when the trailing words CANNOT start the next sentence;
   if they could open it (તો …, આપણે …, પછી …, બસ …, એટલે …), leave the stop where it is.
 - At long pauses with no mark he left 81% unchanged and added "." 9%, "," 7%, "?" 2%; at stops with no pause he kept 89%.
-  Change only clear cases — expect roughly one change per 10–15 marks, not more.
+  Change only clear cases. (Earlier runs changed only 1–3% of the marks; his own edits show he wants more commas and
+  question marks than that — follow MANAV_MARKS.md.)
 - Where a question clearly ends at a pause and has no "?", add "?" (he did: "નારદને થોડી પૈણે?", "સ્વસ્થ છો?").
 - Keep full stops between two complete sentences even without a pause (the speaker often runs sentences together).
 - Do not touch Sanskrit shloka lines, mantras or bhajan lines (બ્રહ્માનંદમ પરમ સુખદમ …, સદગુરુ તમ નમામિ …) except their final stop.
