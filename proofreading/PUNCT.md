@@ -31,6 +31,7 @@ What we know from Manav's own corrections (video 9, 0–1:34):
   word ends or he pauses inside a phrase ("બ્રહ્મ સ્વરૂપ", "ચોથી અવસ્થા સ્વરૂપ"); NEVER a comma where the book prints a
   bracket ("તેઓ (બ્રહ્મ)જ બધાનો" → "તેઓ બ્રહ્મ જ બધાનો", not "તેઓ, બ્રહ્મ"); inside a sentence he reads from the book add
   no comma the book does not have. When in doubt, no comma.
+- QUESTION TAGS (Manav, 15 Nov, ઉપનિષદ - 30: "પછી બરાબર?"): a sentence ending in બરાબર, ખરું ને, સમજાયું, ક્લિયર ALWAYS gets "?".
 - QUESTIONS: add "?" wherever the speaker asks — also the short ones ("બરાબર?", "કેવી રીતે?", "ક્લિયર?", "સમજાયું?") — and
   turn "." or "," into "?" at the end of a question.
 - Most real changes come as a MOVE: a full stop with no pause is removed AND a full stop is added at the pause 1–4 words

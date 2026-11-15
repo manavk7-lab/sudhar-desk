@@ -30,6 +30,13 @@ Your job: find every place where he is READING and the transcript does not spell
 4. **Book spellings of ordinary words** inside the read sentence when the Doc's spelling is just a different spelling of
    the same word (સિદ્ધિયો/સિદ્ધિઓ both fine — leave; but a misspelling like વિષ્ટા for વિષ્ઠા → book).
 
+5. **Question tags get "?"** (Manav, 15 Nov, ઉપનિષદ - 30: "પછી બરાબર?"): when he ends with a tag asking the
+   listeners — બરાબર, ખરું ને, સમજાયું, ક્લિયર, ને, હેં — and the transcript has "." or "," or nothing, write "?".
+   ("બરાબર છે." is a statement: leave it.) Do this in the whole text, not only the read passages.
+6. **Whole words the Doc misheard while he reads**: book "અન્ય ભ્રમમાંથી મુક્તિ ઇચ્છે છે" — the Doc had "અન્ય બ્રહ્માદિ
+   મુક્તિ"; book "એ (જીવ) ક્યારેક" → "એ જીવ ક્યારેક". When the transcript's word makes no sense and the book's word sounds
+   alike, write the book's word.
+
 ## What NOT to change
 - His explanations and additions ("તીવ્રત એટલે સત, રજ અને તમસ", "એટલે કે …", "સમજાયું?") — they are his words. Inside an
   explanation, still spell a repeated book term the book's way (the second "તીવ્રત" → "ત્રિવૃત્ત" too).
