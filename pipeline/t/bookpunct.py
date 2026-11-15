@@ -132,6 +132,21 @@ for s,e,new,why in sorted(changes,reverse=True):
         if j<0: j=len(t)
         if 0<=nl<j: R=nl; break
         R=j
+    # if the context touches other items, fold them all into one item (so no two items overlap)
+    touch=sorted([(sp,x) for x in it+new_items for sp in [span(x,t)] if sp and sp[0]<R and sp[1]>L],key=lambda q:q[0][0])
+    if touch:
+        Us=min(L,touch[0][0][0]); Ue=max(R,max(q[0][1] for q in touch))
+        alt=''; pos=Us
+        for (hs,he),x in touch: alt+=t[pos:hs]+x['alt']; pos=he
+        alt+=t[pos:Ue]
+        d=len(new)-(e-s)
+        t=t[:s]+new+t[e:]
+        host=touch[0][1]
+        host['cur']=t[Us:Ue+d]; host['alt']=alt
+        host['why']=' ; '.join([q[1].get('why','') for q in touch]+['punctuation as in the book — '+why])
+        drop={id(q[1]) for q in touch[1:]}
+        it=[x for x in it if id(x) not in drop]; new_items=[x for x in new_items if id(x) not in drop]
+        continue
     alt=t[L:R]; cur=t[L:s]+new+t[e:R]
     t=t[:s]+new+t[e:]
     x={'id':hashlib.md5(('bp'+cur+str(s)).encode()).hexdigest()[:8],'cur':cur,'alt':alt,'kind':'applied','conf':'likely','why':'punctuation as in the book — '+why,'heard':''}
