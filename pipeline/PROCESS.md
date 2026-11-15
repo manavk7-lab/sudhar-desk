@@ -256,6 +256,20 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
    Watch applypunct next to a ":" — it once wrote "છે.:"; and fold a punctuation item into a check item or a join it
    touches (or drop the punctuation change).
 
+### C9a. Every word of the read passages against the book (Manav, 15 Nov, ઉપનિષદ - 29)
+"તીવ્રત" stood where the book prints "ત્રિવૃત્ત", "મહીપુષા" for "મહી, પૂષા", and commas stood where the book has brackets
+("તેઓ, જાગૃતિ, …", "ચોથી અવસ્થા, સ્વરૂપ"): "kindly check each and every word, so I have to correct less". bookalign.py
+misses clauses he mixes with his own words, so now an AGENT checks every read paragraph:
+1. `python3 t/unbracket.py VM/final.txt VM/doc_orig.txt book/NAME_gu.txt VM/unbr.json` — commas that backbone_m.py made
+   from the Doc's brackets where the bracket is the BOOK's (his own asides keep theirs).
+2. Agent with `proofreading/BOOKCHECK.md` on final.txt + book_gu.txt + book.txt + sar.txt → rows `[old, new, why, conf]`
+   (book spellings of the book's words, words split/joined as in the book, no comma where the book has a bracket; his
+   explanations and his own everyday words stay — Manav: keep his word when he says અને for the book's તથા; book words he
+   skipped are only "listen" notes). Long Docs: one agent per ~100 lines.
+3. Review the rows, then `t/wordfix.py` (or, for an already posted Doc, `python3 t/applybookcheck.py N YT` on bcN/ with
+   final.txt = the Doc now and the ✎ list from review/YT.json; it runs overlapcheck, revertcheck and lastcheck).
+Posted Docs Manav had not touched (30, 31, 34–37, 42–47, 49–53, 55) were re-checked this way on 15 Nov; 29 left to him.
+
 ### C9b. Book wording (when the speaker reads from the book) — Manav, 1 Nov: "always see what is written in book"
 `python3 t/bookalign.py VM/final.txt VM/bookalign.json book/NAME.txt[,book/OTHER.txt] 80` lists every place inside a
 read sentence where the Doc has different words than the book (`sub`), extra words (`extra`, his own additions — keep)

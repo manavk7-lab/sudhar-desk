@@ -27,6 +27,10 @@ What we know from Manav's own corrections (video 9, 0–1:34):
   "… નથી, એ …", "… હોય, તો …"); in lists and repetitions ("ઓમ, ઓમ, ઓમ"); after a vocative ("હે મહામુનિ, …"); around a word
   the speaker adds to explain ("સંપૂર્ણ, પૂર્ણતા"); before a short tag ("…, ભાઈ?", "…, કેમ?"). Never turn a "," into "."
   unless a complete sentence clearly ends there. (Where he reads from the book, a later step copies the book's own marks.)
+  BUT not too many (Manav, 15 Nov, ઉપનિષદ - 29: "so many alpaviram … don't add too much"): no comma just because a
+  word ends or he pauses inside a phrase ("બ્રહ્મ સ્વરૂપ", "ચોથી અવસ્થા સ્વરૂપ"); NEVER a comma where the book prints a
+  bracket ("તેઓ (બ્રહ્મ)જ બધાનો" → "તેઓ બ્રહ્મ જ બધાનો", not "તેઓ, બ્રહ્મ"); inside a sentence he reads from the book add
+  no comma the book does not have. When in doubt, no comma.
 - QUESTIONS: add "?" wherever the speaker asks — also the short ones ("બરાબર?", "કેવી રીતે?", "ક્લિયર?", "સમજાયું?") — and
   turn "." or "," into "?" at the end of a question.
 - Most real changes come as a MOVE: a full stop with no pause is removed AND a full stop is added at the pause 1–4 words
