@@ -246,7 +246,7 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
    groups (their alt is a suggestion, not the old text) — merge two overlapping check items by hand into one check item.
    After the punctuation pass use `--overlaps-only` (LOST items were folded already), and when foldfix still says "could
    not fold", `python3 t/mergeover.py VM/final.txt VM/items_all_final.json` merges each overlapping pair (cur = union,
-   alt = both undone); what it cannot merge is merged by hand from doc_orig.
+   alt = both undone); what it cannot merge: `python3 t/mergealign.py VM/final.txt VM/items_all_final.json VM/doc_orig.txt` (15 Nov) merges each overlapping group with alt taken from the Doc itself through a word alignment (no undo order needed); revertcheck after.
    (add the punctuation items from rev_punct.json). Check: every item's `cur` occurs exactly once in final.txt.
 5. Last checks on final.txt: no quotation marks or brackets; every paragraph ends in a stop (except the closing
    "જય સચ્ચિદાનંદ" and the line just before a mantra); mantras laid out as in C5.4; sha256 of the text = **NEW**.
@@ -437,6 +437,7 @@ and PUNCT.md (the old "never add a comma" rule was wrong).
 | ઉપનિષદ - 49 | D8PeLB03Ycs | શાણ્ડિલ્યોપનિષદ્ part 6 | posted 15 Nov, 40 ✎ (mostly his explanation; no book passages found) |
 | ઉપનિષદ - 50 | gjNpSaWSIK8 | શાણ્ડિલ્યોપનિષદ્ part 7 (અધ્યાય 2–3) | posted 15 Nov, 52 ✎ (16 book punctuation); closing ભદ્રં કર્ણેભિઃ in standard text; names as in the book (શાંડિલ્ય, અથર્વા, અત્રિ); પીત રંગ (Doc: પિત્ત); an earlier AI rewrite (આ સાંભળીને શાંડીલ્ય ઋષિ … કરવા ગયા) replaced by what he said, as one ✎ item |
 | ઉપનિષદ - 51 | 30FKx1zO9Nw | શારીરકોપનિષદ્ | posted 15 Nov, 149 ✎; book OCR p. 332–334 (shariraka); આવાહનં ન જાનામિ …, the opening and closing સહ નાવવતુ (the Doc had lost the first half of the closing one) and the first mantra ૐ અથાતઃ પૃથિવ્યાદિ … in standard text; જિહ્વા (Doc: જીવવા), ભોક્તા; brackets two in a row made backbone_m fail — fixed (lookahead) |
+| ઉપનિષદ - 52 | AAkSInM5Lr0 | સંન્યાસોપનિષદ્ part 1 | posted 15 Nov, 194 ✎ (6 to listen); book OCR p. 322–337 (sannyasa); ૐ ભૂઃ સ્વાહા, સંન્યસ્તં મયા; book punctuation (10) and spellings યજ્ઞોપવીત, ઋત્વિજ, આવસથ્ય, આનુશ્રવિક, તુષાગ્નિ, આપ્તબંધુ, સમભાવયુક્ત, પાશ, ચિહ્ન; મળદું → મડદું; overlaps the old tools could not merge → new t/mergealign.py |
 | ઉપનિષદ - 53 | N_Zh1SR6r58 | સંન્યાસોપનિષદ્ part 2 | posted 15 Nov, 120 ✎ (6 to listen); book OCR p. 322–337 (sannyasa); પૂર્ણમદઃ in standard text; book punctuation (4) and spellings માધુકરી, નશ્વર, શ્રોત્રિય, વિષ્ઠા, પ્રાયઃ; ભિક્ષાં દેહિ; કાલકૂટ / સ્મશાનવત asides without brackets |
 | ઉપનિષદ - 55 | 9qlVeufLJDw | સ્વસંવેદ્યોપનિષદ્ part 2 | posted 15 Nov, 34 ✎; book OCR p. 357–359 (svasam, ocrlabel.py); closing પૂર્ણમદઃ in standard text on its own lines; ન માતા, ન પિતા … commas from the book; તત્; અહીંયા ગાળે આસ સંવેદ્યો → અહીંયા આગળે આ સ્વસંવેદ્યોપનિષદ |
 | ઉપનિષદ - 29 | SVuerlTFeHI | નિર્વાણોપનિષદ્ · પંચબ્રહ્મોપનિષદ્ | posted 14 Nov, 76 ✎; opening prayer = સત્યનારાયણ કથા 1.8–9 (standard text found online), સહ નાવવતુ as in 48 |
