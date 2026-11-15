@@ -124,6 +124,11 @@ for r in runs:
             if not bw.endswith('ઃ') or ',' in book[Bk[j][4]:Bk[j+1][3] if j+1<len(Bk) else None] or (j>0 and ',' in book[Bk[j-1][4]:Bk[j][3]]):
                 changes.append((D[i][3],D[i][4],bw,'visarga as in the book'))
 changes.sort()
+# --skip=TEXT (repeatable): leave out a change whose 30 characters before + after contain TEXT (my review of the dry run)
+SKIPS=[a[7:] for a in sys.argv if a.startswith('--skip=')]
+if SKIPS:
+    keep=[c for c in changes if not any(k in t[max(0,c[0]-30):c[1]+30] for k in SKIPS)]
+    print('skipped',len(changes)-len(keep)); changes=keep
 print(f'runs {len(runs)} words in runs {sum(len(r) for r in runs)} of {len(D)}; changes {len(changes)}')
 from collections import Counter
 print(Counter(c[3] for c in changes).most_common(12))

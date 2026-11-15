@@ -161,6 +161,11 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
    raw.githubusercontent.com, set TESSDATA_PREFIX): `pdftoppm -r 300 -gray`, then `tesseract page.pgm out -l guj+san
    --psm 6` — good enough for the B reference; check verses by eye or online), save the Gujarati text as `book/NAME_gu.txt` and the Devanagari verses via
    `python3 t/bookverses.py book/NAME.txt book/NAME_verses.json` (Gujarati script via `t/deva2gu.py`).
+   When the pages are already OCR'd as one text file per page (`ocr2/`, `ocr3/` `tNNN.txt`, file number = printed page
+   + 13): `python3 t/ocrlabel.py OCRDIR FIRST LAST 13 bvk/clean/ocr_NAME.txt` labels the lines [S]/[G] (keeps each line's
+   final full stop, which book punctuation needs), fix the obvious misreads by hand, then
+   `python3 t/bookbuild.py NAME bvk/clean/ocr_NAME.txt 'START HEADING' 'NEXT HEADING'` writes book/NAME.txt, NAME_gu.txt and
+   NAME_verses.json. Pass book files to the scripts by absolute path.
 3. `python3 t/findmantras.py VM/doc.txt book/NAME_verses.json > VM/mantra_report.txt` — where the speaker recites the
    book's Sanskrit. Also look for shanti paths, Gita verses, stotras, Gayatri etc. by reading the Doc.
 4. For each recited mantra write an item in `VM/mantra_draft.json`:
@@ -279,7 +284,7 @@ sentence that asks (શું, કેમ, કોણ …), and the book's visarga
 (the OCR often loses marks), never adds a "." (stops come from where he really stops), never changes his own "?" / "!",
 never puts a mark before an auxiliary (છે, હતું …) and leaves paragraph ends alone. **Book brackets are NOT marks** (Manav, 15 Nov, ઉપનિષદ - 29:
 "ઇન્દ્રિયો પર અંકુશ રાખવો એ જ (બ્રહ્મ પ્રાપ્તિનો) માર્ગ છે" — he removed the two commas the first version put there; "alap
-viram is not needed"). `--undo-brackets` removes such commas from a posted Doc (only where a "punctuation as in the book" item
+viram is not needed"). Review the `--dry` list first; `--skip=TEXT` (repeatable) leaves out a change whose surroundings contain TEXT (53: the book's "પાખંડી- પથભ્રષ્ટ" is a hyphen, not a dash). `--undo-brackets` removes such commas from a posted Doc (only where a "punctuation as in the book" item
 made them): done the same day for 30, 31, 34–37, 42–47, 50, 51 (1 to 44 commas each). Each change is a ✎ item ("punctuation
 as in the book"), folded into an existing item when it falls inside one. Typical: 50–80 changes in an hour of reading.
 15 Nov: applied to the posted Docs Manav had not opened (34, 35, 36, 37, 42, 43, 44 — 8 to 64 changes each) and, with his
@@ -432,6 +437,7 @@ and PUNCT.md (the old "never add a comma" rule was wrong).
 | ઉપનિષદ - 49 | D8PeLB03Ycs | શાણ્ડિલ્યોપનિષદ્ part 6 | posted 15 Nov, 40 ✎ (mostly his explanation; no book passages found) |
 | ઉપનિષદ - 50 | gjNpSaWSIK8 | શાણ્ડિલ્યોપનિષદ્ part 7 (અધ્યાય 2–3) | posted 15 Nov, 52 ✎ (16 book punctuation); closing ભદ્રં કર્ણેભિઃ in standard text; names as in the book (શાંડિલ્ય, અથર્વા, અત્રિ); પીત રંગ (Doc: પિત્ત); an earlier AI rewrite (આ સાંભળીને શાંડીલ્ય ઋષિ … કરવા ગયા) replaced by what he said, as one ✎ item |
 | ઉપનિષદ - 51 | 30FKx1zO9Nw | શારીરકોપનિષદ્ | posted 15 Nov, 149 ✎; book OCR p. 332–334 (shariraka); આવાહનં ન જાનામિ …, the opening and closing સહ નાવવતુ (the Doc had lost the first half of the closing one) and the first mantra ૐ અથાતઃ પૃથિવ્યાદિ … in standard text; જિહ્વા (Doc: જીવવા), ભોક્તા; brackets two in a row made backbone_m fail — fixed (lookahead) |
+| ઉપનિષદ - 53 | N_Zh1SR6r58 | સંન્યાસોપનિષદ્ part 2 | posted 15 Nov, 120 ✎ (6 to listen); book OCR p. 322–337 (sannyasa); પૂર્ણમદઃ in standard text; book punctuation (4) and spellings માધુકરી, નશ્વર, શ્રોત્રિય, વિષ્ઠા, પ્રાયઃ; ભિક્ષાં દેહિ; કાલકૂટ / સ્મશાનવત asides without brackets |
 | ઉપનિષદ - 29 | SVuerlTFeHI | નિર્વાણોપનિષદ્ · પંચબ્રહ્મોપનિષદ્ | posted 14 Nov, 76 ✎; opening prayer = સત્યનારાયણ કથા 1.8–9 (standard text found online), સહ નાવવતુ as in 48 |
 | ઉપનિષદ - 30 | txdQ3939tmk | પરબ્રહ્મોપનિષદ્ | posted 14 Nov, 92 ✎ (3 check); book = Tesseract OCR of p. 197–203 (not typed); judges' moved-word pairs and the ? after a fix folded by hand |
 | ઉપનિષદ - 5 | 8YbF5PwMMnU | અધ્યાત્મોપનિષદ્ ૩ | no Doc: new Doc from Sarvam + captions hint + book (PDF 24–29 typed), posted 7 Nov, 92 ✎ |
