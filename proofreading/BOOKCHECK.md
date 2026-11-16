@@ -20,13 +20,12 @@ Your job: find every place where he is READING and the transcript does not spell
 2. **Words run together or split differently**: "મહીપુષા" → "મહી, પૂષા" (the book lists them separately);
    "નિર્વિકલ્પ" written as one word when the book does.
 3. **Book punctuation inside the read sentence**: commas between list items, ? and ! as in the book.
-   **Too many commas** (Manav, 15 Nov, twice): where the book prints a BRACKET, the transcript must NOT have a comma.
-   Book "તેઓ (જાગૃતિ, સ્વપ્ન તેમજ સુષુપ્તિ) ત્રણેય અવસ્થાઓથી પર તુરીયાવસ્થા (ચોથી અવસ્થા) સ્વરૂપ" → write
-   "તેઓ જાગૃતિ, સ્વપ્ન, સુષુપ્તિ ત્રણેય અવસ્થાઓથી પર તુરીયાવસ્થા ચોથી અવસ્થા સ્વરૂપ" (the commas INSIDE the bracket
-   stay; the ones standing for "(" and ")" go). Book "એ જ (બ્રહ્મ પ્રાપ્તિનો) માર્ગ" → "એ જ બ્રહ્મ પ્રાપ્તિનો માર્ગ";
-   book "તેઓ (બ્રહ્મ)જ બધાનો" → "તેઓ બ્રહ્મ જ બધાનો"; book "શિખા (ચોટલી) છે" → "શિખા ચોટલી છે". So: REMOVE every comma
-   in final.txt that stands exactly where the book has "(" or ")" in the passage he is reading. Never add a comma the
-   book does not have inside a read sentence.
+   **The book's brackets stay** (Manav, 16 Nov, ઉપનિષદ - 34: "you used to forget ( ) while checking from books";
+   RULES.md since 1 Nov): where he reads a sentence and the book prints a bracket, write the SAME bracket around the
+   same words — book "અચ્યુતરૂપી હંસ (ચેતન જીવ) હંમેશાં રહેતો" → "હંસ (ચેતન જીવ) હંમેશા રહેતો" (not "હંસ, ચેતન જીવ," and
+   not "હંસ ચેતન જીવ"); book "તેઓ (બ્રહ્મ)જ બધાનો" → "તેઓ (બ્રહ્મ) જ બધાનો"; book "એષણાત્રય (પુત્રૈષણા, વિત્તૈષણા અને
+   લોકૈષણા)" → the same with brackets. A comma that stands where the book has "(" or ")" goes. Only the book's own
+   brackets: his spoken asides get no brackets. Never add a comma the book does not have inside a read sentence.
 4. **Book spellings of ordinary words** inside the read sentence when the Doc's spelling is just a different spelling of
    the same word (સિદ્ધિયો/સિદ્ધિઓ both fine — leave; but a misspelling like વિષ્ટા for વિષ્ઠા → book).
 

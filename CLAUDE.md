@@ -19,7 +19,7 @@ commands), then `proofreading/RULES.md` (what to write) and `proofreading/JUDGE.
 - Never put the Apps Script `SECRET`, the `CAP_KEY`, or any API key (Sarvam, Gemini) in chat, in a file in this repo,
   or in a commit. They live only in Manav's Apps Script, his browser, and the work folder (`*.key`, `capkey.txt`).
 - Never write a Doc except through the hash-checked post (PROCESS.md C10): stop if the Doc changed since it was read.
-- Never change the speaker's words to "better Gujarati"; no quotation marks or brackets in transcripts.
+- Never change the speaker's words to "better Gujarati"; no quotation marks in transcripts; no brackets for his spoken asides, but where he reads the book its brackets stay exactly as printed (Manav, 1 and 16 Nov).
 - Never try to get around YouTube's bot checks (other yt-dlp clients etc.); use Manav's own browser.
 - Ask Manav before anything that cannot be undone.
 - Never change a Doc Manav has finished: those are in his Drive folder **"total final"** (as of 7 Nov: Atharvashir, ઉપનિષદ - 38-1, 38-2, 39,

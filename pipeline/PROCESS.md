@@ -270,6 +270,13 @@ misses clauses he mixes with his own words, so now an AGENT checks every read pa
    final.txt = the Doc now and the ✎ list from review/YT.json; it runs overlapcheck, revertcheck and lastcheck).
 Posted Docs Manav had not touched (30, 31, 34–37, 42–47, 49–53, 55) were re-checked this way on 15 Nov; 29 left to him.
 
+**16 Nov — the book's brackets STAY** (Manav, ઉપનિષદ - 34: "you used to forget ( ) while checking from books"; RULES.md
+already said so on 1 Nov): where he reads the book, its "(…)" is written as printed ("હંસ (ચેતન જીવ) હંમેશા"); only his
+spoken asides lose brackets. BOOKCHECK.md rule 3 now says so; `t/bookbrackets.py final.txt book_gu.txt rows.json` finds
+book brackets whose words stand bare in the text (word before and after must match the book) and
+`applybookcheck.py N YT --rows=rows.json` applies them. Done for 35, 42–45, 50–53, 55 (1–4 each); 29, 30, 31, 34, 36 are
+Manav's (he is editing them).
+
 ### C9b. Book wording (when the speaker reads from the book) — Manav, 1 Nov: "always see what is written in book"
 `python3 t/bookalign.py VM/final.txt VM/bookalign.json book/NAME.txt[,book/OTHER.txt] 80` lists every place inside a
 read sentence where the Doc has different words than the book (`sub`), extra words (`extra`, his own additions — keep)

@@ -8,14 +8,15 @@ R=os.environ.get('SD_REPO','/home/claude/sudhar-desk'); D=f'bc{N}'
 t=open(f'{D}/final.txt',encoding='utf-8').read()
 rev=json.load(open(f'{R}/review/{YT}.json',encoding='utf-8'))['items']
 rows=[]
-for f in sorted(glob.glob(f'{D}/bookcheck_out*.json'))+[f'{D}/unbr.json']:
+RF=[a.split('=',1)[1] for a in sys.argv if a.startswith('--rows=')]
+for f in (RF or sorted(glob.glob(f'{D}/bookcheck_out*.json'))+[f'{D}/unbr.json']):
     if os.path.exists(f): rows+=json.load(open(f,encoding='utf-8'))
 listen=[r for r in rows if len(r)>3 and r[3]=='listen']
 rows=[r for r in rows if not(len(r)>3 and r[3]=='listen') and r[0]!=r[1]]
 ok=[];bad=[]
 for r in rows:
     old,new=r[0],r[1]
-    if '(' in new or ')' in new or '"' in new: bad.append(('bracket/quote in new',r)); continue
+    if '"' in new: bad.append(('quote in new',r)); continue
     if t.count(old)!=1: bad.append((f'old occurs {t.count(old)}x',r)); continue
     ok.append([old,new,r[2] if len(r)>2 else 'as in the book',r[3] if len(r)>3 else 'likely'])
 # overlapping rows: keep the first, report the rest

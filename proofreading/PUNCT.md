@@ -29,7 +29,7 @@ What we know from Manav's own corrections (video 9, 0–1:34):
   unless a complete sentence clearly ends there. (Where he reads from the book, a later step copies the book's own marks.)
   BUT not too many (Manav, 15 Nov, ઉપનિષદ - 29: "so many alpaviram … don't add too much"): no comma just because a
   word ends or he pauses inside a phrase ("બ્રહ્મ સ્વરૂપ", "ચોથી અવસ્થા સ્વરૂપ"); NEVER a comma where the book prints a
-  bracket ("તેઓ (બ્રહ્મ)જ બધાનો" → "તેઓ બ્રહ્મ જ બધાનો", not "તેઓ, બ્રહ્મ"); inside a sentence he reads from the book add
+  bracket — the book's bracket itself is written ("તેઓ (બ્રહ્મ)જ બધાનો" → "તેઓ (બ્રહ્મ) જ બધાનો", not "તેઓ, બ્રહ્મ"); inside a sentence he reads from the book add
   no comma the book does not have. When in doubt, no comma.
 - QUESTION TAGS (Manav, 15 Nov, ઉપનિષદ - 30: "પછી બરાબર?"): a sentence ending in બરાબર, ખરું ને, સમજાયું, ક્લિયર ALWAYS gets "?".
 - QUESTIONS: add "?" wherever the speaker asks — also the short ones ("બરાબર?", "કેવી રીતે?", "ક્લિયર?", "સમજાયું?") — and
