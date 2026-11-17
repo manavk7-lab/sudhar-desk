@@ -14,6 +14,8 @@ try{
 const mp=document.querySelector('#movie_player');
 try{mp.setPlaybackQualityRange('tiny','tiny')}catch(e){}
 const v=document.querySelector('video');if(!v)throw new Error('no video');
+// the audio graph first, before anything plays: the tab never sounds on the speakers (Manav, 17 Nov: "mute all audio, I am doing my work")
+let ctx,dst;if(window.__AUD){ctx=window.__AUD.ctx;dst=window.__AUD.dst}else if(R0&&R0.ctx&&R0.rec&&R0.rec.stream){ctx=R0.ctx;dst={stream:R0.rec.stream}}else{ctx=new AudioContext();const src=ctx.createMediaElementSource(v);dst=ctx.createMediaStreamDestination();src.connect(dst)}window.__AUD={ctx,dst};
 const unm=()=>{try{if(mp.isMuted&&mp.isMuted()){mp.unMute();R.unmuted=(R.unmuted||0)+1}}catch(e){}if(v.muted){v.muted=false;R.unmuted=(R.unmuted||0)+1}if(v.volume<1)v.volume=1};
 unm();v.addEventListener('volumechange',unm);  // YouTube mutes background playback after ~30 s; that recorded silence (31 Oct)
 const ad=()=>mp&&mp.classList.contains('ad-showing');
@@ -23,7 +25,6 @@ try{mp.seekTo(START,true)}catch(e){v.currentTime=START}
 try{await v.play()}catch(e){R.playErr=String(e)}
 for(let i=0;i<60;i++){if(Math.abs(v.currentTime-START)<4&&!v.paused&&v.readyState>=3)break;await sleep(250)}
 R.t0=Math.round(v.currentTime*10)/10;
-let ctx,dst;if(window.__AUD){ctx=window.__AUD.ctx;dst=window.__AUD.dst}else if(R0&&R0.ctx&&R0.rec&&R0.rec.stream){ctx=R0.ctx;dst={stream:R0.rec.stream}}else{ctx=new AudioContext();const src=ctx.createMediaElementSource(v);dst=ctx.createMediaStreamDestination();src.connect(dst)}window.__AUD={ctx,dst};
 try{await ctx.resume()}catch(e){}
 const rec=new MediaRecorder(dst.stream,{mimeType:'audio/webm;codecs=opus',audioBitsPerSecond:24000});
 R.rec=rec;R.ctx=ctx;
