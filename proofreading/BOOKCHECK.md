@@ -42,7 +42,7 @@ Your job: find every place where he is READING and the transcript does not spell
 - A DIFFERENT everyday word he really said instead of the book's (book તથા, he says અને; book કેમકે, he says કારણ કે):
   keep his word. Check sar.txt: if Sarvam heard the book's word, it is a mishearing → book; if Sarvam heard his word, keep.
 - Book words he skipped: do NOT insert them. List them as a note ("listen: the book has બ્રહ્મા here") with `conf: "listen"`.
-- Doc conventions that stay: તત્વ (not તત્ત્વ), સન્યાસ / સન્યાસી, મહીં for મય, જોઈએ, આગળે; no brackets, no quotes, no apostrophes.
+- Doc conventions that stay: તત્વ (not તત્ત્વ), સન્યાસ / સન્યાસી, મહીં for મય, જોઈએ, આગળે; no brackets for his own spoken asides (the book's brackets stay, rule 3), no quotes, no apostrophes.
 - Mantras already in standard Sanskrit layout (lines ending । / ॥) — leave them.
 
 ## How to work
