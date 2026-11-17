@@ -276,6 +276,10 @@ spoken asides lose brackets. BOOKCHECK.md rule 3 now says so; `t/bookbrackets.py
 book brackets whose words stand bare in the text (word before and after must match the book) and
 `applybookcheck.py N YT --rows=rows.json` applies them. Done for 35, 42–45, 50–53, 55 (1–4 each); 29, 30, 31, 34, 36 are
 Manav's (he is editing them).
+**17 Nov — એટલે before a book bracket:** Manav ("change where you feel") — in his own ઉપનિષદ - 34 he kept "નિષ્કલ એટલે કલા
+રહિત" without brackets and bracketed only bare words ("નિષ્કલ (કલા રહિત)"). So where he says એટલે / એટલે કે before the book's
+bracketed words, no bracket (BOOKCHECK rule 3). ઉપનિષદ - 56 fixed the same day (6 spots). `t/postbc.sh` now stops (pipefail)
+when the post is refused, so the ✎ list is never rewritten for a text that did not reach the Doc.
 
 ### C9b. Book wording (when the speaker reads from the book) — Manav, 1 Nov: "always see what is written in book"
 `python3 t/bookalign.py VM/final.txt VM/bookalign.json book/NAME.txt[,book/OTHER.txt] 80` lists every place inside a

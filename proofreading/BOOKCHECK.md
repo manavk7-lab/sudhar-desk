@@ -26,6 +26,11 @@ Your job: find every place where he is READING and the transcript does not spell
    not "હંસ ચેતન જીવ"); book "તેઓ (બ્રહ્મ)જ બધાનો" → "તેઓ (બ્રહ્મ) જ બધાનો"; book "એષણાત્રય (પુત્રૈષણા, વિત્તૈષણા અને
    લોકૈષણા)" → the same with brackets. A comma that stands where the book has "(" or ")" goes. Only the book's own
    brackets: his spoken asides get no brackets. Never add a comma the book does not have inside a read sentence.
+   **But when he says એટલે / એટલે કે before the book's bracketed words, write no bracket** — his એટલે does the bracket's
+   work (Manav's own ઉપનિષદ - 34, 17 Nov: he kept "નિષ્કલ એટલે કલા રહિત" and "નિષ્કલ એટલે કે કલા રહિત" without brackets,
+   and wrote the bracket only where the words stood bare: "નિષ્કલ, કલા રહિત અને" → "નિષ્કલ (કલા રહિત) અને").
+   So: "અસંવૃત્ત એટલે અસંકીર્ણ છે", not "અસંવૃત્ત એટલે (અસંકીર્ણ) છે"; "આ વિરાટ એટલે હિરણ્ય (સ્વર્ણ)ની જેમ", not "(આ વિરાટ) એટલે".
+   He also follows the book's word ORDER around a bracket he reads: "પોતાના દેહ શરીરની અંદર" → "પોતાના શરીરની (દેહ) અંદર".
 4. **Book spellings of ordinary words** inside the read sentence when the Doc's spelling is just a different spelling of
    the same word (સિદ્ધિયો/સિદ્ધિઓ both fine — leave; but a misspelling like વિષ્ટા for વિષ્ઠા → book).
 
