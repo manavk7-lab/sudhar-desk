@@ -393,6 +393,12 @@ and PUNCT.md (the old "never add a comma" rule was wrong).
 - **One set of YouTube tabs for many videos** (6 Nov): `browser/recorder_fn.js` defines `__loadVid(id)` (the player's
   `loadVideoById`, which keeps the relay), `__startRec(KEY,START,END)` and `__getCaps(KEY)`. Inject it once per tab. The
   recorder reuses the tab's audio graph (`createMediaElementSource` works only once per video element).
+- **Silent tabs (18 Nov):** open each YouTube tab on a placeholder address (`https://www.youtube.com/watch?v=xxxxxxxxxx0`,
+  no video), run `browser/silent_tab.js` (hooks every new `<video>` into a hidden audio graph, adds the relay button),
+  click the button, fill the relay, inject `recorder_fn.js`, then `__loadVid(ID)` and `__startRec(KEY,START,END)`. Check
+  `document.querySelector('video').__g` is set before starting. A tab can reload by itself (Chrome memory saver): `__R`
+  is then gone — set the tab up again and record the rest under a new key (decode the partial key with a partial log).
+  Book pages: `gyan/mkstrips.py` + typing agents (`gyan/clean/BRIEF.md`, `NOTES.md`: this font prints દૃ as દ).
 - If Manav's computer sleeps, Chrome stops answering and the recordings stall: tell him, carry on with work that needs no
   browser (book pages, judging), and check the recorders (`window.__R`) when Chrome is back.
 

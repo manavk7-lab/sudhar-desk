@@ -53,8 +53,12 @@ window.__getCaps=async KEY=>{
  if(!url){const T=(((pr||{}).captions||{}).playerCaptionsTracklistRenderer||{}).captionTracks||[];
    const t=T.find(x=>x.languageCode==='gu'&&x.kind==='asr')||T.find(x=>x.languageCode==='gu')||T[0];url=t&&t.baseUrl}
  if(!url) return 'no caption track';
- const u=new URL(url,location.href);u.searchParams.set('fmt','json3');u.searchParams.delete('tlang');
- const j=await fetch(u.toString()).then(r=>r.json());
+ // try every caption request the player made for this video: the last one can come back empty (18 Nov, video 61)
+ const urls=[...new Set([...performance.getEntriesByType('resource').map(e=>e.name).filter(n=>n.includes('/api/timedtext')&&n.includes('v='+vid)),url])];
+ let j=null;
+ for(const raw of urls){const u=new URL(raw,location.href);u.searchParams.set('fmt','json3');u.searchParams.delete('tlang');
+   const t=await fetch(u.toString()).then(r=>r.text());if(t.length>100){j=JSON.parse(t);break}}
+ if(!j) return 'captions came back empty';
  const L=['# Sudhar Desk sync — YouTube auto-caption word times for '+vid+' (ms<TAB>word)'];
  for(const ev of (j.events||[])){if(!ev.segs)continue;for(const s of ev.segs){const w=(s.utf8||'').trim();if(!w)continue;
    const ms=(ev.tStartMs||0)+(s.tOffsetMs||0);for(const x of w.split(/\s+/))L.push(ms+'\t'+x)}}
