@@ -482,6 +482,7 @@ and PUNCT.md (the old "never add a comma" rule was wrong).
 | ઉપનિષદ - 5 | 8YbF5PwMMnU | અધ્યાત્મોપનિષદ્ ૩ | no Doc: new Doc from Sarvam + captions hint + book (PDF 24–29 typed), posted 7 Nov, 92 ✎ |
 | ઉપનિષદ - 48 | Cv61CQOqbIw | શાણ્ડિલ્યોપનિષદ્ ૫ (guided meditation) | no Doc: new Doc from Sarvam (Part G), posted 7 Nov, 13 ✎; shared with manavk7 as editor |
 | ઉપનિષદ - 142 | 5A0I2r8P50k | લાઙ્ગૂલોપનિષદ્ (Hanuman mantras) | no Doc: new Doc (Part G), posted 7 Nov, 90 ✎ (17 check items on mantra words); no book (not in બ્રહ્મ વિદ્યા ખંડ) |
+| ઉપનિષદ - 62 | Akjw_KJEq2k | કઠોપનિષદ્ (ભાગ ૧) | posted 19 Nov, 274 ✎; 85 book rows (નચિકેતા spelling, વિશ્વજિત, અર્ઘ્ય, ઇષ્ટકા, નાચિકેત, 24 book brackets read bare), 3 listen notes |
 
 **Playlist vs Docs (7 Nov).** The ઉપનિષદ playlist (Manav's channel, 150 videos) against the 147 "UPNISHAD -video N" Docs:
 three videos have no Doc — video 5 = 8YbF5PwMMnU (અધ્યાત્મોપનિષદ્ ૩, 47 min), video 48 = Cv61CQOqbIw
