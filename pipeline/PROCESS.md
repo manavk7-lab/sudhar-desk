@@ -485,6 +485,7 @@ and PUNCT.md (the old "never add a comma" rule was wrong).
 | ઉપનિષદ - 62 | Akjw_KJEq2k | કઠોપનિષદ્ (ભાગ ૧) | posted 19 Nov, 274 ✎; 85 book rows (નચિકેતા spelling, વિશ્વજિત, અર્ઘ્ય, ઇષ્ટકા, નાચિકેત, 24 book brackets read bare), 3 listen notes |
 | ઉપનિષદ - 61 | Fymt0eQSSmk | એકાક્ષરોપનિષદ્ + ઐતરેયોપનિષદ્ | posted 19 Nov, 519 ✎; 3 silent tabs; 199 book rows (એકાક્ષર + ઐતરેય: હિરણ્યગર્ભ, નાભિ, વષટ્કાર, આપઃ, અપ્, મરીચિ, અમ્ભ, શબ્દકલ્પદ્રુમ, ભ્રમબુદ્ધિ, ~45 book brackets read bare); 12 listen notes (ગજસુકુમાર, શાન્તાકારં, પ્રજ્ઞાનરૂપ, ત્રીજો જન્મ …) |
 | ઉપનિષદ - 63 | ug3fkOawPIk | કઠોપનિષદ્ (ભાગ ૨) | posted 19 Nov, 196 ✎; 2 tabs; 69 book rows (નચિકેતા/નાચિકેત, વરણ, સાન્નિધ્ય, પ્રેય-પથ, મૂળિયાં સોતું, 28 book brackets); hyphen-only book spellings left out |
+| ઉપનિષદ - 64 | ijfC_O_OHes | કઠોપનિષદ્ (ભાગ ૩) | posted 19 Nov, 467 ✎; 3 tabs; 160 book rows (નચિકેતા, સારથિ, એતદ્વૈ તત્, જડ યોનિઓ, ગાર્હપત્ય, ઓદન, શ્રદ્ધાસિક્ત, ~58 book brackets); bookpunct --keepstops |
 
 **Playlist vs Docs (7 Nov).** The ઉપનિષદ playlist (Manav's channel, 150 videos) against the 147 "UPNISHAD -video N" Docs:
 three videos have no Doc — video 5 = 8YbF5PwMMnU (અધ્યાત્મોપનિષદ્ ૩, 47 min), video 48 = Cv61CQOqbIw
