@@ -488,6 +488,7 @@ and PUNCT.md (the old "never add a comma" rule was wrong).
 | ઉપનિષદ - 64 | ijfC_O_OHes | કઠોપનિષદ્ (ભાગ ૩) | posted 19 Nov, 467 ✎; 3 tabs; 160 book rows (નચિકેતા, સારથિ, એતદ્વૈ તત્, જડ યોનિઓ, ગાર્હપત્ય, ઓદન, શ્રદ્ધાસિક્ત, ~58 book brackets); bookpunct --keepstops |
 | ઉપનિષદ - 65 | 6pC9GkXSq7Y | કેનોપનિષદ્ | posted 19 Nov, 117 ✎; book from the typed pages 73–78; 48 book rows (હૈમવતી, મઘવન, અંતર્ધાન, જાતવેદા, આધિદૈવિક, તદ્વન, 10 book brackets); he skips mantra 1.5 |
 | ઉપનિષદ - 67 | tc0HXMSWc0o | છાંદોગ્ય ઉપનિષદ (ભાગ ૨) | posted 19 Nov, 219 ✎; book = Gemini docx (chandogya); 102 book rows (ઉદ્ગીથ, ઋક્, ઉત્, ઉદ્ગાતા, ઉષસ્તિ, કૌષીતકિ, પ્રવાહણ જૈવલિ, book commas and brackets); no apostrophes (ઓમ’માં) |
+| ઉપનિષદ - 66 | 4qzSjrPtndY | ગાયત્ર્યુપનિષદ્ + છાંદોગ્ય ઉપનિષદ (ભાગ ૧) | posted 19 Nov, 474 ✎; book = Gemini docx (gayatri + chandogya); 244 book rows (મૌદ્ગલ્ય, વરણીય, તત્સવિતુર્વરેણ્યં, ઉદ્ગીથ, ઋક્, ઉત્, ઉદ્ગાતા, book commas and 8 book brackets restored) |
 
 **Playlist vs Docs (7 Nov).** The ઉપનિષદ playlist (Manav's channel, 150 videos) against the 147 "UPNISHAD -video N" Docs:
 three videos have no Doc — video 5 = 8YbF5PwMMnU (અધ્યાત્મોપનિષદ્ ૩, 47 min), video 48 = Cv61CQOqbIw
