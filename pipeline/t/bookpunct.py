@@ -7,7 +7,8 @@ fuzzily). Inside a run of >= MINRUN aligned words (a passage he reads), at every
 are aligned, the Doc's mark is replaced by the book's mark. Brackets in the book count as commas (no brackets in
 transcripts). Boundaries at a paragraph break are changed only to a stop (. ? !). Each change is a ✎ item
 ("punctuation as in the book"); a change inside an existing item updates that item (no overlaps).
---dry: print what would change, write nothing."""
+--dry: print what would change, write nothing. --keepstops: leave his full stops (no book comma in their place).
+--skip=TEXT: leave out a change whose context holds TEXT. A change inside a check item is left out."""
 import re,sys,json,difflib,hashlib,os,subprocess
 from rapidfuzz import fuzz
 T,BKS,I,SY=sys.argv[1:5]; DRY='--dry' in sys.argv; MINRUN=6; UNDOBR='--undo-brackets' in sys.argv
@@ -129,6 +130,10 @@ SKIPS=[a[7:] for a in sys.argv if a.startswith('--skip=')]
 if SKIPS:
     keep=[c for c in changes if not any(k in t[max(0,c[0]-30):c[1]+30] for k in SKIPS)]
     print('skipped',len(changes)-len(keep)); changes=keep
+# --keepstops: never turn his full stop into the book's comma (his stops come from where he stops)
+if '--keepstops' in sys.argv:
+    keep=[c for c in changes if '(Doc: .)' not in c[3]]
+    print('kept stops',len(changes)-len(keep)); changes=keep
 print(f'runs {len(runs)} words in runs {sum(len(r) for r in runs)} of {len(D)}; changes {len(changes)}')
 from collections import Counter
 print(Counter(c[3] for c in changes).most_common(12))
@@ -145,6 +150,8 @@ for s,e,new,why in sorted(changes,reverse=True):
     for x in it+new_items:
         sp=span(x,t)
         if sp and sp[0]<e and sp[1]>s: host=(sp,x); break
+    if host and host[1].get('kind')=='check':
+        continue   # a check item's cur must stay as it is: leave the book mark out here
     if host:
         (hs,he),x=host
         x['cur']=t[hs:s]+new+t[e:he]; x['why']=(x.get('why','')+'; punctuation as in the book').strip('; ')
