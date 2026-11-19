@@ -2,6 +2,7 @@
 set -e
 cd ${SD_WORK:-.}
 V=$1; A=$2; Y=${SD_REPO:-$HOME/sudhar-desk}/sync/$3.tsv; BK=$4; shift 4
+echo "$BK" > $V/book.txt   # finishdoc.py checks the book brackets against this
 for g2 in $A/*_p[0-9][0-9].gem2.txt; do
   [ -e "$g2" ] || continue
   g=${g2%.gem2.txt}.gem.txt

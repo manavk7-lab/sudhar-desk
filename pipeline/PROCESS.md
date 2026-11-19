@@ -276,6 +276,16 @@ spoken asides lose brackets. BOOKCHECK.md rule 3 now says so; `t/bookbrackets.py
 book brackets whose words stand bare in the text (word before and after must match the book) and
 `applybookcheck.py N YT --rows=rows.json` applies them. Done for 35, 42–45, 50–53, 55 (1–4 each); 29, 30, 31, 34, 36 are
 Manav's (he is editing them).
+**19 Nov — book brackets are now a hard stop before posting** (Manav, ઉપનિષદ - 43: "still ( ) is missed … this type of
+mistakes not happen again"; the book's "જે (પુરુષ) સંન્યાસ-આશ્રમને … એવા (પુરુષ)ને આરૂઢચ્યુત (પાતકી-પાપી) … અનુશાસન (આદેશ) છે"
+stood bare). Two causes: 43 was posted on 14 Nov, before the bracket rows existed, and `bookbrackets.py` was a manual step
+that was not run for later Docs. Now: `bookbrackets.py` compares spelling-blind (સન્યાસ / સંન્યાસ), handles a bracket glued
+to a word ("(પુરુષ)ને"), the book's hyphen inside ("પાતકી-પાપી"), a verse number after the bracket, and the OCR's line
+breaks; `fusem.sh` writes `vN/book.txt`; **`finishdoc.py` runs it on final.txt and refuses to post** while any book bracket
+he reads stands bare, or while its "one side only" places (`vN/bb_report.txt`) are not looked at (`touch vN/bb_ok`).
+Posted Docs not yet in "total final" were amended the same day with `t/amendbrackets.py N YT DOCID BOOKS --post`
+(reads the Doc as it is now, hash-checked post, ✎ items added to review/YT.json): 44, 45, 47, 50–53, 57, 61, 64,
+68, 69, 70-1. 43 left to Manav (he was editing it).
 **17 Nov — એટલે before a book bracket:** Manav ("change where you feel") — in his own ઉપનિષદ - 34 he kept "નિષ્કલ એટલે કલા
 રહિત" without brackets and bracketed only bare words ("નિષ્કલ (કલા રહિત)"). So where he says એટલે / એટલે કે before the book's
 bracketed words, no bracket (BOOKCHECK rule 3). ઉપનિષદ - 56 fixed the same day (6 spots). `t/postbc.sh` now stops (pipefail)

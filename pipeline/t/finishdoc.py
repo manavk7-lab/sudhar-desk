@@ -10,6 +10,18 @@ n,yt,doc,title,note,ver=sys.argv[1:7]
 S=os.environ['SD_WORK']; R=os.environ['SD_REPO']; V=f'{S}/v{n}'
 def run(cmd,**k): return subprocess.run(cmd,shell=isinstance(cmd,str),capture_output=True,text=True,**k)
 old=hashlib.sha256(open(f'{V}/doc_orig.txt','rb').read()).hexdigest()[:16]
+# Manav 16 + 19 Nov ("still ( ) is missed … this type of mistakes not happen again"): no post while a book bracket
+# he reads stands bare. vN/book.txt (written by fusem.sh; 'none' = no book) names the book files.
+bf=f'{V}/book.txt'
+if not os.path.exists(bf): print('NO vN/book.txt — write the book files (or none) there first'); sys.exit(1)
+bk=open(bf).read().strip()
+if bk!='none':
+    p=run(['python3',f'{S}/t/bookbrackets.py',f'{V}/final.txt',bk,f'{V}/bb_rows.json','--report'],cwd=S)
+    rep=p.stdout+p.stderr; open(f'{V}/bb_report.txt','w',encoding='utf-8').write(rep)
+    nrow=len(__import__('json').load(open(f'{V}/bb_rows.json',encoding='utf-8'))) if os.path.exists(f'{V}/bb_rows.json') else -1
+    if nrow!=0: print(f'BOOK BRACKETS: {nrow} bare (see {V}/bb_report.txt) — apply bb_rows.json with t/wordfix1.py first'); sys.exit(1)
+    if '  ? book' in rep and not os.path.exists(f'{V}/bb_ok'):
+        print(f'BOOK BRACKETS: one-side places in {V}/bb_report.txt — look at each, fix by hand, then touch {V}/bb_ok'); sys.exit(1)
 p=run(['python3',f'{S}/bin/postdoc.py',doc,old,f'{V}/final.txt'],cwd=S)
 out=(p.stdout+p.stderr).strip(); print(out[-300:])
 if ' OK' not in out: print('NOT POSTED — stopping'); sys.exit(1)

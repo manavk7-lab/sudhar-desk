@@ -31,6 +31,13 @@ Your job: find every place where he is READING and the transcript does not spell
    and wrote the bracket only where the words stood bare: "નિષ્કલ, કલા રહિત અને" → "નિષ્કલ (કલા રહિત) અને").
    So: "અસંવૃત્ત એટલે અસંકીર્ણ છે", not "અસંવૃત્ત એટલે (અસંકીર્ણ) છે"; "આ વિરાટ એટલે હિરણ્ય (સ્વર્ણ)ની જેમ", not "(આ વિરાટ) એટલે".
    He also follows the book's word ORDER around a bracket he reads: "પોતાના દેહ શરીરની અંદર" → "પોતાના શરીરની (દેહ) અંદર".
+   **Go through EVERY bracket of the book passage, one by one** (Manav, 19 Nov, ઉપનિષદ - 43: "still ( ) is missed"):
+   book "જે (પુરુષ) સંન્યાસ-આશ્રમને … એવા (પુરુષ)ને આરૂઢચ્યુત (પાતકી-પાપી) … કારણકે એ (પુરુષ) … અનુશાસન (આદેશ) છે" →
+   "જે (પુરુષ) સન્યાસ આશ્રમને … એવા (પુરુષ)ને આરૂઢચ્યુત (પાતકી-પાપી) … કારણ કે એ (પુરુષ), પુરુષનો ધર્મ શું છે? …
+   અનુશાસન (આદેશ) છે". The bracket stays glued as printed ("(પુરુષ)ને"), with the book's hyphen inside; his spelling
+   outside stays (સન્યાસ). Where he reads the bracketed word and then adds his own aside ("એ (પુરુષ), પુરુષનો ધર્મ…"),
+   the book's bracket still goes on the word he read. `vN/bb_report.txt` lists the places the script could match on
+   one side only — decide each of them.
 4. **Book spellings of ordinary words** inside the read sentence when the Doc's spelling is just a different spelling of
    the same word (સિદ્ધિયો/સિદ્ધિઓ both fine — leave; but a misspelling like વિષ્ટા for વિષ્ઠા → book).
 
