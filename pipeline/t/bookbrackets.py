@@ -90,6 +90,7 @@ for para in [_bk]:
             if endR: b=TT[i+k-1][1]; after=''
             else:
                 b=nx[1]; sr=sep_of(para[(aft[0][1] if glue else c):Rb[0]]) if Rb else ' '
+                if glue and not tail: sr=' '      # book "(આત્મા)જ," but he says "આત્મા જ": his next word is the book's ending
                 g=gapR.replace(',','').replace('–','').replace('-','')     # keep the text's own "(" etc., drop its comma/dash
                 g=re.sub(r'\s+',' ',g) if g.strip() else ''
                 after=(', ' if sr==', ' else ' ')+g.strip()+nx[2]
