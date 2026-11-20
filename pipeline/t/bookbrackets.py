@@ -12,7 +12,7 @@ text in that order — so where he says એટલે / એટલે કે befor
 Inside the bracket and at its edges the book's punctuation is used (its hyphen, its comma); the words stay his.
 Writes wordfix rows [old, new, why, conf] (old unique in the text) → t/wordfix1.py. --report prints the rows and
 the "one side only" places to look at by hand."""
-import re,sys,json
+import re,sys,json,os
 from rapidfuzz import fuzz
 T,BK,OUT=sys.argv[1:4]; REP='--report' in sys.argv
 t=open(T,encoding='utf-8').read()
@@ -105,6 +105,11 @@ for para in [_bk]:
             used.add(i); stat['rows']+=1
             rows.append([old,new,('[ctx %d] '%sc)+'book bracket as printed: '+para[max(0,Lb[0]):min(len(para),c+20)].strip(),'sure'])
             break
+# vN/bb_skip.json: rows looked at by hand and found wrong (the book's bracket is elsewhere) — [old, ...]
+_sk=os.path.join(os.path.dirname(os.path.abspath(OUT)),'bb_skip.json')
+if os.path.exists(_sk):
+    _skip=set(json.load(open(_sk,encoding='utf-8'))); _n=len(rows); rows=[r for r in rows if r[0] not in _skip]
+    stat['skipped']=_n-len(rows); stat['rows']=len(rows)
 json.dump(rows,open(OUT,'w',encoding='utf-8'),ensure_ascii=False,indent=1)
 print(stat)
 for r in (rows if REP else rows[:6]): print('   ',r[0],' → ',r[1])
