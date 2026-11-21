@@ -106,30 +106,37 @@ t=re.sub(r'[ \t]+',' ',t); t=re.sub(r' +\n','\n',t); t=re.sub(r'\n +','\n',t)
 t=re.sub(r' ([,.?!:;])',r'\1',t)
 spans=[]
 # brackets -> commas (RULES: no brackets), for every "(…)" not listed in FIX/KEEP: "શબ્દ (aside) આગળ" -> "શબ્દ, aside, આગળ"
-_auto=[]
+_auto=[]; _keepnote=[]
 # the next word is only looked at, not consumed, so two asides in a row both match (v51: "અસ્તેય (…), બ્રહ્મચર્ય (…)")
 for m in re.finditer(r'(\S+) \(([^()\n]+)\)([^\s,.?!:;()]*)([,.?!:;]?)(?=( \S+)?)',t):
     w,inner,suf,pun,nxt=m.group(1),m.group(2).strip(),m.group(3),m.group(4),m.group(5) or ''
     if any(m.group(0) in o or o in m.group(0) for o,_,_ in FIX.get(vm,[])): continue
     w2=w.rstrip(',')
+    # "છે. (જનકે પૂછ્યું) કે" (v83): a short bracket right after a full stop is Manav's speaker note, not a spoken aside —
+    # it stays a bracket (turning it into commas gave "છે., જનકે પૂછ્યું," and the judges then deleted the words)
+    if re.search(r'[.?!]$',w2) and len(inner.split())<=3 and not suf:
+        _keepnote.append(m.group(0).split(' ',1)[1].split(')')[0]+')'); continue
     # "(જાણવા યોગ્ય વસ્તુ)ને" (v42): the suffix joins the last word, no stop: "વસ્તુને"
     if suf: newt=w2+', '+inner+suf+pun
     elif pun: newt=w2+', '+inner+pun
     elif nxt.strip() in ('–','-','—'): newt=w2+', '+inner          # "(…) – આ પાંચ"
     else: newt=w2+', '+inner+(',' if nxt else '.')
     _auto.append((m.group(0),newt,'no brackets (aside spoken as is)'))
+_auto=list(dict.fromkeys(_auto))   # the same aside twice is one entry (replaced at every place below)
 FIX.setdefault(vm,[]); FIX[vm]=FIX[vm]+[x for x in _auto if x[0] not in [o for o,_,_ in FIX[vm]]]
 for old,new,why in FIX.get(vm,[]):
     old2=re.sub(r'["“”]','',old)
-    n=t.count(old2); assert n==1,(old2,n)
-    i=t.find(old2); t=t[:i]+new+t[i+len(old2):]
-    spans.append((i,len(new),old2,new,why))
+    n=t.count(old2); auto=(old,new,why) in _auto
+    assert n==1 or (auto and n>1),(old2,n)   # an identical aside twice (v83 "(જનકે કહ્યું)"): each one
+    for _ in range(n):
+        i=t.find(old2); t=t[:i]+new+t[i+len(old2):]
+        spans.append((i,len(new),old2,new,why))
 # shift: later replacements may move earlier spans; recompute positions by search
 T=t
 # brackets printed in the book stay where he reads them (RULES 5): list them per video
 KEEP={'v12':['ઉદર (પેટ)નો'],'v18':['પરાકોટા (ચાર દિવાલ)']}
 _T=T
-for k in KEEP.get(vm,[]): _T=_T.replace(k,'')
+for k in KEEP.get(vm,[])+_keepnote: _T=_T.replace(k,'')
 assert '(' not in _T and ')' not in _T and '"' not in _T, 'leftover brackets/quotes'
 open(out,'w',encoding='utf-8').write(T)
 subprocess.run(['node',S+'/wordtimes.js',out,tsv,out+'.words'],check=True,capture_output=True)
