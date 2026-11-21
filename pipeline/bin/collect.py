@@ -8,7 +8,7 @@ def get(k,p):
     return None
 st={k:{'n':None} for k in keys}
 t0=time.time()
-while time.time()-t0<6000:
+while time.time()-t0<int(os.environ.get("COLLECT_MAX","9000")):
     alldone=True
     for k in keys:
         d=f'{base}/{k}'; os.makedirs(d,exist_ok=True)
