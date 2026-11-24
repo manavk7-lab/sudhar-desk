@@ -535,6 +535,7 @@ and PUNCT.md (the old "never add a comma" rule was wrong).
 | ઉપનિષદ - 99 | VXT-Yc6Wjyg | અક્ષ્યુપનિષદ્ (ભાગ ૧) | posted 24 Nov, 26 ✎; one key v99a; judges + CANDS at high (NOGEM); no book here (Manav asked), so no book steps; the opening સહ નાવવતુ in standard text; 1 sentence join (ચાક્ષુસ્મતિ વિદ્યા) |
 | ઉપનિષદ - 100 | QWhGetrBwJU | અક્ષ્યુપનિષદ્ (ભાગ ૨) | posted 24 Nov, 112 ✎; two keys v100a (0–3400 s) + v100b (3380 s–end); judges + CANDS at high (NOGEM); no book here (Manav asked), so no book steps; the ચાક્ષુષ્મતી વિદ્યા (અક્ષ્યુપનિષદ્ 1, the common Sanskrit edition, marked for Manav to check) and the closing સહ નાવવતુ in standard text; 4 sentence joins; લાહિરી મહાશય, પૂર્યાષ્ટક |
 | ઉપનિષદ - 101 | etRuzzjd_es | અદ્વયતારકોપનિષદ્ | posted 24 Nov, 66 ✎; one key v101a; judges + CANDS at high (NOGEM); no book here (Manav asked), so no book steps; the opening and closing પૂર્ણમદઃ શાંતિ in standard text; 2 sentence joins; અદ્વયતારક, અંતરલક્ષ્ય, બ્રહ્મરંધ્ર, માણેકઠારી |
+| ઉપનિષદ - 102 | LthljicH8h4 | કલિસંતરણોપનિષદ્ | posted 24 Nov, 22 ✎; one key v102a; judges + CANDS at high (NOGEM); no book here (Manav asked), so no book steps; the opening and closing સહ નાવવતુ and the 16-name મહામંત્ર (હરે રામ … હરે હરે, three times where he first chants it) in standard text; ષોડશ, દેવર્ષિ; listen: બ્રહ્મવિદ્યાના / બ્રહ્મહત્યાના |
 
 **Playlist vs Docs (7 Nov).** The ઉપનિષદ playlist (Manav's channel, 150 videos) against the 147 "UPNISHAD -video N" Docs:
 three videos have no Doc — video 5 = 8YbF5PwMMnU (અધ્યાત્મોપનિષદ્ ૩, 47 min), video 48 = Cv61CQOqbIw
