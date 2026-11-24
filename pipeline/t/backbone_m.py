@@ -158,8 +158,12 @@ def uniq(text,s,e):
     return a,b
 def hid(*x): return hashlib.md5('|'.join(x).encode()).hexdigest()[:8]
 items=[]
+_seen={}   # the same aside replaced at several places (v91 "(એમ કહીને)" x7): the k-th span is the k-th place, not the first one again
 for _,ln,old,new,why in spans:
-    st=T.find(new); assert st>=0
+    k=_seen.get(new,0); _seen[new]=k+1
+    st=-1
+    for _ in range(k+1): st=T.find(new,st+1)
+    assert st>=0
     a,b=uniq(T,st,st+ln); cur=T[a:b]; alt=T[a:st]+old+T[st+ln:b]
     items.append({'id':hid(cur,alt),'cur':re.sub(r'\s+',' ',cur).strip(),'alt':re.sub(r'\s+',' ',alt).strip(),'kind':'auto','conf':'sure',
                   'why':why,'heard':'','t':tm(st)})
