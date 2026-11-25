@@ -166,6 +166,14 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
    final full stop, which book punctuation needs), fix the obvious misreads by hand, then
    `python3 t/bookbuild.py NAME bvk/clean/ocr_NAME.txt 'START HEADING' 'NEXT HEADING'` writes book/NAME.txt, NAME_gu.txt and
    NAME_verses.json. Pass book files to the scripts by absolute path.
+   **સાધનાખંડ volume (25 Nov, from ઉપનિષદ - 109 on):** Manav sent the Word file of "૧૦૮ ઉપનિષદ્ – સાધનાખંડ" with the
+   324-page scan; Claude corrects it page by page against the scan (book work folder `gks/`: `paras.json` +
+   `fix/edits.jsonl`, notes in `fix/NOTES.md`). Book files come from that corrected text, not from OCR:
+   `python3 t/sadhana_book.py NAME FIRST_PARA NEXT_PARA` → `book_sk/NAME.txt`, `NAME_gu.txt`, `NAME_verses.json`,
+   `NAME_clean.txt`. Paragraph ranges: chaturveda 780–792, chakshusha 792–806, tulasi 806–825, tripura 825–870,
+   trishikhi 870–1137, dakshinamurti 1137–1186, devi 1186–1234, dhyanabindu 1234–1450, narayana 1450–1470,
+   nilarudra 1470–1506. Rebuild after more book pages are corrected. The book's text stays in the work folder, never in
+   this public repo. Its typeface spellings (કહયું, પડયો, પ્રાગટય) are not copied into transcripts.
 3. `python3 t/findmantras.py VM/doc.txt book/NAME_verses.json > VM/mantra_report.txt` — where the speaker recites the
    book's Sanskrit. Also look for shanti paths, Gita verses, stotras, Gayatri etc. by reading the Doc.
 4. For each recited mantra write an item in `VM/mantra_draft.json`:
