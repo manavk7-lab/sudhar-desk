@@ -174,6 +174,10 @@ If Gemini refuses a piece (block_reason OTHER), `python3 t/gemsplit.py audio/m39
    trishikhi 870–1137, dakshinamurti 1137–1186, devi 1186–1234, dhyanabindu 1234–1450, narayana 1450–1470,
    nilarudra 1470–1506. Rebuild after more book pages are corrected. The book's text stays in the work folder, never in
    this public repo. Its typeface spellings (કહયું, પડયો, પ્રાગટય) are not copied into transcripts.
+   **Manav, 26 Nov:** no more page-by-page scan reading (it costs too many tokens); check the videos from the Word file.
+   The scan is the original (the Word file was made by another model), so the fixes already made from the scan (to
+   p. 168) stay: keep using `book_sk/` (the Word file as given from p. 169 on). Read a scan page only for one doubtful
+   word, not whole pages.
 3. `python3 t/findmantras.py VM/doc.txt book/NAME_verses.json > VM/mantra_report.txt` — where the speaker recites the
    book's Sanskrit. Also look for shanti paths, Gita verses, stotras, Gayatri etc. by reading the Doc.
 4. For each recited mantra write an item in `VM/mantra_draft.json`:
