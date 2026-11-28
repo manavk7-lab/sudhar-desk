@@ -141,7 +141,7 @@ h1{font-size:26px;margin:2px 0 4px}
 #docEdit{
   position:absolute;inset:0;width:100%;height:100%;border:none;outline:none;resize:none;background:transparent;
   font-family:'Noto Serif Gujarati',serif;font-size:17.5px;line-height:1.75;
-  padding:16px 16px 120px;color:var(--ink);z-index:1;
+  padding:16px 16px 120px;color:#1B3A8C;caret-color:var(--ink);text-align:justify;z-index:1;
 }
 /* follow-along highlight: a copy of the text with transparent letters sits under the editor */
 #hl{position:absolute;left:0;top:0;bottom:0;right:0;overflow:hidden;pointer-events:none;color:transparent;
@@ -384,7 +384,7 @@ let devName=sget('desk-devname')||guessName;
 let autoRew=+(sget('desk-autorew')||0);
 
 /* ================= library ================= */
-const APP_VERSION='2026-11-28e';
+const APP_VERSION='2026-11-28f';
 /* ===== BUILT-IN LIBRARY =====
    Pre-loaded video+doc pairs baked into the app itself.
    Format: {yt:'11charVideoId', doc:'GoogleDocId', title:'…'}
@@ -653,7 +653,7 @@ function buildMirror(){
   const key=ta.value.length+'|'+ta.clientWidth+'|'+fsz;
   if(mir&&mir.key===key&&mir.text===ta.value)return mir;
   const m=$('mirror'),cs=getComputedStyle(ta);
-  ['fontFamily','fontSize','fontWeight','lineHeight','letterSpacing','wordSpacing','paddingTop','paddingLeft','paddingRight','tabSize']
+  ['fontFamily','fontSize','fontWeight','lineHeight','letterSpacing','wordSpacing','paddingTop','paddingLeft','paddingRight','tabSize','textAlign']
     .forEach(k=>m.style[k]=cs[k]);
   m.style.width=ta.clientWidth+'px';
   const lines=ta.value.split('\n');
@@ -1315,7 +1315,7 @@ const Fol=(()=>{
   }
   function style(){
     const cs=getComputedStyle(ta);
-    ['fontFamily','fontSize','fontWeight','lineHeight','letterSpacing','wordSpacing','tabSize','paddingTop','paddingRight','paddingBottom','paddingLeft','textIndent']
+    ['fontFamily','fontSize','fontWeight','lineHeight','letterSpacing','wordSpacing','tabSize','paddingTop','paddingRight','paddingBottom','paddingLeft','textIndent','textAlign']
       .forEach(k=>inner.style[k]=cs[k]);
     inner.style.boxSizing='border-box';
     inner.style.width=ta.clientWidth+'px';
@@ -1446,7 +1446,7 @@ const Rv=(()=>{
   const done=it=>it.kind==='auto'||it.kind==='applied';   /* already changed in the Doc by Claude */
   function style(){
     const cs=getComputedStyle(ta);
-    ['fontFamily','fontSize','fontWeight','lineHeight','letterSpacing','wordSpacing','tabSize','paddingTop','paddingRight','paddingBottom','paddingLeft','textIndent']
+    ['fontFamily','fontSize','fontWeight','lineHeight','letterSpacing','wordSpacing','tabSize','paddingTop','paddingRight','paddingBottom','paddingLeft','textIndent','textAlign']
       .forEach(k=>inner.style[k]=cs[k]);
     inner.style.boxSizing='border-box';inner.style.width=ta.clientWidth+'px';layer.scrollTop=ta.scrollTop;
   }
