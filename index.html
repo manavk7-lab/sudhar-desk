@@ -140,7 +140,7 @@ h1{font-size:26px;margin:2px 0 4px}
 #docWrap{flex:1;position:relative;min-height:0;background:#fff}
 #docEdit{
   position:absolute;inset:0;width:100%;height:100%;border:none;outline:none;resize:none;background:transparent;
-  font-family:'Noto Serif Gujarati',serif;font-size:17.5px;line-height:1.75;
+  font-family:'Noto Serif Gujarati',serif;font-size:24px;line-height:1.75;
   padding:16px 16px 120px;color:#1B3A8C;caret-color:var(--ink);text-align:justify;z-index:1;
 }
 /* follow-along highlight: a copy of the text with transparent letters sits under the editor */
@@ -384,7 +384,7 @@ let devName=sget('desk-devname')||guessName;
 let autoRew=+(sget('desk-autorew')||0);
 
 /* ================= library ================= */
-const APP_VERSION='2026-11-28i';
+const APP_VERSION='2026-11-28j';
 /* ===== BUILT-IN LIBRARY =====
    Pre-loaded video+doc pairs baked into the app itself.
    Format: {yt:'11charVideoId', doc:'GoogleDocId', title:'…'}
@@ -883,7 +883,7 @@ function keepAnchor(fn){
 }
 
 /* font size — remembered on this device */
-let fsz=+(sget('desk-font')||17.5);
+let fsz=+(sget('desk-font')||24);   /* default 18 pt; A− / A+ keep the reader's own choice on each device */
 function applyFont(){$('docEdit').style.fontSize=fsz+'px';if(window.Fol)Fol.style();if(window.Rv)Rv.style()}
 applyFont();
 $('btnFmin').onclick=()=>keepAnchor(()=>{fsz=Math.max(12,fsz-1.5);sset('desk-font',String(fsz));applyFont()});
